@@ -28,6 +28,18 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    packagingOptions {
+        exclude 'META-INF/LICENSE.TXT'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/license'
+        exclude 'META-INF/NOTICE.TXT'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/notice'
+        exclude 'META-INF/ASL2.0'
+    }
 }
 
 dependencies {
@@ -36,6 +48,9 @@ dependencies {
     def androidAnnotationsVer = '3.0.1'
     apt "org.androidannotations:androidannotations:$androidAnnotationsVer"
     compile "org.androidannotations:androidannotations-api:$androidAnnotationsVer"
+
+    compile 'com.intellij:annotations:12.0'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.3.0'
 }
 
 apt {
