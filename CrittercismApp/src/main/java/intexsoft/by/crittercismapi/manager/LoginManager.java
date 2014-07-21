@@ -1,20 +1,25 @@
 package intexsoft.by.crittercismapi.manager;
 
+import android.content.Context;
 import android.util.Log;
 import intexsoft.by.crittercismapi.settings.SettingsFacade;
 import intexsoft.by.crittercismapi.utils.DateTimeUtils;
 import intexsoft.by.crittercismapi.utils.StringUtils;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
+import org.androidannotations.annotations.RootContext;
 
 /**
  * Created by anastasya.konovalova on 21.07.2014.
  */
-@EBean
+@EBean(scope = EBean.Scope.Singleton)
 public class LoginManager
 {
 	@Bean
 	SettingsFacade settingsFacade;
+
+	@RootContext
+	Context context;
 
 	public boolean isLoginNotExpired()
 	{

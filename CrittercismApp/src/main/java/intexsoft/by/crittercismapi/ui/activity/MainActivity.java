@@ -2,10 +2,12 @@ package intexsoft.by.crittercismapi.ui.activity;
 
 import android.app.Activity;
 import intexsoft.by.crittercismapi.R;
+import intexsoft.by.crittercismapi.data.facade.RemoteFacade;
 import intexsoft.by.crittercismapi.ui.presenter.MainPresenter;
 import intexsoft.by.crittercismapi.ui.presenter.MainPresenterImpl;
 import intexsoft.by.crittercismapi.ui.view.BaseView;
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 
@@ -17,6 +19,9 @@ public class MainActivity extends Activity implements BaseView
 {
 	@Bean(MainPresenterImpl.class)
 	MainPresenter presenter;
+
+	@Bean
+	RemoteFacade remoteFacade;
 
 	@Override
 	public void onStart()
@@ -37,6 +42,14 @@ public class MainActivity extends Activity implements BaseView
 	void initViews()
 	{
 		presenter.init(this);
+
+		getApps();
+	}
+
+	@Background
+	void getApps()
+	{
+		remoteFacade.getApps();
 	}
 
 

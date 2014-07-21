@@ -2,8 +2,10 @@ package intexsoft.by.crittercismapi.ui.presenter;
 
 import android.content.Context;
 import intexsoft.by.crittercismapi.CrittercismApplication;
+import intexsoft.by.crittercismapi.data.facade.RemoteFacade;
 import intexsoft.by.crittercismapi.event.EventObserver;
 import intexsoft.by.crittercismapi.ui.view.BaseView;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 
 /**
@@ -12,6 +14,8 @@ import org.androidannotations.annotations.EBean;
 @EBean
 public class MainPresenterImpl implements MainPresenter
 {
+	@Bean
+	RemoteFacade remoteFacade;
 
     private final EventObserver.Receiver geoPointsReceiver = new EventObserver.Receiver()
     {

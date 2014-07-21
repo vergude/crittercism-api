@@ -7,7 +7,7 @@ import org.androidannotations.annotations.sharedpreferences.SharedPref;
 /**
  * Created by anastasya.konovalova on 21.07.14.
  */
-@SharedPref(SharedPref.Scope.APPLICATION_DEFAULT)
+@SharedPref(SharedPref.Scope.UNIQUE)
 public interface AppSettings
 {
 	@DefaultString("")

@@ -3,7 +3,7 @@ package intexsoft.by.crittercismapi;
 public class Constants
 {
 
-    public static final String BASE_URL = "";
+    public static final String BASE_URL = "https://developers.crittercism.com/v1.0";
 
 	public static final String CRITTERCISM_API_CLIENT_ID = "33VfTC2gd6soUEvBpSJeSHJNEJTcfN8F";
 
