@@ -12,6 +12,9 @@ import intexsoft.by.crittercismapi.CrittercismApplication;
 import intexsoft.by.crittercismapi.data.remote.entity.LoginResponse;
 import intexsoft.by.crittercismapi.event.EventObserver;
 import intexsoft.by.crittercismapi.event.LoginPerformedEvent;
+import intexsoft.by.crittercismapi.manager.LoginManager;
+import intexsoft.by.crittercismapi.utils.StringUtils;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EIntentService;
 import org.androidannotations.annotations.ServiceAction;
 import org.apache.http.HttpResponse;
@@ -36,6 +39,10 @@ import java.util.List;
 @EIntentService
 public class LoginService extends IntentService
 {
+	public static final String TAG = LoginService.class.getSimpleName();
+
+	@Bean
+	LoginManager loginManager;
 
 	public LoginService()
 	{
@@ -58,15 +65,35 @@ public class LoginService extends IntentService
 	@ServiceAction(Constants.Action.REQUEST_LOGIN)
 	protected void fetchLogin(String userName, String password)
 	{
-		doBasicAuth(userName, password);
+		userName = "crittercism.api@gmail.com";
+		password = "crittercism_07";
+
+		LoginResponse loginResponse = doBasicAuth(userName, password);
 
 		LoginPerformedEvent event = new LoginPerformedEvent();
+		if (loginResponse == null)
+		{
+			event.setSuccessful(false);
+			Log.d(TAG, "error");
+		}
+		if (loginResponse != null && StringUtils.isNotEmpty(loginResponse.getError()))
+		{
+			event.setSuccessful(false);
+			event.setErrorMessage(loginResponse.getErrorDescription());
+
+			Log.d(TAG, "error  " + loginResponse.getErrorDescription());
+		}
+		if (loginResponse != null && StringUtils.isEmpty(loginResponse.getError()))
+		{
+			event.setSuccessful(true);
+			loginManager.saveLoginData(userName, password, loginResponse.getAccessToken(), Integer.valueOf(loginResponse.getExpiresIn()));
+		}
 
         Context context = CrittercismApplication.getApplication();
         EventObserver.sendEvent(context, event);
 	}
 
-	void doBasicAuth(String userName, String password)
+	LoginResponse doBasicAuth(String userName, String password)
 	{
 		// Create a new HttpClient and Post Header
 		HttpClient httpclient = new DefaultHttpClient();
@@ -77,7 +104,7 @@ public class LoginService extends IntentService
 		try {
 
 			String base64EncodedCredentials = "Basic " + Base64.encodeToString(
-					("33VfTC2gd6soUEvBpSJeSHJNEJTcfN8F" + ":" + "zigzag34").getBytes(),
+					(Constants.CRITTERCISM_API_CLIENT_ID + ":" + password).getBytes(),
 					Base64.NO_WRAP);
 
 
@@ -86,8 +113,8 @@ public class LoginService extends IntentService
 
 			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
 			nameValuePairs.add(new BasicNameValuePair("grant_type", "password"));
-			nameValuePairs.add(new BasicNameValuePair("username", "mobapps@intexsoft.by"));
-			nameValuePairs.add(new BasicNameValuePair("password", "zigzag34"));
+			nameValuePairs.add(new BasicNameValuePair("username", userName));
+			nameValuePairs.add(new BasicNameValuePair("password", password));
 
 			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
@@ -105,19 +132,21 @@ public class LoginService extends IntentService
 			JsonFactory factory = new JsonFactory();
 			ObjectMapper mapper = new ObjectMapper(factory);
 
-			LoginResponse loginResponse;
+			LoginResponse loginResponse = null;
 			if (responseBody != null)
 			{
 				loginResponse = mapper.readValue(responseBody, LoginResponse.class);
 			}
 
-
+			return loginResponse;
 
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
+		return null;
 	}
 
 }

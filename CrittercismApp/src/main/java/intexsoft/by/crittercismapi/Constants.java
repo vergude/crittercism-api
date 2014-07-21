@@ -5,6 +5,8 @@ public class Constants
 
     public static final String BASE_URL = "";
 
+	public static final String CRITTERCISM_API_CLIENT_ID = "33VfTC2gd6soUEvBpSJeSHJNEJTcfN8F";
+
     public final static class Action
     {
         private Action()

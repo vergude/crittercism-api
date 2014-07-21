@@ -1,11 +1,14 @@
 package intexsoft.by.crittercismapi.ui.presenter;
 
 import android.content.Context;
-import android.util.Log;
 import intexsoft.by.crittercismapi.CrittercismApplication;
 import intexsoft.by.crittercismapi.event.EventObserver;
 import intexsoft.by.crittercismapi.event.LoginPerformedEvent;
+import intexsoft.by.crittercismapi.manager.LoginManager;
 import intexsoft.by.crittercismapi.service.LoginService;
+import intexsoft.by.crittercismapi.ui.view.LoginView;
+import intexsoft.by.crittercismapi.utils.Launcher;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 
 /**
@@ -15,33 +18,53 @@ import org.androidannotations.annotations.EBean;
 public class LoginPresenterImpl implements LoginPresenter
 {
 
-    private final EventObserver.Receiver geoPointsReceiver = new EventObserver.Receiver()
+    private final EventObserver.Receiver loginReceiver = new EventObserver.Receiver()
     {
         @Override
         protected void onReceive(Context context, EventObserver.Event event)
         {
-			Log.d("*******", "Success");
+			closeLoginAndShowMain();
         }
     };
 
+	private LoginView loginView;
 
+	@Bean
+	LoginManager loginManager;
 
     @Override
-    public void init()
+    public void init(LoginView loginView)
 	{
-		LoginService.login("u", "p");
+		this.loginView = loginView;
+
+		if (loginManager.isLoginNotExpired())
+		{
+			closeLoginAndShowMain();
+			return;
+		}
+
+		if (loginManager.isLoginExpired() && loginManager.isLoginAndPasswordSaved())
+		{
+			this.loginView.onFillStoredFields(loginManager.getLogin(), loginManager.getPassword());
+		}
     }
 
-    @Override
+	private void closeLoginAndShowMain()
+	{
+		Launcher.showMainActivity(loginView.getActivity());
+		loginView.getActivity().finish();
+	}
+
+	@Override
     public void onStart()
     {
-        EventObserver.register(getContext(), geoPointsReceiver, LoginPerformedEvent.class);
+        EventObserver.register(getContext(), loginReceiver, LoginPerformedEvent.class);
     }
 
     @Override
     public void onStop()
     {
-        EventObserver.unregister(getContext(), geoPointsReceiver);
+        EventObserver.unregister(getContext(), loginReceiver);
     }
 
     private Context getContext()
@@ -49,4 +72,9 @@ public class LoginPresenterImpl implements LoginPresenter
         return CrittercismApplication.getApplication().getApplicationContext();
     }
 
+	@Override
+	public void doLogin(String login, String password)
+	{
+		LoginService.login(login, password);
+	}
 }
