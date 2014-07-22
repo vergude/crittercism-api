@@ -28,12 +28,12 @@ public class SettingsFacade
 
 	public void saveLogin(String login)
 	{
-		appSettings.edit().password().put(login).apply();
+		appSettings.edit().login().put(login).apply();
 	}
 
 	public String getPassword()
 	{
-		return appSettings.login().get();
+		return appSettings.password().get();
 	}
 
 	public void savePassword(String password)
