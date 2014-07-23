@@ -2,12 +2,17 @@ package intexsoft.by.crittercismapi.manager;
 
 import android.content.Context;
 import android.util.Log;
-import intexsoft.by.crittercismapi.settings.SettingsFacade;
-import intexsoft.by.crittercismapi.utils.DateTimeUtils;
-import intexsoft.by.crittercismapi.utils.StringUtils;
+
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
+
+import java.util.Calendar;
+import java.util.Date;
+
+import intexsoft.by.crittercismapi.settings.SettingsFacade;
+import intexsoft.by.crittercismapi.utils.DateTimeUtils;
+import intexsoft.by.crittercismapi.utils.StringUtils;
 
 /**
  * Created by anastasya.konovalova on 21.07.2014.
@@ -25,6 +30,8 @@ public class LoginManager
 	{
 		return settingsFacade.getExpireDate() > DateTimeUtils.getCurrentDateLong();
 	}
+
+
 
 	public boolean isLoginExpired()
 	{
@@ -48,11 +55,22 @@ public class LoginManager
 
 	public void saveLoginData(String login, String password, String token, int expiredValue)
 	{
-		settingsFacade.saveLogin(login);
+
+        settingsFacade.saveLogin(login);
 		settingsFacade.savePassword(password);
 		settingsFacade.saveToken(token);
 
-		Log.d("LoginManager", "Saved");
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.SECOND, expiredValue);
+        settingsFacade.saveExpireDate(calendar.getTimeInMillis());
 
+        //TODO save expiredValue
+		Log.d("LoginManager", "Saved");
 	}
+
+    public void clearExpireDate()
+    {
+        settingsFacade.saveExpireDate(0);
+    }
 }
