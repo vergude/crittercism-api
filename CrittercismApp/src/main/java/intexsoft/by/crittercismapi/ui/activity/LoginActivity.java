@@ -2,15 +2,17 @@ package intexsoft.by.crittercismapi.ui.activity;
 
 import android.app.Activity;
 import android.widget.EditText;
-import intexsoft.by.crittercismapi.R;
-import intexsoft.by.crittercismapi.ui.presenter.LoginPresenter;
-import intexsoft.by.crittercismapi.ui.presenter.LoginPresenterImpl;
-import intexsoft.by.crittercismapi.ui.view.LoginView;
+
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
+
+import intexsoft.by.crittercismapi.R;
+import intexsoft.by.crittercismapi.ui.presenter.LoginPresenter;
+import intexsoft.by.crittercismapi.ui.presenter.LoginPresenterImpl;
+import intexsoft.by.crittercismapi.ui.view.LoginView;
 
 /**
  * Created by anastasya.konovalova on 11.07.2014.
