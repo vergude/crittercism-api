@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AppSummaryData {
 
-    private String links;
+    private Object links;
     private String appName;
     private String appType;
     private String [] appVersions;
@@ -23,11 +23,11 @@ public class AppSummaryData {
     private Integer rating;
     private String role;
 
-    public String getLinks() {
+    public Object getLinks() {
         return links;
     }
 
-    public void setLinks(String links) {
+    public void setLinks(Object links) {
         this.links = links;
     }
 

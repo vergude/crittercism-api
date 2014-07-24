@@ -1,13 +1,6 @@
 package intexsoft.by.crittercismapi.ui.activity;
 
 import android.app.Activity;
-import intexsoft.by.crittercismapi.R;
-import intexsoft.by.crittercismapi.data.facade.RemoteFacade;
-import intexsoft.by.crittercismapi.manager.LoginManager_;
-import intexsoft.by.crittercismapi.ui.presenter.MainPresenter;
-import intexsoft.by.crittercismapi.ui.presenter.MainPresenterImpl;
-import intexsoft.by.crittercismapi.ui.view.BaseView;
-import intexsoft.by.crittercismapi.ui.view.MainView;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
@@ -15,6 +8,12 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
+
+import intexsoft.by.crittercismapi.R;
+import intexsoft.by.crittercismapi.data.facade.RemoteFacade;
+import intexsoft.by.crittercismapi.ui.presenter.MainPresenter;
+import intexsoft.by.crittercismapi.ui.presenter.MainPresenterImpl;
+import intexsoft.by.crittercismapi.ui.view.MainView;
 
 /**
  * Created by anastasya.konovalova on 11.07.2014.
@@ -60,7 +59,7 @@ public class MainActivity extends Activity implements MainView
 	@Background
 	void getApps()
 	{
-		remoteFacade.getApps();
+		remoteFacade.getErrorGraph();
 	}
 
 
