@@ -29,7 +29,6 @@ public class NavigationDrawerAdapter extends ArrayAdapter<String>
     @Override
     public View getView(int position, View convertView, ViewGroup parent)
     {
-
         ViewHolder viewHolder;
         if (convertView == null)
         {
@@ -43,7 +42,6 @@ public class NavigationDrawerAdapter extends ArrayAdapter<String>
             viewHolder=(ViewHolder)convertView.getTag();
         }
         viewHolder.mTextView.setText(mItems[position]);
-
 
         return convertView;
     }
