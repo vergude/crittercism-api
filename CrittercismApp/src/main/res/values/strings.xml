@@ -1,3 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">CrittercismAPI</string>
+    <string name="title_activity_statistics">StatisticsActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <color name="back">#3d4140</color>
+    <color name="white">#FFFFFF</color>
+    <string-array name="drawer">
+        <item>Applications</item>
+        <item>Statistics</item>
+    </string-array>
 </resources>

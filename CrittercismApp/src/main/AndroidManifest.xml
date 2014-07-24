@@ -1,18 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="intexsoft.by.crittercismapi">
+    package="intexsoft.by.crittercismapi" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:name="intexsoft.by.crittercismapi.CrittercismApplication_"
+        android:name=".CrittercismApplication_"
         android:allowBackup="true"
-        android:label="@string/app_name"
         android:icon="@drawable/ic_launcher"
-        android:theme="@style/AppTheme">
-
-
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
         <activity
             android:name=".ui.activity.LoginActivity_"
             android:label="@string/app_name" >
@@ -22,15 +21,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity
-            android:name=".ui.activity.MainActivity_">
+        <activity android:name=".ui.activity.MainActivity_" >
         </activity>
 
         <service
-            android:name="intexsoft.by.crittercismapi.service.LoginService_"
+            android:name=".service.LoginService_"
             android:exported="false" />
 
+        <activity
+            android:name=".ui.activity.StatisticsActivity_"
+            android:label="@string/title_activity_statistics" >
+        </activity>
     </application>
 
 </manifest>
