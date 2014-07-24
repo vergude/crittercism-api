@@ -59,15 +59,19 @@ public class LoginManager
         settingsFacade.saveLogin(login);
 		settingsFacade.savePassword(password);
 		settingsFacade.saveToken(token);
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Date());
-        calendar.add(Calendar.SECOND, expiredValue);
-        settingsFacade.saveExpireDate(calendar.getTimeInMillis());
+        settingsFacade.saveExpireDate(getExpireDate(expiredValue));
 
         //TODO save expiredValue
 		Log.d("LoginManager", "Saved");
 	}
+
+    private long getExpireDate(int expiredValue)
+    {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.add(Calendar.SECOND, expiredValue);
+        return calendar.getTimeInMillis();
+    }
 
     public void clearExpireDate()
     {
