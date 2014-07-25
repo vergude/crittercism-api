@@ -1,4 +1,4 @@
-package intexsoft.by.crittercismapi.data.remote.entity;
+package intexsoft.by.crittercismapi.data.remote.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

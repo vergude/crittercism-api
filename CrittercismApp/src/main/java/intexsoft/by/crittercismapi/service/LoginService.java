@@ -9,7 +9,7 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import intexsoft.by.crittercismapi.Constants;
 import intexsoft.by.crittercismapi.CrittercismApplication;
-import intexsoft.by.crittercismapi.data.remote.entity.LoginResponse;
+import intexsoft.by.crittercismapi.data.remote.response.LoginResponse;
 import intexsoft.by.crittercismapi.event.EventObserver;
 import intexsoft.by.crittercismapi.event.LoginPerformedEvent;
 import intexsoft.by.crittercismapi.manager.LoginManager;
