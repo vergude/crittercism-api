@@ -1,5 +1,7 @@
 package intexsoft.by.crittercismapi.data.remote.service;
 
+import intexsoft.by.crittercismapi.Constants;
+import intexsoft.by.crittercismapi.data.remote.entity.AppSummaryData;
 import org.androidannotations.annotations.rest.Get;
 import org.androidannotations.annotations.rest.Post;
 import org.androidannotations.annotations.rest.Rest;
@@ -8,10 +10,6 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
-
-import intexsoft.by.crittercismapi.Constants;
-import intexsoft.by.crittercismapi.data.remote.entity.AppSummaryData;
-import intexsoft.by.crittercismapi.data.remote.request.GraphRequest;
 
 /**
  * Created by anastasya.konovalova on 21.07.2014.
@@ -26,7 +24,6 @@ public interface CrittercismAPIService
     HashMap<String,AppSummaryData> getApps();
 
     @Post("/errorMonitoring/graph")
-
-    String getErrorGraph (GraphRequest graphRequest);
+    String getErrorGraph (String graphRequest);
 
 }

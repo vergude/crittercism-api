@@ -1,5 +1,7 @@
 package intexsoft.by.crittercismapi.data.remote.request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
 
 /**
@@ -7,7 +9,8 @@ import java.io.Serializable;
  */
 public class GraphRequest implements Serializable
 {
-    private GraphRequestInternal params = new GraphRequestInternal();
+	@JsonProperty
+    private GraphRequestInternal params;
 
     public void setParams(GraphRequestInternal params)
     {

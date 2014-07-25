@@ -2,19 +2,28 @@ package intexsoft.by.crittercismapi.data.facade;
 
 import android.content.Context;
 import android.util.Log;
-
-import org.androidannotations.annotations.EBean;
-import org.androidannotations.annotations.RootContext;
-import org.androidannotations.annotations.rest.RestService;
-
-import java.util.HashMap;
-
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import intexsoft.by.crittercismapi.Constants;
+import intexsoft.by.crittercismapi.CrittercismApplication;
 import intexsoft.by.crittercismapi.data.remote.entity.AppSummaryData;
 import intexsoft.by.crittercismapi.data.remote.request.GraphRequest;
 import intexsoft.by.crittercismapi.data.remote.request.GraphRequestInternal;
 import intexsoft.by.crittercismapi.data.remote.service.CrittercismAPIService;
+import intexsoft.by.crittercismapi.settings.SettingsFacade;
 import intexsoft.by.crittercismapi.utils.ThreadUtils;
+import org.androidannotations.annotations.EBean;
+import org.androidannotations.annotations.RootContext;
+import org.androidannotations.annotations.rest.RestService;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.HashMap;
 
 
 @EBean(scope = EBean.Scope.Singleton)
@@ -53,7 +62,42 @@ public class RemoteFacade
 
         graphRequest.setParams(graphRequestInternal);
 
-        String response = remoteService.getErrorGraph(graphRequest);
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonString = "";
+
+
+
+		try
+		{
+			jsonString = mapper.writeValueAsString(graphRequest);
+			Log.d("**********", jsonString);
+		}
+		catch (JsonProcessingException e)
+		{
+			Log.d("*****error*****","Errrrrorrrrrrr");
+			e.printStackTrace();
+		}
+//
+//		String response = remoteService.getErrorGraph(jsonString);
+
+		SettingsFacade settingsFacade = SettingsFacade.getInstance(CrittercismApplication.getApplication());
+
+		// Set the Content-Type header
+		HttpHeaders requestHeaders = new HttpHeaders();
+		requestHeaders.setContentType(new MediaType("application","json"));
+		requestHeaders.add("Authorization", "Bearer " + settingsFacade.getToken());
+		HttpEntity<String> requestEntity = new HttpEntity<String>(jsonString, requestHeaders);
+
+		// Create a new RestTemplate instance
+		RestTemplate restTemplate = new RestTemplate();
+
+		// Add the Jackson and String message converters
+		restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
+
+		// Make the HTTP POST request, marshaling the request to JSON, and the response to a String
+		ResponseEntity<String> responseEntity = restTemplate.exchange("https://developers.crittercism.com:443/v1.0/errorMonitoring/graph",
+				HttpMethod.POST, requestEntity, String.class);
+		String response = responseEntity.getBody();
 
         Log.d("**********", response + "");
     }
