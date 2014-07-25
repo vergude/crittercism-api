@@ -2,16 +2,12 @@ package intexsoft.by.crittercismapi.data.facade;
 
 import android.content.Context;
 import android.util.Log;
+
+import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import intexsoft.by.crittercismapi.Constants;
-import intexsoft.by.crittercismapi.CrittercismApplication;
-import intexsoft.by.crittercismapi.data.remote.entity.AppSummaryData;
-import intexsoft.by.crittercismapi.data.remote.request.GraphRequest;
-import intexsoft.by.crittercismapi.data.remote.request.GraphRequestInternal;
-import intexsoft.by.crittercismapi.data.remote.service.CrittercismAPIService;
-import intexsoft.by.crittercismapi.settings.SettingsFacade;
-import intexsoft.by.crittercismapi.utils.ThreadUtils;
+
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
 import org.androidannotations.annotations.rest.RestService;
@@ -23,7 +19,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
 import java.util.HashMap;
+
+import intexsoft.by.crittercismapi.Constants;
+import intexsoft.by.crittercismapi.CrittercismApplication;
+import intexsoft.by.crittercismapi.data.remote.request.GraphRequest;
+import intexsoft.by.crittercismapi.data.remote.request.GraphRequestInternal;
+import intexsoft.by.crittercismapi.data.remote.response.AppSummaryData;
+import intexsoft.by.crittercismapi.data.remote.response.GraphResponse;
+import intexsoft.by.crittercismapi.data.remote.service.CrittercismAPIService;
+import intexsoft.by.crittercismapi.settings.SettingsFacade;
+import intexsoft.by.crittercismapi.utils.ThreadUtils;
 
 
 @EBean(scope = EBean.Scope.Singleton)
@@ -98,7 +105,15 @@ public class RemoteFacade
 		ResponseEntity<String> responseEntity = restTemplate.exchange("https://developers.crittercism.com:443/v1.0/errorMonitoring/graph",
 				HttpMethod.POST, requestEntity, String.class);
 		String response = responseEntity.getBody();
-
         Log.d("**********", response + "");
+
+        JsonFactory factory = new JsonFactory();
+        ObjectMapper mapper2 = new ObjectMapper(factory);
+        TypeReference<GraphResponse> typeRef = new TypeReference<GraphResponse>() {};
+        try {
+            GraphResponse graphResponse = mapper2.readValue(response, typeRef);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

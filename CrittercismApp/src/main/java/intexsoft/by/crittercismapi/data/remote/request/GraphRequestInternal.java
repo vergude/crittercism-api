@@ -8,8 +8,26 @@ import java.io.Serializable;
 public class GraphRequestInternal implements Serializable
 {
     private String appId;
+    //private String [] applds;
     private String graph;
     private int duration;
+    //private Filter filters;
+
+//    public String[] getApplds() {
+//        return applds;
+//    }
+//
+//    public void setApplds(String[] applds) {
+//        this.applds = applds;
+//    }
+
+//   public Filter getFilters() {
+//        return filters;
+//    }
+
+//    public void setFilters(Filter filters) {
+//        this.filters = filters;
+//    }
 
     public String getAppId() {
         return appId;
