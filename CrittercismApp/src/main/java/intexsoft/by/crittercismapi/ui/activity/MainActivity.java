@@ -65,7 +65,8 @@ public class MainActivity extends Activity implements BaseView
     }
 
     @ItemClick(R.id.main_left_drawer)
-    public void drawerItemClick(int position) {
+    public void drawerItemClick(int position)
+    {
         if(position==1)
         {
             StatisticsActivity_.intent(this).start();

@@ -33,20 +33,20 @@ public class NavigationDrawerAdapter extends ArrayAdapter<String>
         {
             viewHolder = new ViewHolder();
             convertView = mInflater.inflate(R.layout.drawer_item, parent, false);
-            viewHolder.mTextView=(TextView)convertView.findViewById(R.id.tvDrawer);
+            viewHolder.textView=(TextView)convertView.findViewById(R.id.tvDrawer);
             convertView.setTag(viewHolder);
         }
         else
         {
             viewHolder=(ViewHolder)convertView.getTag();
         }
-        viewHolder.mTextView.setText(mItems[position]);
+        viewHolder.textView.setText(mItems[position]);
 
         return convertView;
     }
 
-    public static class ViewHolder
+    private static class ViewHolder
     {
-       TextView mTextView;
+       TextView textView;
     }
 }

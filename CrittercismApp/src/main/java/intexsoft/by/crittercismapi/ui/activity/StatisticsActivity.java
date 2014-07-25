@@ -15,7 +15,9 @@ import intexsoft.by.crittercismapi.R;
 import intexsoft.by.crittercismapi.ui.adapters.NavigationDrawerAdapter;
 
 @EActivity(R.layout.activity_statistics)
-public class StatisticsActivity extends Activity {
+public class StatisticsActivity extends Activity
+{
+
     @ViewById(R.id.statistic_left_drawer)
     ListView leftDrawer;
 
@@ -28,7 +30,8 @@ public class StatisticsActivity extends Activity {
     }
 
     @ItemClick(R.id.statistic_left_drawer)
-    public void drawerItemClick(int position) {
+    public void drawerItemClick(int position)
+    {
         if(position==0)
         {
             MainActivity_.intent(this).start();
