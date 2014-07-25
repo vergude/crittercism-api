@@ -8,10 +8,10 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import intexsoft.by.crittercismapi.R;
 
+
 /**
  * Created by vadim on 24.07.2014.
  */
-
 
 public class NavigationDrawerAdapter extends ArrayAdapter<String>
 {
