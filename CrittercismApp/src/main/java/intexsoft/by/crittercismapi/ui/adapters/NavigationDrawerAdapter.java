@@ -8,7 +8,6 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import intexsoft.by.crittercismapi.R;
 
-
 /**
  * Created by vadim on 24.07.2014.
  */
