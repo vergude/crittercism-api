@@ -2,7 +2,6 @@ package intexsoft.by.crittercismapi.ui.activity;
 
 import android.app.Activity;
 import android.app.DialogFragment;
-import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,8 +26,6 @@ import java.util.Random;
 
 import intexsoft.by.crittercismapi.R;
 import intexsoft.by.crittercismapi.data.facade.RemoteFacade;
-import intexsoft.by.crittercismapi.data.remote.request.GraphRequest;
-import intexsoft.by.crittercismapi.data.remote.request.GraphRequestInternal;
 import intexsoft.by.crittercismapi.data.remote.response.AppData;
 import intexsoft.by.crittercismapi.ui.adapters.AppInfoAdapter;
 import intexsoft.by.crittercismapi.ui.adapters.NavigationDrawerAdapter;
@@ -45,7 +42,6 @@ import intexsoft.by.crittercismapi.ui.view.MainView;
 @OptionsMenu(R.menu.menu)
 public class MainActivity extends Activity implements MainView,DatePickerFragment.FragmentDatePickerInterface
 {
-
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("d.M.yyyy");
     private Calendar mCalendar = Calendar.getInstance();
     private ArrayList<AppData> appDatas = new ArrayList<AppData>();
