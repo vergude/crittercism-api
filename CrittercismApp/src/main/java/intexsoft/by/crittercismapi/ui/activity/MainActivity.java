@@ -13,8 +13,6 @@ import org.androidannotations.annotations.OptionsMenu;
 
 import intexsoft.by.crittercismapi.R;
 import intexsoft.by.crittercismapi.data.facade.RemoteFacade;
-import intexsoft.by.crittercismapi.data.remote.request.GraphRequest;
-import intexsoft.by.crittercismapi.data.remote.request.GraphRequestInternal;
 import intexsoft.by.crittercismapi.data.remote.response.AppData;
 import intexsoft.by.crittercismapi.ui.adapters.AppInfoAdapter;
 import intexsoft.by.crittercismapi.ui.adapters.NavigationDrawerAdapter;
@@ -31,6 +29,19 @@ import intexsoft.by.crittercismapi.ui.view.MainView;
 @OptionsMenu(R.menu.menu)
 public class MainActivity extends Activity implements MainView,DatePickerFragment.FragmentDatePickerInterface
 {
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("d.M.yyyy");
+    private Calendar mCalendar = Calendar.getInstance();
+    private ArrayList<AppData> appDatas = new ArrayList<AppData>();
+
+    @ViewById(R.id.main_left_drawer)
+    ListView leftDrawer;
+
+    @ViewById
+    TextView tvDate;
+
+    @ViewById
+    ListView lvAppInfo;
+
 	@Bean(MainPresenterImpl.class)
 	MainPresenter presenter;
 
