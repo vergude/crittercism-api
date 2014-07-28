@@ -1,6 +1,10 @@
 package intexsoft.by.crittercismapi.data.remote.request;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.io.Serializable;
+
+import intexsoft.by.crittercismapi.data.remote.response.Filter;
 
 /**
  * Created by Евгений on 24.07.2014.
@@ -8,48 +12,60 @@ import java.io.Serializable;
 public class GraphRequestInternal implements Serializable
 {
     private String appId;
-    //private String [] applds;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private String [] applds;
     private String graph;
     private int duration;
-    //private Filter filters;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Filter filters;
 
-//    public String[] getApplds() {
-//        return applds;
-//    }
-//
-//    public void setApplds(String[] applds) {
-//        this.applds = applds;
-//    }
+    public String[] getApplds()
+    {
+        return applds;
+    }
 
-//   public Filter getFilters() {
-//        return filters;
-//    }
+    public void setApplds(String[] applds)
+    {
+        this.applds = applds;
+    }
 
-//    public void setFilters(Filter filters) {
-//        this.filters = filters;
-//    }
+    public Filter getFilters()
+    {
+        return filters;
+    }
 
-    public String getAppId() {
+    public void setFilters(Filter filters)
+    {
+        this.filters = filters;
+    }
+
+    public String getAppId()
+    {
         return appId;
     }
 
-    public void setAppId(String appId) {
+    public void setAppId(String appId)
+    {
         this.appId = appId;
     }
 
-    public String getGraph() {
+    public String getGraph()
+    {
         return graph;
     }
 
-    public void setGraph(String graph) {
+    public void setGraph(String graph)
+    {
         this.graph = graph;
     }
 
-    public int getDuration() {
+    public int getDuration()
+    {
         return duration;
     }
 
-    public void setDuration(int duration) {
+    public void setDuration(int duration)
+    {
         this.duration = duration;
     }
 }
