@@ -1,15 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
         <string name="app_name">CrittercismAPI</string>
+    <string name="logout">Logout</string>
     <string name="title_activity_statistics">StatisticsActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="logout">Logout</string>
+    <string name="error">Error set date!</string>
+
+    <string name="previous">previous day</string>
+    <string name="next">next day</string>
 
     <color name="back">#3d4140</color>
     <color name="white">#FFFFFF</color>
+    <color name="grey">#C8C8C8</color>
+
     <string-array name="drawer">
         <item>Applications</item>
         <item>Statistics</item>
     </string-array>
+
+    <string name = "name_app">Application name:</string>
+    <string name = "starts_day">Starts per day:</string>
+    <string name = "crashes">Count crashes:</string>
+    <string name = "crash_percent">Crash percent:</string>
 </resources>
