@@ -217,7 +217,6 @@ public class MainActivity extends Activity implements MainView,DatePickerFragmen
         remoteFacade.getErrorGraph();
 	}
 
-
 	@Override
 	public Activity getActivity()
 	{

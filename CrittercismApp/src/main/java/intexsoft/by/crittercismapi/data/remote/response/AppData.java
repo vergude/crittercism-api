@@ -6,7 +6,6 @@ import org.androidannotations.annotations.EBean;
  * Created by vadim on 28.07.2014.
  */
 
-
 public class AppData {
     private String appName;
     private Integer startsPerDay;
