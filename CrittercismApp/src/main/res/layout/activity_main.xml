@@ -1,12 +1,71 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<android.support.v4.widget.DrawerLayout
+    android:id="@+id/drawer_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <!-- The main content view -->
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Main Activity"/>
-</LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/grey">
+
+            <ImageButton
+                android:id="@+id/ibPreviousDay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:background="@color/grey"
+                android:contentDescription="@string/previous"
+                android:src="@drawable/ic_action_previous_item"/>
+
+            <TextView
+                android:id="@+id/tvDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textSize="20sp"/>
+
+            <ImageButton
+                android:id="@+id/ibNextDay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:background="@color/grey"
+                android:contentDescription="@string/next"
+                android:src="@drawable/ic_action_next_item"/>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1">
+
+
+            <ListView
+                android:id="@+id/lvAppInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:divider="@android:color/black"
+                android:dividerHeight="1dp"/>
+        </FrameLayout>
+
+    </LinearLayout>
+    <!-- The navigation drawer -->
+    <ListView
+        android:id="@+id/main_left_drawer"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@color/back"
+        android:choiceMode="singleChoice"
+        android:divider="@android:color/white"
+        android:dividerHeight="1dp"/>
+</android.support.v4.widget.DrawerLayout>
