@@ -1,7 +1,11 @@
 package intexsoft.by.crittercismapi.ui.activity;
 
 import intexsoft.by.crittercismapi.R;
+import intexsoft.by.crittercismapi.manager.LoginManager;
+import intexsoft.by.crittercismapi.utils.Launcher;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
 
 /**
@@ -12,5 +16,15 @@ import org.androidannotations.annotations.OptionsMenu;
 @OptionsMenu(R.menu.menu)
 public class MainActivity extends NavigationActivity
 {
+	@Bean
+	LoginManager loginManager;
+
+	@OptionsItem(R.id.logout)
+	void logoutSelect()
+	{
+		loginManager.clearExpireDate();
+		Launcher.showLoginActivity(this);
+		this.finish();
+	}
 
 }

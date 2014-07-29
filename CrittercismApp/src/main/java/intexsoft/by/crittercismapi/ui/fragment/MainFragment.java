@@ -10,7 +10,6 @@ import intexsoft.by.crittercismapi.ui.view.MainView;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.OptionsItem;
 
 /**
  * Created by anastasya.konovalova on 11.07.2014.
@@ -51,12 +50,6 @@ public class MainFragment extends Fragment implements MainView
 	{
 		presenter.init(this);
 	}
-
-    @OptionsItem(R.id.logout)
-    void logoutSelect()
-    {
-        presenter.logout();
-    }
 
 
 	@Override
