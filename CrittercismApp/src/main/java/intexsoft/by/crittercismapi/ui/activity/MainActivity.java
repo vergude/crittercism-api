@@ -1,16 +1,10 @@
 package intexsoft.by.crittercismapi.ui.activity;
 
 import android.app.Activity;
-
-import org.androidannotations.annotations.AfterInject;
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.ItemClick;
-import org.androidannotations.annotations.OptionsItem;
-import org.androidannotations.annotations.OptionsMenu;
-
+import android.app.DialogFragment;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 import intexsoft.by.crittercismapi.R;
 import intexsoft.by.crittercismapi.data.facade.RemoteFacade;
 import intexsoft.by.crittercismapi.data.remote.response.AppData;
@@ -20,6 +14,21 @@ import intexsoft.by.crittercismapi.ui.dialogs.DatePickerFragment;
 import intexsoft.by.crittercismapi.ui.presenter.MainPresenter;
 import intexsoft.by.crittercismapi.ui.presenter.MainPresenterImpl;
 import intexsoft.by.crittercismapi.ui.view.MainView;
+import org.androidannotations.annotations.AfterInject;
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ItemClick;
+import org.androidannotations.annotations.OptionsItem;
+import org.androidannotations.annotations.OptionsMenu;
+import org.androidannotations.annotations.ViewById;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Random;
 
 /**
  * Created by anastasya.konovalova on 11.07.2014.
@@ -27,7 +36,7 @@ import intexsoft.by.crittercismapi.ui.view.MainView;
 
 @EActivity(R.layout.activity_main)
 @OptionsMenu(R.menu.menu)
-public class MainActivity extends Activity implements MainView,DatePickerFragment.FragmentDatePickerInterface
+public class MainActivity extends Activity implements MainView, DatePickerFragment.FragmentDatePickerInterface
 {
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("d.M.yyyy");
     private Calendar mCalendar = Calendar.getInstance();
@@ -37,10 +46,10 @@ public class MainActivity extends Activity implements MainView,DatePickerFragmen
     ListView leftDrawer;
 
     @ViewById
-    TextView tvDate;
+	TextView tvDate;
 
     @ViewById
-    ListView lvAppInfo;
+	ListView lvAppInfo;
 
 	@Bean(MainPresenterImpl.class)
 	MainPresenter presenter;
@@ -109,13 +118,6 @@ public class MainActivity extends Activity implements MainView,DatePickerFragmen
 		presenter.init(this);
 	}
 
-	@AfterViews
-    void initDrawer()
-    {
-        String[] names = getResources().getStringArray(R.array.drawer);
-        NavigationDrawerAdapter adapter = new NavigationDrawerAdapter(this,names);
-        leftDrawer.setAdapter(adapter);
-    }
 
     @ItemClick(R.id.main_left_drawer)
     public void drawerItemClick(int position)
@@ -172,15 +174,6 @@ public class MainActivity extends Activity implements MainView,DatePickerFragmen
         String date = dayOfMonth.concat(".").concat(month).concat(".").concat(year);
         tvDate.setText(date);
         setAppInfo(date);
-    }
-
-    @ItemClick(R.id.main_left_drawer)
-    public void drawerItemClick(int position)
-    {
-        if(position==1)
-        {
-            StatisticsActivity_.intent(this).start();
-        }
     }
 
     @Override
