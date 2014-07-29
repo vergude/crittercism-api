@@ -1,14 +1,13 @@
 package intexsoft.by.crittercismapi.ui.activity;
 
 import android.app.Activity;
+import android.widget.ListView;
 import intexsoft.by.crittercismapi.R;
 import intexsoft.by.crittercismapi.data.facade.RemoteFacade;
-import intexsoft.by.crittercismapi.manager.LoginManager_;
+import intexsoft.by.crittercismapi.ui.adapters.NavigationDrawerAdapter;
 import intexsoft.by.crittercismapi.ui.presenter.MainPresenter;
 import intexsoft.by.crittercismapi.ui.presenter.MainPresenterImpl;
-import intexsoft.by.crittercismapi.ui.view.BaseView;
 import intexsoft.by.crittercismapi.ui.view.MainView;
-
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
@@ -16,12 +15,6 @@ import org.androidannotations.annotations.ItemClick;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.ViewById;
-
-import intexsoft.by.crittercismapi.R;
-import intexsoft.by.crittercismapi.data.facade.RemoteFacade;
-import intexsoft.by.crittercismapi.ui.presenter.MainPresenter;
-import intexsoft.by.crittercismapi.ui.presenter.MainPresenterImpl;
-import intexsoft.by.crittercismapi.ui.view.MainView;
 
 /**
  * Created by anastasya.konovalova on 11.07.2014.
@@ -31,7 +24,7 @@ import intexsoft.by.crittercismapi.ui.view.MainView;
 public class MainActivity extends Activity implements MainView
 {
     @ViewById(R.id.main_left_drawer)
-    ListView leftDrawer;
+	ListView leftDrawer;
 
 	@Bean(MainPresenterImpl.class)
 	MainPresenter presenter;
