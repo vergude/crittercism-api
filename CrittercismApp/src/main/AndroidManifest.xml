@@ -28,10 +28,6 @@
             android:name=".service.LoginService_"
             android:exported="false" />
 
-        <activity
-            android:name=".ui.activity.StatisticsActivity_"
-            android:label="@string/title_activity_statistics" >
-        </activity>
     </application>
 
 </manifest>

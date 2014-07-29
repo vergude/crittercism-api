@@ -51,8 +51,8 @@ public class LoginPresenterImpl implements LoginPresenter
 
 	private void closeLoginAndShowMain()
 	{
-		Launcher.showMainActivity(loginView.getActivity());
-		loginView.getActivity().finish();
+		Launcher.showMainActivity(loginView.getContainer());
+		loginView.getContainer().finish();
 	}
 
 	@Override
