@@ -5,10 +5,7 @@ import intexsoft.by.crittercismapi.CrittercismApplication;
 import intexsoft.by.crittercismapi.data.facade.RemoteFacade;
 import intexsoft.by.crittercismapi.event.EventObserver;
 import intexsoft.by.crittercismapi.manager.LoginManager;
-import intexsoft.by.crittercismapi.ui.view.BaseView;
 import intexsoft.by.crittercismapi.ui.view.MainView;
-import intexsoft.by.crittercismapi.utils.Launcher;
-
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 
@@ -60,11 +57,4 @@ public class MainPresenterImpl implements MainPresenter
         return CrittercismApplication.getApplication().getApplicationContext();
     }
 
-    @Override
-    public void logout()
-    {
-        loginManager.clearExpireDate();
-        Launcher.showLoginActivity(mainView.getActivity());
-        mainView.getActivity().finish();
-    }
 }

@@ -1,4 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">CrittercismAPI</string>
-    <string name="logout">Logout</string>
+
+    <string name="title_activity_statistics">StatisticsActivity</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="action_logout">Logout</string>
+
+    <string name="navigate_apps">Applications</string>
+    <string name="navigate_statistics">Statistics</string>
+    <string name="navigate_settings">Settings</string>
+
 </resources>

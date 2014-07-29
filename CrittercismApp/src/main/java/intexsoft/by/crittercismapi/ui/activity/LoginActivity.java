@@ -65,7 +65,7 @@ public class LoginActivity extends Activity implements LoginView
 	}
 
 	@Override
-	public Activity getActivity()
+	public Activity getContainer()
 	{
 		return this;
 	}

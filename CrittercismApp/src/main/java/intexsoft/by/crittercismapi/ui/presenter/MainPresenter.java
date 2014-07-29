@@ -7,5 +7,5 @@ import intexsoft.by.crittercismapi.ui.view.MainView;
  */
 public interface MainPresenter extends BasePresenter<MainView>
 {
-    void logout();
+
 }
