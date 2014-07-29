@@ -5,15 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Base64;
 import android.util.Log;
+
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import intexsoft.by.crittercismapi.Constants;
-import intexsoft.by.crittercismapi.CrittercismApplication;
-import intexsoft.by.crittercismapi.data.remote.response.LoginResponse;
-import intexsoft.by.crittercismapi.event.EventObserver;
-import intexsoft.by.crittercismapi.event.LoginPerformedEvent;
-import intexsoft.by.crittercismapi.manager.LoginManager;
-import intexsoft.by.crittercismapi.utils.StringUtils;
+
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EIntentService;
 import org.androidannotations.annotations.ServiceAction;
@@ -31,6 +26,14 @@ import org.apache.http.util.EntityUtils;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import intexsoft.by.crittercismapi.Constants;
+import intexsoft.by.crittercismapi.CrittercismApplication;
+import intexsoft.by.crittercismapi.data.remote.response.LoginResponse;
+import intexsoft.by.crittercismapi.event.EventObserver;
+import intexsoft.by.crittercismapi.event.LoginPerformedEvent;
+import intexsoft.by.crittercismapi.manager.LoginManager;
+import intexsoft.by.crittercismapi.utils.StringUtils;
 
 /**
  * Created by anastasya.konovalova on 20.06.14.
@@ -66,7 +69,7 @@ public class LoginService extends IntentService
 	protected void fetchLogin(String userName, String password)
 	{
 		userName = "crittercism.api@gmail.com";
-		password = "crittercism_07";
+		password = "crittercism_0";
 
 		LoginResponse loginResponse = doBasicAuth(userName, password);
 

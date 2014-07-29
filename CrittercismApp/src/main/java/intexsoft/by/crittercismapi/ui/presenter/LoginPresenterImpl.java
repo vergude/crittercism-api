@@ -1,6 +1,7 @@
 package intexsoft.by.crittercismapi.ui.presenter;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
@@ -19,14 +20,21 @@ import intexsoft.by.crittercismapi.utils.Launcher;
 @EBean
 public class LoginPresenterImpl implements LoginPresenter
 {
-
     private final EventObserver.Receiver loginReceiver = new EventObserver.Receiver()
     {
         @Override
         protected void onReceive(Context context, EventObserver.Event event)
         {
-
-			closeLoginAndShowMain();
+            LoginPerformedEvent loginPerformedEvent = (LoginPerformedEvent) event;
+            if(loginPerformedEvent.isSuccessful())
+            {
+                closeLoginAndShowMain();
+            }
+            else
+            {
+                loginView.hide();
+                Toast.makeText(context,loginPerformedEvent.getErrorMessage(),Toast.LENGTH_LONG).show();
+            }
         }
     };
 
@@ -78,6 +86,7 @@ public class LoginPresenterImpl implements LoginPresenter
 	@Override
 	public void doLogin(String login, String password)
 	{
+        loginView.show();
 		LoginService.login(login, password);
 	}
 }
