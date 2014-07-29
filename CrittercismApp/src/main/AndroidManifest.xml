@@ -4,6 +4,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
     <application
         android:name="intexsoft.by.crittercismapi.CrittercismApplication_"
@@ -30,7 +31,7 @@
         <service
             android:name="intexsoft.by.crittercismapi.service.LoginService_"
             android:exported="false" />
-
+        <receiver android:name=".manager.AlarmManager"></receiver>
     </application>
 
 </manifest>

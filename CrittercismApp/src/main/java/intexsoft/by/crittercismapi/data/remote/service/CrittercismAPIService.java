@@ -10,8 +10,10 @@ import java.util.HashMap;
 
 import intexsoft.by.crittercismapi.Constants;
 import intexsoft.by.crittercismapi.data.remote.request.GraphRequest;
+import intexsoft.by.crittercismapi.data.remote.request.PieRequest;
 import intexsoft.by.crittercismapi.data.remote.response.AppSummaryData;
 import intexsoft.by.crittercismapi.data.remote.response.GraphResponse;
+import intexsoft.by.crittercismapi.data.remote.response.PieResponse;
 
 /**
  * Created by anastasya.konovalova on 21.07.2014.
@@ -27,5 +29,8 @@ public interface CrittercismAPIService
 
     @Post("/errorMonitoring/graph")
     GraphResponse getErrorGraph (GraphRequest graphRequest);
+
+    @Post("/errorMonitoring/pie")
+    PieResponse getErrorGraphAllApps(PieRequest pieRequest);
 
 }

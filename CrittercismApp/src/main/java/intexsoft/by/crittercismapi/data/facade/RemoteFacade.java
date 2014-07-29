@@ -12,8 +12,11 @@ import java.util.HashMap;
 import intexsoft.by.crittercismapi.Constants;
 import intexsoft.by.crittercismapi.data.remote.request.GraphRequest;
 import intexsoft.by.crittercismapi.data.remote.request.GraphRequestInternal;
+import intexsoft.by.crittercismapi.data.remote.request.PieRequest;
+import intexsoft.by.crittercismapi.data.remote.request.PieRequestInternal;
 import intexsoft.by.crittercismapi.data.remote.response.AppSummaryData;
 import intexsoft.by.crittercismapi.data.remote.response.GraphResponse;
+import intexsoft.by.crittercismapi.data.remote.response.PieResponse;
 import intexsoft.by.crittercismapi.data.remote.service.CrittercismAPIService;
 import intexsoft.by.crittercismapi.utils.ThreadUtils;
 
@@ -42,7 +45,7 @@ public class RemoteFacade
         Log.d("**********", response.size() + "");
 	}
 
-    public void getErrorGraph()
+    public void getErrorGraphOneApp()
     {
         ThreadUtils.checkAndThrowIfUIThread();
 
@@ -50,12 +53,34 @@ public class RemoteFacade
 
         GraphRequest graphRequest = new GraphRequest();
         GraphRequestInternal graphRequestInternal = new GraphRequestInternal();
-        graphRequestInternal.setAppId(responseApp.keySet().iterator().next());
-        graphRequestInternal.setGraph(Constants.GRAPH);
+        graphRequestInternal.setApplds(responseApp.keySet().toArray(new String [responseApp.keySet().size()]));
+        graphRequestInternal.setGraph(Constants.GRAPH_CRASHES);
         graphRequestInternal.setDuration(Constants.DURATION);
 
         graphRequest.setParams(graphRequestInternal);
 
         GraphResponse graphResponse = remoteService.getErrorGraph(graphRequest);
+    }
+
+    public void getErrorGraphAllApps()
+    {
+        ThreadUtils.checkAndThrowIfUIThread();
+
+        HashMap<String,AppSummaryData> responseApp = remoteService.getApps();
+
+        PieRequest pieRequest = new PieRequest();
+        PieRequestInternal pieRequestInternal = new PieRequestInternal();
+        pieRequestInternal.setAppId(responseApp.keySet().iterator().next());
+        pieRequestInternal.setDuration(Constants.DURATION);
+        pieRequestInternal.setGroupBy(Constants.GROUP_BY);
+        pieRequestInternal.setGraph(Constants.GRAPH_CRASHES);
+        pieRequest.setParams(pieRequestInternal);
+
+        PieResponse pieResponseCrashes = remoteService.getErrorGraphAllApps(pieRequest);
+
+        pieRequestInternal.setGraph(Constants.GRAPH_APPLOADS);
+        pieRequest.setParams(pieRequestInternal);
+
+        PieResponse pieResponseAppLoads = remoteService.getErrorGraphAllApps(pieRequest);
     }
 }

@@ -1,14 +1,26 @@
 package intexsoft.by.crittercismapi.data.remote.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * Created by Евгений on 25.07.2014.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class SeriesCollection
 {
     private String start;
     private String end;
     private Integer interval;
     private SeriesData [] series;
+    private SeriesData [] slices;
+
+    public SeriesData[] getSlices() {
+        return slices;
+    }
+
+    public void setSlices(SeriesData[] slices) {
+        this.slices = slices;
+    }
 
     public String getStart() {
         return start;
