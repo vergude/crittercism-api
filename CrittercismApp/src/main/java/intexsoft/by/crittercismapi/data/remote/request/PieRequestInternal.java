@@ -11,12 +11,15 @@ public class PieRequestInternal
 {
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String appId;
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+
+	@JsonInclude(JsonInclude.Include.NON_EMPTY)
     private String [] applds;
-    private String groupBy;
+
+	private String groupBy;
     private String graph;
     private int duration;
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+
+	@JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Filter filters;
 
     public String[] getApplds() {
