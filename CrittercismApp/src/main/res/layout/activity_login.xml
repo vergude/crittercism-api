@@ -27,6 +27,7 @@
         android:inputType="textEmailAddress"
         android:layout_gravity="center_horizontal"
         android:hint="E-Mail"
+        android:text="crittercism.api@gmail.com"
         />
 
     <EditText
@@ -35,7 +36,8 @@
         android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:layout_gravity="center_horizontal"
-        android:hint="Password"/>
+        android:hint="Password"
+        android:text="crittercism_07"/>
 
     <Button
         android:id="@+id/login_button"
@@ -62,6 +64,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/progressBar"
             android:layout_gravity="center" />
+
     </FrameLayout>
 
 </RelativeLayout>

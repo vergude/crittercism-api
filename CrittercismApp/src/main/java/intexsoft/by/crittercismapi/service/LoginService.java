@@ -68,9 +68,6 @@ public class LoginService extends IntentService
 	@ServiceAction(Constants.Action.REQUEST_LOGIN)
 	protected void fetchLogin(String userName, String password)
 	{
-		userName = "crittercism.api@gmail.com";
-		password = "crittercism_0";
-
 		LoginResponse loginResponse = doBasicAuth(userName, password);
 
 		LoginPerformedEvent event = new LoginPerformedEvent();
