@@ -24,11 +24,14 @@
         </activity>
         <activity android:name=".ui.activity.MainActivity_" >
         </activity>
+        <activity android:name=".ui.activity.SettingsActivity"
+            android:label="@string/action_settings"
+            android:parentActivityName=".ui.activity.MainActivity_">
+            </activity>
 
         <service
             android:name=".service.LoginService_"
             android:exported="false" />
-        <receiver android:name=".manager.AlarmManager"></receiver>
     </application>
 
 </manifest>

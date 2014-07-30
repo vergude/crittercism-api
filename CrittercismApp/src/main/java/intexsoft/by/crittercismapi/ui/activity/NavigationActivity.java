@@ -1,7 +1,9 @@
 package intexsoft.by.crittercismapi.ui.activity;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.view.Menu;
+
 import intexsoft.by.crittercismapi.R;
 import intexsoft.by.crittercismapi.ui.fragment.MainFragment;
 import intexsoft.by.crittercismapi.ui.fragment.NavigationItem;
@@ -80,8 +82,8 @@ public class NavigationActivity extends BaseNavigationActivity
 				showStatisticsFragment();
 				break;
 			case NAVIGATION_SETTINGS:
-//				Intent intent = new Intent(this, SettingsActivity.class);
-//				startActivity(intent);
+				Intent intent = new Intent(this, SettingsActivity.class);
+				startActivity(intent);
 				break;
 			default:
 				break;

@@ -71,12 +71,12 @@ public class LoginActivity extends Activity implements LoginView
 	}
 
     @Override
-    public void show() {
+    public void showProgressBar() {
         progressBarConteiner.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void hide() {
+    public void hideProgressBar() {
         progressBarConteiner.setVisibility(View.INVISIBLE);
     }
 

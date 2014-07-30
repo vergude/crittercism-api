@@ -6,6 +6,6 @@ package intexsoft.by.crittercismapi.ui.view;
 public interface LoginView extends BaseView
 {
 	void onFillStoredFields(String login, String password);
-    void show();
-    void hide();
+    void showProgressBar();
+    void hideProgressBar();
 }

@@ -32,7 +32,7 @@ public class LoginPresenterImpl implements LoginPresenter
             }
             else
             {
-                loginView.hide();
+                loginView.hideProgressBar();
                 Toast.makeText(context,loginPerformedEvent.getErrorMessage(),Toast.LENGTH_LONG).show();
             }
         }
@@ -86,7 +86,7 @@ public class LoginPresenterImpl implements LoginPresenter
 	@Override
 	public void doLogin(String login, String password)
 	{
-        loginView.show();
+        loginView.showProgressBar();
 		LoginService.login(login, password);
 	}
 }
