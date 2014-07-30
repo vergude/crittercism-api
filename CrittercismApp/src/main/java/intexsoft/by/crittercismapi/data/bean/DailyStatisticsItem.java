@@ -15,15 +15,18 @@ public class DailyStatisticsItem implements Serializable
 
 	private int appLoadsCount;
 
+    private String date;
+
 	public DailyStatisticsItem()
 	{
 	}
 
-	public DailyStatisticsItem(CrittercismApp application, int crashesCount, int appLoadsCount)
+    public DailyStatisticsItem(CrittercismApp application, int crashesCount, int appLoadsCount,String date)
 	{
 		this.application = application;
 		this.crashesCount = crashesCount;
 		this.appLoadsCount = appLoadsCount;
+        this.date=date;
 	}
 
 	public long getId()
@@ -65,4 +68,14 @@ public class DailyStatisticsItem implements Serializable
 	{
 		this.appLoadsCount = appLoadsCount;
 	}
+
+    public String getDate()
+    {
+        return date;
+    }
+
+    public void setDate(String date)
+    {
+        this.date = date;
+    }
 }
