@@ -13,7 +13,7 @@ public class PieRequestInternal
     private String appId;
 
 	@JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private String [] applds;
+    private String [] appIds;
 
 	private String groupBy;
     private String graph;
@@ -22,12 +22,12 @@ public class PieRequestInternal
 	@JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Filter filters;
 
-    public String[] getApplds() {
-        return applds;
+    public String[] getAppIds() {
+        return appIds;
     }
 
-    public void setApplds(String[] applds) {
-        this.applds = applds;
+    public void setAppIds(String[] appIds) {
+        this.appIds = appIds;
     }
 
     public String getAppId() {

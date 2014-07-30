@@ -72,13 +72,13 @@ public class RemoteFacade
 
         PieRequest pieRequest = new PieRequest();
         PieRequestInternal pieRequestInternal = new PieRequestInternal();
-        pieRequestInternal.setApplds(responseApp.keySet().toArray (new String[responseApp.keySet().size()]));
+        pieRequestInternal.setAppIds(responseApp.keySet().toArray(new String[responseApp.keySet().size()]));
         pieRequestInternal.setDuration(Constants.DURATION);
-        pieRequestInternal.setGroupBy(Constants.GROUP_BY);
+        pieRequestInternal.setGroupBy(Constants.GROUP_BY_APP_ID);
         pieRequestInternal.setGraph(Constants.GRAPH_CRASHES);
         pieRequest.setParams(pieRequestInternal);
 
-        PieResponse pieResponseCrashes = remoteService.getErrorGraphAllApps(pieRequest);
+		PieResponse pieResponseCrashes = remoteService.getErrorGraphAllApps(pieRequest);
 
         pieRequestInternal.setGraph(Constants.GRAPH_APPLOADS);
         pieRequest.setParams(pieRequestInternal);
@@ -114,7 +114,7 @@ public class RemoteFacade
 		for(Map.Entry<String, DailyStatisticsItem> entry: statisticsHashMap.entrySet())
 		{
 			DailyStatisticsItem item = entry.getValue();
-			Log.d("STATISTIC", item.getApplication() + " " +item.getCrashesCount() + " " +item.getAppLoadsCount());
+			Log.d("STATISTIC", item.getApplication().getName() + " " +item.getCrashesCount() + " " +item.getAppLoadsCount());
 		}
     }
 }

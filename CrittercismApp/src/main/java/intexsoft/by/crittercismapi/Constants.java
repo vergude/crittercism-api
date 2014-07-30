@@ -9,7 +9,8 @@ public class Constants
     public static final Integer DURATION = 43200;
     public static final String GRAPH_CRASHES = "crashes";
     public static final String GRAPH_APPLOADS = "appLoads";
-    public static final String GROUP_BY = "appVersion";
+    public static final String GROUP_BY_APP_VERSION = "appVersion";
+	public static final String GROUP_BY_APP_ID = "appId";
     public static final long INTERVAL = 30000;
 
     public final static class Action
