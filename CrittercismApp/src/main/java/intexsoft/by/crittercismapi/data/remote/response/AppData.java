@@ -1,7 +1,5 @@
 package intexsoft.by.crittercismapi.data.remote.response;
 
-import org.androidannotations.annotations.EBean;
-
 /**
  * Created by vadim on 28.07.2014.
  */

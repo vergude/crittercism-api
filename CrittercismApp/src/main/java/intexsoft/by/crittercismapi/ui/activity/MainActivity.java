@@ -134,9 +134,7 @@ public class MainActivity extends Activity implements MainView,DatePickerFragmen
     @AfterViews
     public void setCurrentDate()
     {
-        String date = DATE_FORMAT.format(new Date(System.currentTimeMillis()));
-        tvDate.setText(date);
-        setAppInfo(date);
+        setNewDate();
     }
 
     @Click(R.id.tvDate)
