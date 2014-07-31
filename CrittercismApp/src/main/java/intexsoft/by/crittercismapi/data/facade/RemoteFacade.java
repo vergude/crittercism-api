@@ -19,8 +19,9 @@ import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
 import org.androidannotations.annotations.rest.RestService;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 
 @EBean(scope = EBean.Scope.Singleton)
@@ -57,14 +58,14 @@ public class RemoteFacade
         GraphRequestInternal graphRequestInternal = new GraphRequestInternal();
         graphRequestInternal.setApplds(responseApp.keySet().toArray(new String [responseApp.keySet().size()]));
         graphRequestInternal.setGraph(Constants.GRAPH_CRASHES);
-        graphRequestInternal.setDuration(Constants.DURATION);
+        graphRequestInternal.setDuration(Constants.DURATION_ONE_DAY);
 
         graphRequest.setParams(graphRequestInternal);
 
         GraphResponse graphResponse = remoteService.getErrorGraph(graphRequest);
     }
 
-    public void getErrorGraphAllApps()
+    public List<DailyStatisticsItem> getErrorGraphAllApps(int duration)
     {
         ThreadUtils.checkAndThrowIfUIThread();
 
@@ -73,7 +74,7 @@ public class RemoteFacade
         PieRequest pieRequest = new PieRequest();
         PieRequestInternal pieRequestInternal = new PieRequestInternal();
         pieRequestInternal.setAppIds(responseApp.keySet().toArray(new String[responseApp.keySet().size()]));
-        pieRequestInternal.setDuration(Constants.DURATION);
+        pieRequestInternal.setDuration(duration);
         pieRequestInternal.setGroupBy(Constants.GROUP_BY_APP_ID);
         pieRequestInternal.setGraph(Constants.GRAPH_CRASHES);
         pieRequest.setParams(pieRequestInternal);
@@ -111,10 +112,6 @@ public class RemoteFacade
 			}
 		}
 
-		for(Map.Entry<String, DailyStatisticsItem> entry: statisticsHashMap.entrySet())
-		{
-			DailyStatisticsItem item = entry.getValue();
-			Log.d("STATISTIC", item.getApplication().getName() + " " +item.getCrashesCount() + " " +item.getAppLoadsCount());
-		}
+		return new ArrayList<DailyStatisticsItem>(statisticsHashMap.values());
     }
 }

@@ -6,7 +6,6 @@ import intexsoft.by.crittercismapi.data.facade.RemoteFacade;
 import intexsoft.by.crittercismapi.event.EventObserver;
 import intexsoft.by.crittercismapi.manager.LoginManager;
 import intexsoft.by.crittercismapi.ui.view.MainView;
-import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 
@@ -40,14 +39,8 @@ public class MainPresenterImpl implements MainPresenter
 	{
         this.mainView = mainView;
 
-		loadCrashesByDay();
     }
 
-	@Background
-	void loadCrashesByDay()
-	{
-		remoteFacade.getErrorGraphAllApps();
-	}
 
 	@Override
     public void onStart()

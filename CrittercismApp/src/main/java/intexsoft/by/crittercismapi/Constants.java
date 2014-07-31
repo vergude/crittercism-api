@@ -6,7 +6,7 @@ public class Constants
     public static final String BASE_URL = "https://developers.crittercism.com/v1.0";
 
 	public static final String CRITTERCISM_API_CLIENT_ID = "33VfTC2gd6soUEvBpSJeSHJNEJTcfN8F";
-    public static final Integer DURATION = 43200;
+    public static final Integer DURATION_ONE_DAY = 86400;
     public static final String GRAPH_CRASHES = "crashes";
     public static final String GRAPH_APPLOADS = "appLoads";
     public static final String GROUP_BY_APP_VERSION = "appVersion";
@@ -23,5 +23,6 @@ public class Constants
 
         public static final String REQUEST_LOGIN = BASE + ".REQUEST_LOGIN";
 		public static final String REQUEST_GET_APPS = BASE + ".REQUEST_GET_APPS";
+		public static final String REQUEST_GET_DAILY_STATISTICS = BASE + ".REQUEST_GET_DAILY_STATISTICS";
     }
 }
