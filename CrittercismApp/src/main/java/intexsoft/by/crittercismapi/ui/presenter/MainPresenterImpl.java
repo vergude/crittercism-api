@@ -3,8 +3,10 @@ package intexsoft.by.crittercismapi.ui.presenter;
 import android.content.Context;
 import intexsoft.by.crittercismapi.CrittercismApplication;
 import intexsoft.by.crittercismapi.data.facade.RemoteFacade;
+import intexsoft.by.crittercismapi.event.DailyStatisticsLoadedEvent;
 import intexsoft.by.crittercismapi.event.EventObserver;
 import intexsoft.by.crittercismapi.manager.LoginManager;
+import intexsoft.by.crittercismapi.service.ErrorGraphService;
 import intexsoft.by.crittercismapi.ui.view.MainView;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
@@ -23,12 +25,12 @@ public class MainPresenterImpl implements MainPresenter
     @Bean
     LoginManager loginManager;
 
-    private final EventObserver.Receiver geoPointsReceiver = new EventObserver.Receiver()
+    private final EventObserver.Receiver dailyStatisticsReceiver = new EventObserver.Receiver()
     {
         @Override
         protected void onReceive(Context context, EventObserver.Event event)
         {
-
+			mainView.setDailyStatisticsItems(((DailyStatisticsLoadedEvent)event).getDailyStatisticsItems());
         }
     };
 
@@ -39,19 +41,20 @@ public class MainPresenterImpl implements MainPresenter
 	{
         this.mainView = mainView;
 
+		ErrorGraphService.getDailyStatistics();
     }
 
 
 	@Override
     public void onStart()
     {
-        //EventObserver.register(getContext(), geoPointsReceiver, LoginPerformedEvent.class);
+        EventObserver.register(getContext(), dailyStatisticsReceiver, DailyStatisticsLoadedEvent.class);
     }
 
     @Override
     public void onStop()
     {
-        //EventObserver.unregister(getContext(), geoPointsReceiver);
+        EventObserver.unregister(getContext(), dailyStatisticsReceiver);
     }
 
     private Context getContext()

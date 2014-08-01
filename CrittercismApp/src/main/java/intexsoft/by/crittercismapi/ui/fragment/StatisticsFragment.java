@@ -2,6 +2,7 @@ package intexsoft.by.crittercismapi.ui.fragment;
 
 import android.app.Activity;
 import android.app.Fragment;
+import intexsoft.by.crittercismapi.data.bean.DailyStatisticsItem;
 import intexsoft.by.crittercismapi.data.facade.RemoteFacade;
 import intexsoft.by.crittercismapi.ui.presenter.MainPresenter;
 import intexsoft.by.crittercismapi.ui.presenter.MainPresenterImpl;
@@ -9,6 +10,8 @@ import intexsoft.by.crittercismapi.ui.view.MainView;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
+
+import java.util.List;
 
 /**
  * Created by anastasya.konovalova on 11.07.2014.
@@ -58,4 +61,9 @@ public class StatisticsFragment extends Fragment implements MainView
 	}
 
 
+	@Override
+	public void setDailyStatisticsItems(List<DailyStatisticsItem> dailyStatisticsItems)
+	{
+
+	}
 }

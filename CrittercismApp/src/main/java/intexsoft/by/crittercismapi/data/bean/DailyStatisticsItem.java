@@ -1,6 +1,7 @@
 package intexsoft.by.crittercismapi.data.bean;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by anastasya.konovalova on 29.07.2014.
@@ -15,18 +16,18 @@ public class DailyStatisticsItem implements Serializable
 
 	private int appLoadsCount;
 
-    private String date;
+    private Date date;
 
 	public DailyStatisticsItem()
 	{
 	}
 
-    public DailyStatisticsItem(CrittercismApp application, int crashesCount, int appLoadsCount,String date)
+    public DailyStatisticsItem(CrittercismApp application, int crashesCount, int appLoadsCount)
 	{
 		this.application = application;
 		this.crashesCount = crashesCount;
 		this.appLoadsCount = appLoadsCount;
-        this.date=date;
+        this.date = new Date();
 	}
 
 	public long getId()
@@ -69,13 +70,8 @@ public class DailyStatisticsItem implements Serializable
 		this.appLoadsCount = appLoadsCount;
 	}
 
-    public String getDate()
-    {
-        return date;
-    }
-
-    public void setDate(String date)
-    {
-        this.date = date;
-    }
+	public int getErrorsPercent()
+	{
+		return (crashesCount/appLoadsCount)*100;
+	}
 }

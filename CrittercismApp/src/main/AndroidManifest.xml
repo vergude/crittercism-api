@@ -32,6 +32,9 @@
         <service
             android:name=".service.LoginService_"
             android:exported="false" />
+        <service
+            android:name=".service.ErrorGraphService_"
+            android:exported="false" />
     </application>
 
 </manifest>

@@ -92,9 +92,9 @@ public class RemoteFacade
 		{
 			String appId = seriesData.getLabel();
 			CrittercismApp app = new CrittercismApp(seriesData.getLabel(), responseApp.get(appId).getAppName());
-			//DailyStatisticsItem item = new DailyStatisticsItem(app, 0, seriesData.getValue());
+			DailyStatisticsItem item = new DailyStatisticsItem(app, 0, seriesData.getValue());
 
-			//statisticsHashMap.put(appId, item);
+			statisticsHashMap.put(appId, item);
 		}
 
 		for(SeriesData seriesData : pieResponseCrashes.getData().getSlices())
@@ -103,8 +103,8 @@ public class RemoteFacade
 			if (!statisticsHashMap.containsKey(appId))
 			{
 				CrittercismApp app = new CrittercismApp(seriesData.getLabel(), responseApp.get(appId).getAppName());
-				//DailyStatisticsItem item = new DailyStatisticsItem(app, seriesData.getValue(), 0);
-				//statisticsHashMap.put(appId, item);
+				DailyStatisticsItem item = new DailyStatisticsItem(app, seriesData.getValue(), 0);
+				statisticsHashMap.put(appId, item);
 			}
 			else
 			{
