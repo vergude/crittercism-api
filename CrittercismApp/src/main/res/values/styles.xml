@@ -14,4 +14,7 @@
         <item name="android:background">@drawable/bg_item_drawer</item>
     </style>
 
+    <style name="SelectorDays">
+        <item name="android:background">@drawable/bg_btn_arrows</item>
+    </style>
 </resources>
