@@ -19,8 +19,8 @@ public class Launcher
 //		context.startActivity(intent);
 	}
 
-    public  static void showLoginActivity(Context context)
+    public  static void showLoginActivity(Context context,boolean isFromLogout)
     {
-        LoginActivity_.intent(context).start();
+        LoginActivity_.intent(context).isFromLogout(isFromLogout).start();
     }
 }

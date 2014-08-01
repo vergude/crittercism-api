@@ -11,6 +11,7 @@ import intexsoft.by.crittercismapi.event.EventObserver;
 import intexsoft.by.crittercismapi.event.LoginPerformedEvent;
 import intexsoft.by.crittercismapi.manager.LoginManager;
 import intexsoft.by.crittercismapi.service.LoginService;
+import intexsoft.by.crittercismapi.settings.SettingsFacade;
 import intexsoft.by.crittercismapi.ui.view.LoginView;
 import intexsoft.by.crittercismapi.utils.Launcher;
 
@@ -43,6 +44,9 @@ public class LoginPresenterImpl implements LoginPresenter
 	@Bean
 	LoginManager loginManager;
 
+    @Bean
+    SettingsFacade settingsFacade;
+
     @Override
     public void init(LoginView loginView)
 	{
@@ -54,10 +58,15 @@ public class LoginPresenterImpl implements LoginPresenter
 			return;
 		}
 
-		if (loginManager.isLoginExpired() && loginManager.isLoginAndPasswordSaved())
+		if (loginManager.isLoginExpired() && loginManager.isLoginAndPasswordSaved() &&  settingsFacade.getAutoLogin() && !loginView.isFromLogout())
 		{
-			this.loginView.onFillStoredFields(loginManager.getLogin(), loginManager.getPassword());
-		}
+            doLogin(loginManager.getLogin(),loginManager.getPassword());
+        }
+        else
+        {
+            this.loginView.onFillStoredFields(loginManager.getLogin(), loginManager.getPassword());
+            return;
+        }
     }
 
 	private void closeLoginAndShowMain()

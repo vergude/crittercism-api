@@ -46,7 +46,7 @@ public class MainActivity extends NavigationActivity
     void logoutSelect()
     {
         loginManager.clearExpireDate();
-        Launcher.showLoginActivity(this);
+        Launcher.showLoginActivity(this,true);
         this.finish();
     }
 

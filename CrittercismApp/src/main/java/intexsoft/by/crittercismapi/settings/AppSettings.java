@@ -1,5 +1,6 @@
 package intexsoft.by.crittercismapi.settings;
 
+import org.androidannotations.annotations.sharedpreferences.DefaultBoolean;
 import org.androidannotations.annotations.sharedpreferences.DefaultLong;
 import org.androidannotations.annotations.sharedpreferences.DefaultString;
 import org.androidannotations.annotations.sharedpreferences.SharedPref;
@@ -7,7 +8,7 @@ import org.androidannotations.annotations.sharedpreferences.SharedPref;
 /**
  * Created by anastasya.konovalova on 21.07.14.
  */
-@SharedPref(SharedPref.Scope.UNIQUE)
+@SharedPref(SharedPref.Scope.APPLICATION_DEFAULT)
 public interface AppSettings
 {
 	@DefaultString("")
@@ -21,4 +22,7 @@ public interface AppSettings
 
 	@DefaultLong(0)
 	long expiredDate();
+
+    @DefaultBoolean(false)
+    boolean autoLogin();
 }

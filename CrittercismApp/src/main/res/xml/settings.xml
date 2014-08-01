@@ -5,6 +5,10 @@
         <CheckBoxPreference android:key="@string/settings_key_one"
             android:title="Настройка первая"
             android:summary="Описание первой настройки"/>
+
+        <CheckBoxPreference android:key="@string/autoLogin"
+            android:title="Auto login"
+            android:summary="Автоматическая авторизация пользователя"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/about_settings">

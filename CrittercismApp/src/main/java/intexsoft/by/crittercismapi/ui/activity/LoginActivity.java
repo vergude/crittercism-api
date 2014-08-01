@@ -9,6 +9,7 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
 import intexsoft.by.crittercismapi.R;
@@ -34,12 +35,14 @@ public class LoginActivity extends Activity implements LoginView
 	@Bean(LoginPresenterImpl.class)
 	LoginPresenter loginPresenter;
 
+    @Extra
+    public boolean isFromLogout;
+
 	@Override
 	public void onStart()
 	{
 		super.onStart();
-		loginPresenter.onStart();
-
+        loginPresenter.onStart();
 	}
 
 	@Override
@@ -58,7 +61,6 @@ public class LoginActivity extends Activity implements LoginView
 	@Click(R.id.login_button)
 	void onLoginClick()
 	{
-
 		loginPresenter.doLogin(loginField.getText().toString(), passwordField.getText().toString());
 	}
 
@@ -78,6 +80,11 @@ public class LoginActivity extends Activity implements LoginView
     @Override
     public void hideProgressBar() {
         progressBarConteiner.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public boolean isFromLogout() {
+        return isFromLogout;
     }
 
     @Override

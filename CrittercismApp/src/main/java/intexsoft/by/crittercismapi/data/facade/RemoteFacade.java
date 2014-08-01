@@ -2,6 +2,15 @@ package intexsoft.by.crittercismapi.data.facade;
 
 import android.content.Context;
 import android.util.Log;
+
+import org.androidannotations.annotations.EBean;
+import org.androidannotations.annotations.RootContext;
+import org.androidannotations.annotations.rest.RestService;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import intexsoft.by.crittercismapi.Constants;
 import intexsoft.by.crittercismapi.data.bean.CrittercismApp;
 import intexsoft.by.crittercismapi.data.bean.DailyStatisticsItem;
@@ -15,13 +24,7 @@ import intexsoft.by.crittercismapi.data.remote.response.PieResponse;
 import intexsoft.by.crittercismapi.data.remote.response.SeriesData;
 import intexsoft.by.crittercismapi.data.remote.service.CrittercismAPIService;
 import intexsoft.by.crittercismapi.utils.ThreadUtils;
-import org.androidannotations.annotations.EBean;
-import org.androidannotations.annotations.RootContext;
-import org.androidannotations.annotations.rest.RestService;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 
 @EBean(scope = EBean.Scope.Singleton)

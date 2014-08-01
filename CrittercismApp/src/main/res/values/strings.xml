@@ -16,6 +16,7 @@
     <string name="about_settings">About</string>
 
     <string name="settings_key_one">Setting_One</string>
+    <string name="autoLogin">autoLogin</string>
     <string name="settings_title_version">Build version</string>
     <string name="setting_hint_version">Version:</string>
 

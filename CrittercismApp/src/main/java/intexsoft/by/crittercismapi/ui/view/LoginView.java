@@ -8,4 +8,5 @@ public interface LoginView extends BaseView
 	void onFillStoredFields(String login, String password);
     void showProgressBar();
     void hideProgressBar();
+    boolean isFromLogout();
 }
