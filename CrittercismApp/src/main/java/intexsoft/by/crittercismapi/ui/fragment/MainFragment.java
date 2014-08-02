@@ -152,10 +152,12 @@ public class MainFragment extends Fragment implements MainView,DatePickerFragmen
 
     //**Generates fake objects*/
     @AfterViews
-    public void setCrittercismAppsItems(){
+    public void setCrittercismAppsItems()
+    {
         ArrayList<CrittercismApp>crittercismAppsItems = new ArrayList<CrittercismApp>();
         String []appNames = {"App1","App2","App3","App4","App5","App6","App7","App8","App9","App10"};
-        for(int i=0;i<10;i++){
+        for(int i=0;i<10;i++)
+        {
             CrittercismApp crittercismAppItem = new CrittercismApp(Integer.toString(generatedRandomInt()),appNames[i]);
             crittercismAppsItems.add(crittercismAppItem);
         }
@@ -163,11 +165,14 @@ public class MainFragment extends Fragment implements MainView,DatePickerFragmen
     }
 
     //**Generates fake objects*/
-    public void setDailyStatisticsItems(ArrayList<CrittercismApp>crittercismAppsItems){
+    public void setDailyStatisticsItems(ArrayList<CrittercismApp>crittercismAppsItems)
+    {
         String []dates={"24, July 2014","25, July 2014","26, July 2014","27, July 2014","28, July 2014","29, July 2014",
                 "30, July 2014","31, July 2014","1, August 2014","2, August 2014","3, August 2014"};
-        for(String date:dates){
-            for(CrittercismApp crittercismApp:crittercismAppsItems) {
+        for(String date:dates)
+        {
+            for(CrittercismApp crittercismApp:crittercismAppsItems)
+            {
                 DailyStatisticsItem dailyStatisticsItem = new DailyStatisticsItem(crittercismApp,generatedRandomInt(),
                         generatedRandomInt(),date);
                 mDailyStatisticsItems.add(dailyStatisticsItem);
@@ -175,12 +180,14 @@ public class MainFragment extends Fragment implements MainView,DatePickerFragmen
         }
         setAppInfoGrid(tvDate.getText().toString());
     }
-    public Integer generatedRandomInt(){
+    public Integer generatedRandomInt()
+    {
         Random rand = new Random();
         return rand.nextInt(100);
     }
 
-    public void setAppInfoGrid(String date){
+    public void setAppInfoGrid(String date)
+    {
         ArrayList<DailyStatisticsItem> dailyStatisticsItemsForAdapter = new ArrayList<DailyStatisticsItem>();
         for(DailyStatisticsItem dailyStatisticsItem:mDailyStatisticsItems)
         {

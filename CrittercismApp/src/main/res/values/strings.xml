@@ -23,4 +23,9 @@
     <string name="next_day">next day</string>
 
     <string name="error_parse_date">Error set date!</string>
+
+    <string name = "name_app">Application name</string>
+    <string name = "app_id">id</string>
+    <string name = "crashes">Crashes</string>
+    <string name = "app_loads">Loads</string>
 </resources>
