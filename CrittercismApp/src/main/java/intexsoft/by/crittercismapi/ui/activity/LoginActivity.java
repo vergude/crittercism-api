@@ -20,6 +20,7 @@ import intexsoft.by.crittercismapi.ui.view.LoginView;
 /**
  * Created by anastasya.konovalova on 11.07.2014.
  */
+
 @EActivity(R.layout.activity_login)
 public class LoginActivity extends Activity implements LoginView
 {

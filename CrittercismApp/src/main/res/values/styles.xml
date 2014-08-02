@@ -17,4 +17,8 @@
     <style name="SelectorDays">
         <item name="android:background">@drawable/bg_btn_arrows</item>
     </style>
+
+    <style name="headGridView">
+        <item name="android:textColor">@color/color_head_grid_view</item>
+    </style>
 </resources>
