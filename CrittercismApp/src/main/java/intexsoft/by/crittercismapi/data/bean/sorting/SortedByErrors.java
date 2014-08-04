@@ -13,8 +13,8 @@ public class SortedByErrors implements Comparator<DailyStatisticsItem>
     @Override
     public int compare(DailyStatisticsItem dailyStatisticsItemFirst, DailyStatisticsItem dailyStatisticsItemSecond)
     {
-        int errorsPercentFirst = dailyStatisticsItemFirst.getErrorsPercent();
-        int errorsPercentSecond = dailyStatisticsItemSecond.getErrorsPercent();
+        double errorsPercentFirst = dailyStatisticsItemFirst.getErrorsPercent();
+        double errorsPercentSecond = dailyStatisticsItemSecond.getErrorsPercent();
 
         if(errorsPercentFirst > errorsPercentSecond)
         {

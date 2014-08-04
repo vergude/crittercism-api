@@ -71,9 +71,9 @@ public class DailyStatisticsItem implements Serializable
 		this.appLoadsCount = appLoadsCount;
 	}
 
-	public int getErrorsPercent()
+	public double getErrorsPercent()
 	{
-		return (crashesCount/appLoadsCount)*100;
+		return ((double) crashesCount / appLoadsCount);
 	}
 
 }

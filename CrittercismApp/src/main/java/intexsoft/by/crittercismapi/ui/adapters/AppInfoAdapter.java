@@ -1,16 +1,16 @@
 package intexsoft.by.crittercismapi.ui.adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import intexsoft.by.crittercismapi.R;
-import intexsoft.by.crittercismapi.data.bean.DailyStatisticsItem;
 
 import java.util.List;
+
+import intexsoft.by.crittercismapi.R;
+import intexsoft.by.crittercismapi.data.bean.DailyStatisticsItem;
 
 /**
  * Created by vadim on 30.07.2014.
@@ -46,7 +46,7 @@ public class AppInfoAdapter extends ArrayAdapter {
         viewHolder.tvAppName.setText(dailyStatisticsItems.getApplication().getName());
         viewHolder.tvCrashesCount.setText(Integer.toString(dailyStatisticsItems.getCrashesCount()));
         viewHolder.tvAppLoadsCount.setText(Integer.toString(dailyStatisticsItems.getAppLoadsCount()));
-		viewHolder.tvAppErrorPersent.setText(Integer.toString(dailyStatisticsItems.getErrorsPercent()) + "%");
+		viewHolder.tvAppErrorPersent.setText((String.format("%.3f",dailyStatisticsItems.getErrorsPercent())) + "%");
 
         return convertView;
     }
