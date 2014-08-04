@@ -6,6 +6,7 @@ import java.util.Date;
 /**
  * Created by anastasya.konovalova on 29.07.2014.
  */
+
 public class DailyStatisticsItem implements Serializable
 {
 	private long id;
@@ -74,4 +75,5 @@ public class DailyStatisticsItem implements Serializable
 	{
 		return (crashesCount/appLoadsCount)*100;
 	}
+
 }

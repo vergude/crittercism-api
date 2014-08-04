@@ -8,6 +8,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 import intexsoft.by.crittercismapi.R;
 import intexsoft.by.crittercismapi.data.bean.DailyStatisticsItem;
+import intexsoft.by.crittercismapi.data.bean.sorting.SortedByCrashes;
+import intexsoft.by.crittercismapi.data.bean.sorting.SortedByErrors;
+import intexsoft.by.crittercismapi.data.bean.sorting.SortedByLoads;
+import intexsoft.by.crittercismapi.data.bean.sorting.SortedByName;
 import intexsoft.by.crittercismapi.data.facade.RemoteFacade;
 import intexsoft.by.crittercismapi.ui.adapters.AppInfoAdapter;
 import intexsoft.by.crittercismapi.ui.presenter.MainPresenter;
@@ -22,6 +26,7 @@ import org.androidannotations.annotations.ViewById;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -35,6 +40,7 @@ public class MainFragment extends Fragment implements MainView,DatePickerFragmen
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("d, MMM yyyy");
 	public static final String TAG = MainFragment.class.getSimpleName();
     private Calendar mCalendar = Calendar.getInstance();
+    private List<DailyStatisticsItem> mDailyStatisticsItems;
 
     @ViewById
     TextView tvDate;
@@ -143,10 +149,47 @@ public class MainFragment extends Fragment implements MainView,DatePickerFragmen
     }
 
     @Override
-    public void setDailyStatisticsItems(List<DailyStatisticsItem> dailyStatisticsItems){
-		AppInfoAdapter appInfoAdapter = new AppInfoAdapter(getActivity(),R.layout.appinfo_item, dailyStatisticsItems);
-		gvAppInfo.setAdapter(appInfoAdapter);
+    public void setDailyStatisticsItems(List<DailyStatisticsItem> dailyStatisticsItems)
+    {
+        mDailyStatisticsItems=dailyStatisticsItems;
+        setNewAdapter();
     }
 
+    @Click(R.id.tvHeadAppName)
+    public void sortAppNAme()
+    {
+        startSort(new SortedByName());
+    }
 
+    @Click(R.id.tvHeadCrashes)
+    public void sortAppCrashes()
+    {
+        startSort(new SortedByCrashes());
+    }
+
+    @Click(R.id.tvHeadLoads)
+    public void sortAppLoads()
+    {
+        startSort(new SortedByLoads());
+    }
+
+    @Click(R.id.tvHeadAppErrors)
+    public void sortAppErrors()
+    {
+        startSort(new SortedByErrors());
+    }
+
+    public void startSort(java.util.Comparator<? super DailyStatisticsItem> sorting){
+        if(mDailyStatisticsItems!=null)
+        {
+            Collections.sort(mDailyStatisticsItems, sorting);
+            setNewAdapter();
+        }
+    }
+
+    public void setNewAdapter()
+    {
+        AppInfoAdapter appInfoAdapter = new AppInfoAdapter(getActivity(),R.layout.appinfo_item, mDailyStatisticsItems);
+        gvAppInfo.setAdapter(appInfoAdapter);
+    }
 }
