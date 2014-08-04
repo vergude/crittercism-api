@@ -6,17 +6,7 @@ import android.app.Fragment;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
-import intexsoft.by.crittercismapi.R;
-import intexsoft.by.crittercismapi.data.bean.DailyStatisticsItem;
-import intexsoft.by.crittercismapi.data.bean.sorting.SortedByCrashes;
-import intexsoft.by.crittercismapi.data.bean.sorting.SortedByErrors;
-import intexsoft.by.crittercismapi.data.bean.sorting.SortedByLoads;
-import intexsoft.by.crittercismapi.data.bean.sorting.SortedByName;
-import intexsoft.by.crittercismapi.data.facade.RemoteFacade;
-import intexsoft.by.crittercismapi.ui.adapters.AppInfoAdapter;
-import intexsoft.by.crittercismapi.ui.presenter.MainPresenter;
-import intexsoft.by.crittercismapi.ui.presenter.MainPresenterImpl;
-import intexsoft.by.crittercismapi.ui.view.MainView;
+
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
@@ -30,6 +20,18 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import intexsoft.by.crittercismapi.R;
+import intexsoft.by.crittercismapi.data.bean.DailyStatisticsItem;
+import intexsoft.by.crittercismapi.data.bean.sorting.SortedByCrashes;
+import intexsoft.by.crittercismapi.data.bean.sorting.SortedByErrors;
+import intexsoft.by.crittercismapi.data.bean.sorting.SortedByLoads;
+import intexsoft.by.crittercismapi.data.bean.sorting.SortedByName;
+import intexsoft.by.crittercismapi.data.facade.RemoteFacade;
+import intexsoft.by.crittercismapi.ui.adapters.AppInfoAdapter;
+import intexsoft.by.crittercismapi.ui.presenter.MainPresenter;
+import intexsoft.by.crittercismapi.ui.presenter.MainPresenterImpl;
+import intexsoft.by.crittercismapi.ui.view.MainView;
+
 /**
  * Created by anastasya.konovalova on 11.07.2014.
  */
@@ -40,6 +42,7 @@ public class MainFragment extends Fragment implements MainView,DatePickerFragmen
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("d, MMM yyyy");
 	public static final String TAG = MainFragment.class.getSimpleName();
     private Calendar mCalendar = Calendar.getInstance();
+    private boolean clickResult = true;
     private List<DailyStatisticsItem> mDailyStatisticsItems;
 
     @ViewById
@@ -176,15 +179,23 @@ public class MainFragment extends Fragment implements MainView,DatePickerFragmen
     @Click(R.id.tvHeadAppErrors)
     public void sortAppErrors()
     {
-        startSort(new SortedByErrors());
+            startSort(new SortedByErrors());
     }
 
     public void startSort(java.util.Comparator<? super DailyStatisticsItem> sorting){
-        if(mDailyStatisticsItems!=null)
-        {
-            Collections.sort(mDailyStatisticsItems, sorting);
-            setNewAdapter();
-        }
+
+            if (mDailyStatisticsItems != null) {
+                if (clickResult) {
+                    Collections.sort(mDailyStatisticsItems, sorting);
+                    setNewAdapter();
+                    clickResult = false;
+                } else
+                {
+                    Collections.reverse(mDailyStatisticsItems);
+                    setNewAdapter();
+                    clickResult = true;
+                }
+            }
     }
 
     public void setNewAdapter()
