@@ -32,7 +32,6 @@ public class LoginManager
 	}
 
 
-
 	public boolean isLoginExpired()
 	{
 		return settingsFacade.getExpireDate() <= DateTimeUtils.getCurrentDateLong();
@@ -56,25 +55,25 @@ public class LoginManager
 	public void saveLoginData(String login, String password, String token, int expiredValue)
 	{
 
-        settingsFacade.saveLogin(login);
+		settingsFacade.saveLogin(login);
 		settingsFacade.savePassword(password);
 		settingsFacade.saveToken(token);
-        settingsFacade.saveExpireDate(getExpireDate(expiredValue));
+		settingsFacade.saveExpireDate(getExpireDate(expiredValue));
 
-        //TODO save expiredValue
+		//TODO save expiredValue
 		Log.d("LoginManager", "Saved");
 	}
 
-    private long getExpireDate(int expiredValue)
-    {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Date());
-        calendar.add(Calendar.SECOND, expiredValue);
-        return calendar.getTimeInMillis();
-    }
+	private long getExpireDate(int expiredValue)
+	{
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(new Date());
+		calendar.add(Calendar.SECOND, expiredValue);
+		return calendar.getTimeInMillis();
+	}
 
-    public void clearExpireDate()
-    {
-        settingsFacade.saveExpireDate(0);
-    }
+	public void clearExpireDate()
+	{
+		settingsFacade.saveExpireDate(0);
+	}
 }

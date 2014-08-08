@@ -17,18 +17,18 @@ public class DailyStatisticsItem implements Serializable
 
 	private int appLoadsCount;
 
-    private Date date;
+	private Date date;
 
 	public DailyStatisticsItem()
 	{
 	}
 
-    public DailyStatisticsItem(CrittercismApp application, int crashesCount, int appLoadsCount)
+	public DailyStatisticsItem(CrittercismApp application, int crashesCount, int appLoadsCount)
 	{
 		this.application = application;
 		this.crashesCount = crashesCount;
 		this.appLoadsCount = appLoadsCount;
-        this.date = new Date();
+		this.date = new Date();
 	}
 
 	public long getId()
@@ -73,7 +73,7 @@ public class DailyStatisticsItem implements Serializable
 
 	public double getErrorsPercent()
 	{
-		return ((double) crashesCount / appLoadsCount);
+		return (double) crashesCount / appLoadsCount;
 	}
 
 }

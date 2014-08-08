@@ -3,6 +3,8 @@ package intexsoft.by.crittercismapi.ui.fragment;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.Fragment;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,25 +33,27 @@ import intexsoft.by.crittercismapi.ui.adapters.AppInfoAdapter;
 import intexsoft.by.crittercismapi.ui.presenter.MainPresenter;
 import intexsoft.by.crittercismapi.ui.presenter.MainPresenterImpl;
 import intexsoft.by.crittercismapi.ui.view.MainView;
+import intexsoft.by.crittercismapi.utils.Launcher;
 
 /**
  * Created by anastasya.konovalova on 11.07.2014.
  */
 
 @EFragment(R.layout.fragment_main)
-public class MainFragment extends Fragment implements MainView,DatePickerFragment.FragmentDatePickerInterface
+public class MainFragment extends Fragment implements MainView, DatePickerFragment.FragmentDatePickerInterface
 {
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("d, MMM yyyy");
+	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("d, MMM yyyy");
 	public static final String TAG = MainFragment.class.getSimpleName();
-    private Calendar mCalendar = Calendar.getInstance();
-    private boolean clickResult = true;
-    private List<DailyStatisticsItem> mDailyStatisticsItems;
+	private Calendar calendar = Calendar.getInstance();
+	private boolean clickResult = true;
+	private List<DailyStatisticsItem> mDailyStatisticsItems;
 
-    @ViewById
-    TextView tvDate;
 
-    @ViewById
-    GridView gvAppInfo;
+	@ViewById
+	TextView tvDate;
+
+	@ViewById
+	GridView gvAppInfo;
 
 	@Bean(MainPresenterImpl.class)
 	MainPresenter presenter;
@@ -80,6 +84,14 @@ public class MainFragment extends Fragment implements MainView,DatePickerFragmen
 	void initViews()
 	{
 		presenter.init(this);
+		gvAppInfo.setOnItemClickListener(new AdapterView.OnItemClickListener()
+		{
+			@Override
+			public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
+			{
+				Launcher.showAppDetailsErrorActivity(getActivity(), mDailyStatisticsItems.get(i).getApplication().getId());
+			}
+		});
 	}
 
 	@Override
@@ -88,119 +100,124 @@ public class MainFragment extends Fragment implements MainView,DatePickerFragmen
 		return getActivity();
 	}
 
-    @AfterViews
-    public void setCurrentDate()
-    {
-        setNewDate();
-    }
+	@AfterViews
+	public void setCurrentDate()
+	{
+		setNewDate();
+	}
 
-    @Click(R.id.tvDate)
-    public void setDateFromCalendar()
-    {
-        DialogFragment datePickerFragment = new DatePickerFragment();
-        datePickerFragment.setTargetFragment(this, 0);
-        datePickerFragment.show(getFragmentManager(), "datePicker");
-    }
+	@Click(R.id.tvDate)
+	public void setDateFromCalendar()
+	{
+		DialogFragment datePickerFragment = new DatePickerFragment();
+		datePickerFragment.setTargetFragment(this, 0);
+		datePickerFragment.show(getFragmentManager(), "datePicker");
+	}
 
-    @Click(R.id.ibPreviousDay)
-    public void previousDay()
-    {
-        mCalendar.add(Calendar.DAY_OF_MONTH, -1);
-        setNewDate();
-    }
+	@Click(R.id.ibPreviousDay)
+	public void previousDay()
+	{
+		calendar.add(Calendar.DAY_OF_MONTH, -1);
+		setNewDate();
+	}
 
-    @Click(R.id.ibNextDay)
-    public void nextDay()
-    {
-        mCalendar.add(Calendar.DAY_OF_MONTH, 1);
-        setNewDate();
-    }
+	@Click(R.id.ibNextDay)
+	public void nextDay()
+	{
+		calendar.add(Calendar.DAY_OF_MONTH, 1);
+		setNewDate();
+	}
 
-    @Override
-    public Calendar getCalendar()
-    {
-        return mCalendar;
-    }
+	@Override
+	public Calendar getCalendar()
+	{
+		return calendar;
+	}
 
-    @Override
-    public void setDate(String date)
-    {
-        tvDate.setText(date);
-        parseNewDate(date);
-    }
+	@Override
+	public void setDate(String date)
+	{
+		tvDate.setText(date);
+		parseNewDate(date);
+	}
 
-    public void parseNewDate(String date)
-    {
-        try
-        {
-            Date parsedDate = DATE_FORMAT.parse(date);
-            mCalendar.setTime(parsedDate);
-        } catch (ParseException e)
-        {
-            Toast.makeText(getActivity(), getResources().getString(R.string.error_parse_date), Toast.LENGTH_LONG).show();
-        }
-    }
+	public void parseNewDate(String date)
+	{
+		try
+		{
+			Date parsedDate = DATE_FORMAT.parse(date);
+			calendar.setTime(parsedDate);
+		}
+		catch (ParseException e)
+		{
+			Toast.makeText(getActivity(), getResources().getString(R.string.error_parse_date), Toast.LENGTH_LONG).show();
+		}
+	}
 
-    public void setNewDate()
-    {
-        String[]mounts=getResources().getStringArray(R.array.year);
-        String dayOfMonth = Integer.toString(mCalendar.get(Calendar.DAY_OF_MONTH));
-        String month = mounts[(mCalendar.get(Calendar.MONTH))];
-        String year = Integer.toString(mCalendar.get(Calendar.YEAR));
-        String date = dayOfMonth.concat(", ").concat(month).concat(" ").concat(year);
-        tvDate.setText(date);
-    }
+	public void setNewDate()
+	{
+		String[] mounts = getResources().getStringArray(R.array.year);
+		String dayOfMonth = Integer.toString(calendar.get(Calendar.DAY_OF_MONTH));
+		String month = mounts[calendar.get(Calendar.MONTH)];
+		String year = Integer.toString(calendar.get(Calendar.YEAR));
+		String date = dayOfMonth.concat(", ").concat(month).concat(" ").concat(year);
+		tvDate.setText(date);
+	}
 
-    @Override
-    public void setDailyStatisticsItems(List<DailyStatisticsItem> dailyStatisticsItems)
-    {
-        mDailyStatisticsItems=dailyStatisticsItems;
-        setNewAdapter();
-    }
+	@Override
+	public void setDailyStatisticsItems(List<DailyStatisticsItem> dailyStatisticsItems)
+	{
+		mDailyStatisticsItems = dailyStatisticsItems;
+		setNewAdapter();
+	}
 
-    @Click(R.id.tvHeadAppName)
-    public void sortAppNAme()
-    {
-        startSort(new SortedByName());
-    }
+	@Click(R.id.tvHeadAppName)
+	public void sortAppNAme()
+	{
+		startSort(new SortedByName());
+	}
 
-    @Click(R.id.tvHeadCrashes)
-    public void sortAppCrashes()
-    {
-        startSort(new SortedByCrashes());
-    }
+	@Click(R.id.tvHeadCrashes)
+	public void sortAppCrashes()
+	{
+		startSort(new SortedByCrashes());
+	}
 
-    @Click(R.id.tvHeadLoads)
-    public void sortAppLoads()
-    {
-        startSort(new SortedByLoads());
-    }
+	@Click(R.id.tvHeadLoads)
+	public void sortAppLoads()
+	{
+		startSort(new SortedByLoads());
+	}
 
-    @Click(R.id.tvHeadAppErrors)
-    public void sortAppErrors()
-    {
-            startSort(new SortedByErrors());
-    }
+	@Click(R.id.tvHeadAppErrors)
+	public void sortAppErrors()
+	{
+		startSort(new SortedByErrors());
+	}
 
-    public void startSort(java.util.Comparator<? super DailyStatisticsItem> sorting){
+	public void startSort(java.util.Comparator<? super DailyStatisticsItem> sorting)
+	{
 
-            if (mDailyStatisticsItems != null) {
-                if (clickResult) {
-                    Collections.sort(mDailyStatisticsItems, sorting);
-                    setNewAdapter();
-                    clickResult = false;
-                } else
-                {
-                    Collections.reverse(mDailyStatisticsItems);
-                    setNewAdapter();
-                    clickResult = true;
-                }
-            }
-    }
+		if (mDailyStatisticsItems != null)
+		{
+			if (clickResult)
+			{
+				Collections.sort(mDailyStatisticsItems, sorting);
+				setNewAdapter();
+				clickResult = false;
+			}
+			else
+			{
+				Collections.reverse(mDailyStatisticsItems);
+				setNewAdapter();
+				clickResult = true;
+			}
+		}
+	}
 
-    public void setNewAdapter()
-    {
-        AppInfoAdapter appInfoAdapter = new AppInfoAdapter(getActivity(),R.layout.appinfo_item, mDailyStatisticsItems);
-        gvAppInfo.setAdapter(appInfoAdapter);
-    }
+	public void setNewAdapter()
+	{
+		AppInfoAdapter appInfoAdapter = new AppInfoAdapter(getActivity(), R.layout.appinfo_item, mDailyStatisticsItems);
+		gvAppInfo.setAdapter(appInfoAdapter);
+	}
 }

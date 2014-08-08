@@ -8,49 +8,59 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SeriesCollection
 {
-    private String start;
-    private String end;
-    private Integer interval;
-    private SeriesData [] series;
-    private SeriesData [] slices;
+	private String start;
+	private String end;
+	private Integer interval;
+	private SeriesData[] series;
+	private SeriesData[] slices;
 
-    public SeriesData[] getSlices() {
-        return slices;
-    }
+	public SeriesData[] getSlices()
+	{
+		return slices;
+	}
 
-    public void setSlices(SeriesData[] slices) {
-        this.slices = slices;
-    }
+	public void setSlices(SeriesData[] slices)
+	{
+		this.slices = slices;
+	}
 
-    public String getStart() {
-        return start;
-    }
+	public String getStart()
+	{
+		return start;
+	}
 
-    public void setStart(String start) {
-        this.start = start;
-    }
+	public void setStart(String start)
+	{
+		this.start = start;
+	}
 
-    public String getEnd() {
-        return end;
-    }
+	public String getEnd()
+	{
+		return end;
+	}
 
-    public void setEnd(String end) {
-        this.end = end;
-    }
+	public void setEnd(String end)
+	{
+		this.end = end;
+	}
 
-    public Integer getInterval() {
-        return interval;
-    }
+	public Integer getInterval()
+	{
+		return interval;
+	}
 
-    public void setInterval(Integer interval) {
-        this.interval = interval;
-    }
+	public void setInterval(Integer interval)
+	{
+		this.interval = interval;
+	}
 
-    public SeriesData[] getSeries() {
-        return series;
-    }
+	public SeriesData[] getSeries()
+	{
+		return series;
+	}
 
-    public void setSeries(SeriesData[] series) {
-        this.series = series;
-    }
+	public void setSeries(SeriesData[] series)
+	{
+		this.series = series;
+	}
 }

@@ -1,8 +1,8 @@
 package intexsoft.by.crittercismapi.ui.view;
 
-import intexsoft.by.crittercismapi.data.bean.DailyStatisticsItem;
-
 import java.util.List;
+
+import intexsoft.by.crittercismapi.data.bean.DailyStatisticsItem;
 
 /**
  * Created by Евгений on 22.07.2014.

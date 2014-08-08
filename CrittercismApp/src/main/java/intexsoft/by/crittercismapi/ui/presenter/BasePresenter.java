@@ -7,7 +7,9 @@ import intexsoft.by.crittercismapi.ui.view.BaseView;
  */
 public interface BasePresenter<T extends BaseView>
 {
-    void init(T view);
-    void onStart();
-    void onStop();
+	void init(T view);
+
+	void onStart();
+
+	void onStop();
 }

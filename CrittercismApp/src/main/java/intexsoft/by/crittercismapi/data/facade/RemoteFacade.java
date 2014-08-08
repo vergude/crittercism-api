@@ -26,7 +26,6 @@ import intexsoft.by.crittercismapi.data.remote.service.CrittercismAPIService;
 import intexsoft.by.crittercismapi.utils.ThreadUtils;
 
 
-
 @EBean(scope = EBean.Scope.Singleton)
 public class RemoteFacade
 {
@@ -43,55 +42,57 @@ public class RemoteFacade
 	}
 
 	public void getApps()
-    {
+	{
 		ThreadUtils.checkAndThrowIfUIThread();
 
-        HashMap<String,AppSummaryData> response = remoteService.getApps();
+		HashMap<String, AppSummaryData> response = remoteService.getApps();
 
-        Log.d("**********", response.size() + "");
+		Log.d("**********", response.size() + "");
 	}
 
-    public void getErrorGraphOneApp()
-    {
-        ThreadUtils.checkAndThrowIfUIThread();
+	public GraphResponse getErrorGraphOneApp(String appId, String graph)
+	{
+		ThreadUtils.checkAndThrowIfUIThread();
 
-        HashMap<String,AppSummaryData> responseApp = remoteService.getApps();
+		HashMap<String, AppSummaryData> responseApp = remoteService.getApps();
 
-        GraphRequest graphRequest = new GraphRequest();
-        GraphRequestInternal graphRequestInternal = new GraphRequestInternal();
-        graphRequestInternal.setApplds(responseApp.keySet().toArray(new String [responseApp.keySet().size()]));
-        graphRequestInternal.setGraph(Constants.GRAPH_CRASHES);
-        graphRequestInternal.setDuration(Constants.DURATION_ONE_DAY);
+		GraphRequest graphRequest = new GraphRequest();
+		GraphRequestInternal graphRequestInternal = new GraphRequestInternal();
+		graphRequestInternal.setAppId(appId);
+		graphRequestInternal.setGraph(graph);
+		graphRequestInternal.setDuration(Constants.DURATION_ONE_MONTH);
 
-        graphRequest.setParams(graphRequestInternal);
+		graphRequest.setParams(graphRequestInternal);
 
-        GraphResponse graphResponse = remoteService.getErrorGraph(graphRequest);
-    }
+		GraphResponse graphResponse = remoteService.getErrorGraph(graphRequest);
 
-    public List<DailyStatisticsItem> getErrorGraphAllApps(int duration)
-    {
-        ThreadUtils.checkAndThrowIfUIThread();
+		return graphResponse;
+	}
 
-        HashMap<String,AppSummaryData> responseApp = remoteService.getApps();
+	public List<DailyStatisticsItem> getErrorGraphAllApps(int duration)
+	{
+		ThreadUtils.checkAndThrowIfUIThread();
 
-        PieRequest pieRequest = new PieRequest();
-        PieRequestInternal pieRequestInternal = new PieRequestInternal();
-        pieRequestInternal.setAppIds(responseApp.keySet().toArray(new String[responseApp.keySet().size()]));
-        pieRequestInternal.setDuration(duration);
-        pieRequestInternal.setGroupBy(Constants.GROUP_BY_APP_ID);
-        pieRequestInternal.setGraph(Constants.GRAPH_CRASHES);
-        pieRequest.setParams(pieRequestInternal);
+		HashMap<String, AppSummaryData> responseApp = remoteService.getApps();
+
+		PieRequest pieRequest = new PieRequest();
+		PieRequestInternal pieRequestInternal = new PieRequestInternal();
+		pieRequestInternal.setAppIds(responseApp.keySet().toArray(new String[responseApp.keySet().size()]));
+		pieRequestInternal.setDuration(duration);
+		pieRequestInternal.setGroupBy(Constants.GROUP_BY_APP_ID);
+		pieRequestInternal.setGraph(Constants.GRAPH_CRASHES);
+		pieRequest.setParams(pieRequestInternal);
 
 		PieResponse pieResponseCrashes = remoteService.getErrorGraphAllApps(pieRequest);
 
-        pieRequestInternal.setGraph(Constants.GRAPH_APPLOADS);
-        pieRequest.setParams(pieRequestInternal);
+		pieRequestInternal.setGraph(Constants.GRAPH_APPLOADS);
+		pieRequest.setParams(pieRequestInternal);
 
-        PieResponse pieResponseAppLoads = remoteService.getErrorGraphAllApps(pieRequest);
+		PieResponse pieResponseAppLoads = remoteService.getErrorGraphAllApps(pieRequest);
 
 		HashMap<String, DailyStatisticsItem> statisticsHashMap = new HashMap<String, DailyStatisticsItem>();
 
-		for(SeriesData seriesData : pieResponseAppLoads.getData().getSlices())
+		for (SeriesData seriesData : pieResponseAppLoads.getData().getSlices())
 		{
 			String appId = seriesData.getLabel();
 			CrittercismApp app = new CrittercismApp(seriesData.getLabel(), responseApp.get(appId).getAppName());
@@ -100,7 +101,7 @@ public class RemoteFacade
 			statisticsHashMap.put(appId, item);
 		}
 
-		for(SeriesData seriesData : pieResponseCrashes.getData().getSlices())
+		for (SeriesData seriesData : pieResponseCrashes.getData().getSlices())
 		{
 			String appId = seriesData.getLabel();
 			if (!statisticsHashMap.containsKey(appId))
@@ -116,5 +117,5 @@ public class RemoteFacade
 		}
 
 		return new ArrayList<DailyStatisticsItem>(statisticsHashMap.values());
-    }
+	}
 }

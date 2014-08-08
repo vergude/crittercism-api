@@ -11,9 +11,10 @@ import intexsoft.by.crittercismapi.ui.fragment.SettingsFragment;
 
 public class SettingsActivity extends PreferenceActivity
 {
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getFragmentManager().beginTransaction().replace(android.R.id.content,new SettingsFragment()).commit();
-    }
+	@Override
+	protected void onCreate(Bundle savedInstanceState)
+	{
+		super.onCreate(savedInstanceState);
+		getFragmentManager().beginTransaction().replace(android.R.id.content, new SettingsFragment()).commit();
+	}
 }

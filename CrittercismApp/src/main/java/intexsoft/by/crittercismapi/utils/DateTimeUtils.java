@@ -5,7 +5,7 @@ import java.util.Date;
 /**
  * Created by anastasya.konovalova on 21.07.2014.
  */
-public class DateTimeUtils
+public final class DateTimeUtils
 {
 	private DateTimeUtils()
 	{

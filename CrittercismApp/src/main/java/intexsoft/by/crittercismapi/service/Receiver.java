@@ -11,8 +11,9 @@ import android.widget.Toast;
 public class Receiver extends BroadcastReceiver
 {
 
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        Toast.makeText(context, "30 секунд", Toast.LENGTH_LONG).show();
-    }
+	@Override
+	public void onReceive(Context context, Intent intent)
+	{
+		Toast.makeText(context, "30 секунд", Toast.LENGTH_LONG).show();
+	}
 }

@@ -7,6 +7,8 @@ import intexsoft.by.crittercismapi.Constants;
 import intexsoft.by.crittercismapi.CrittercismApplication;
 import intexsoft.by.crittercismapi.data.bean.DailyStatisticsItem;
 import intexsoft.by.crittercismapi.data.facade.RemoteFacade;
+import intexsoft.by.crittercismapi.data.remote.response.GraphResponse;
+import intexsoft.by.crittercismapi.event.AppDetailsLoadedEvent;
 import intexsoft.by.crittercismapi.event.DailyStatisticsLoadedEvent;
 import intexsoft.by.crittercismapi.event.EventObserver;
 import org.androidannotations.annotations.Bean;
@@ -32,10 +34,16 @@ public class ErrorGraphService extends IntentService
 		super(ErrorGraphService.class.getSimpleName());
 	}
 
+
 	public static void getDailyStatistics()
 	{
-		Context context = CrittercismApplication.getApplication();
-		ErrorGraphService_.intent(context).fetchDailyStatistics().start();
+		ErrorGraphService_.intent(getContext()).fetchDailyStatistics().start();
+	}
+
+	public static void getAppErrorDetails(String appId, String graph)
+	{
+
+		ErrorGraphService_.intent(getContext()).fetchAppDetailsError(appId, graph).start();
 	}
 
 	@Override
@@ -52,8 +60,22 @@ public class ErrorGraphService extends IntentService
 		DailyStatisticsLoadedEvent event = new DailyStatisticsLoadedEvent();
 		event.setDailyStatisticsItems(items);
 
-		Context context = CrittercismApplication.getApplication();
-		EventObserver.sendEvent(context, event);
+		EventObserver.sendEvent(getContext(), event);
+	}
+
+	@ServiceAction(Constants.Action.REQUEST_GET_APP_DETAILS_ERROR)
+	public void fetchAppDetailsError(String appId, String graph)
+	{
+		GraphResponse graphResponseItems = remoteFacade.getErrorGraphOneApp(appId, graph);
+
+		AppDetailsLoadedEvent event = new AppDetailsLoadedEvent();
+
+		EventObserver.sendEvent(getContext(), event);
+	}
+
+	private static Context getContext()
+	{
+		return CrittercismApplication.getApplication();
 	}
 
 }

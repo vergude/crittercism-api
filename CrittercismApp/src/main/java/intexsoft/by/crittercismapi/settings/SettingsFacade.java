@@ -61,9 +61,9 @@ public class SettingsFacade
 		appSettings.edit().expiredDate().put(date).apply();
 	}
 
-    public boolean getAutoLogin()
-    {
-        return appSettings.autoLogin().get();
-    }
+	public boolean getAutoLogin()
+	{
+		return appSettings.autoLogin().get();
+	}
 
 }

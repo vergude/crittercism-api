@@ -7,19 +7,20 @@ import org.androidannotations.annotations.EApplication;
  * Created by user on 25.05.2014.
  */
 @EApplication
-public class CrittercismApplication extends Application {
+public class CrittercismApplication extends Application
+{
 
-    private static Application application;
+	private static Application application;
 
-    @Override
-    public void onCreate()
-    {
-        super.onCreate();
-        application = this;
-    }
+	@Override
+	public void onCreate()
+	{
+		super.onCreate();
+		application = this;
+	}
 
-    public static Application getApplication()
-    {
-        return application;
-    }
+	public static Application getApplication()
+	{
+		return application;
+	}
 }

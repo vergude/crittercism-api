@@ -28,6 +28,10 @@
             android:label="@string/action_settings"
             android:parentActivityName=".ui.activity.MainActivity_">
             </activity>
+        <activity android:name=".ui.activity.AppDetailsErrorActivity_"
+            android:label="Statistic"
+            android:parentActivityName=".ui.activity.MainActivity_">
+        </activity>
 
         <service
             android:name=".service.LoginService_"

@@ -5,6 +5,11 @@ package intexsoft.by.crittercismapi.utils;
  */
 public final class StringUtils
 {
+
+	private StringUtils()
+	{
+
+	}
 	private static final String EMPTY = "";
 
 	public static boolean isNotEmpty(String value)

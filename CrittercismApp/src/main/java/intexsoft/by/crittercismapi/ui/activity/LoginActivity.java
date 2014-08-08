@@ -27,8 +27,8 @@ public class LoginActivity extends Activity implements LoginView
 	@ViewById(R.id.email)
 	EditText loginField;
 
-    @ViewById(R.id.progressbar_conteiner)
-    FrameLayout progressBarConteiner;
+	@ViewById(R.id.progressbar_conteiner)
+	FrameLayout progressBarConteiner;
 
 	@ViewById(R.id.password)
 	EditText passwordField;
@@ -36,14 +36,14 @@ public class LoginActivity extends Activity implements LoginView
 	@Bean(LoginPresenterImpl.class)
 	LoginPresenter loginPresenter;
 
-    @Extra
-    public boolean isFromLogout;
+	@Extra
+	boolean isFromLogout;
 
 	@Override
 	public void onStart()
 	{
 		super.onStart();
-        loginPresenter.onStart();
+		loginPresenter.onStart();
 	}
 
 	@Override
@@ -73,22 +73,25 @@ public class LoginActivity extends Activity implements LoginView
 		passwordField.setText(password);
 	}
 
-    @Override
-    public void showProgressBar() {
-        progressBarConteiner.setVisibility(View.VISIBLE);
-    }
+	@Override
+	public void showProgressBar()
+	{
+		progressBarConteiner.setVisibility(View.VISIBLE);
+	}
 
-    @Override
-    public void hideProgressBar() {
-        progressBarConteiner.setVisibility(View.INVISIBLE);
-    }
+	@Override
+	public void hideProgressBar()
+	{
+		progressBarConteiner.setVisibility(View.INVISIBLE);
+	}
 
-    @Override
-    public boolean isFromLogout() {
-        return isFromLogout;
-    }
+	@Override
+	public boolean isFromLogout()
+	{
+		return isFromLogout;
+	}
 
-    @Override
+	@Override
 	public Activity getContainer()
 	{
 		return this;

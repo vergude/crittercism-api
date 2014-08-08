@@ -12,10 +12,11 @@ import java.io.Serializable;
  * Created by anastasya.konovalova on 11.06.2014.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class LoginResponse implements Serializable {
+public class LoginResponse implements Serializable
+{
 
 	@JsonProperty(value = "access_token")
-    private String accessToken;
+	private String accessToken;
 
 	@JsonProperty(value = "token_type")
 	private String tokenType;

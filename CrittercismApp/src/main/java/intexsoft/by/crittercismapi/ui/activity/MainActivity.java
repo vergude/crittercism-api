@@ -5,7 +5,6 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -28,33 +27,32 @@ import intexsoft.by.crittercismapi.utils.Launcher;
 @OptionsMenu(R.menu.menu)
 public class MainActivity extends NavigationActivity
 {
-    @Bean
-    LoginManager loginManager;
+	@Bean
+	LoginManager loginManager;
 
-    private Receiver broadcastReceiver;
-    private PendingIntent pi;
-    private AlarmManager am;
+	private Receiver broadcastReceiver;
+	private PendingIntent pi;
+	private AlarmManager am;
 
 	@AfterViews
 	void initViews()
 	{
-        setupAlarm();
-        am.setRepeating(AlarmManager.RTC_WAKEUP, 0 , Constants.INTERVAL,pi);
+		setupAlarm();
+		am.setRepeating(AlarmManager.RTC_WAKEUP, 0, Constants.INTERVAL, pi);
 	}
 
-    @OptionsItem(R.id.logout)
-    void logoutSelect()
-    {
-        loginManager.clearExpireDate();
-        Launcher.showLoginActivity(this,true);
-        this.finish();
-    }
+	@OptionsItem(R.id.logout)
+	void logoutSelect()
+	{
+		loginManager.clearExpireDate();
+		Launcher.showLoginActivity(this, true);
+		this.finish();
+	}
 
 	private void setupAlarm()
-    {
-        broadcastReceiver = new Receiver();
-        registerReceiver(broadcastReceiver,new IntentFilter("by.crittercismapi.alarm"));
-        pi = PendingIntent.getBroadcast(this,0,new Intent("by.crittercismapi.alarm"),0);
-        am = (AlarmManager) (this.getSystemService(Context.ALARM_SERVICE));
-    }
+	{
+		broadcastReceiver = new Receiver();
+		pi = PendingIntent.getBroadcast(this, 0, new Intent("by.crittercismapi.alarm"), 0);
+		am = (AlarmManager) (this.getSystemService(Context.ALARM_SERVICE));
+	}
 }
