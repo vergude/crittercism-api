@@ -9,6 +9,7 @@ import intexsoft.by.crittercismapi.data.remote.response.PieResponse;
 import org.androidannotations.annotations.rest.Get;
 import org.androidannotations.annotations.rest.Post;
 import org.androidannotations.annotations.rest.Rest;
+import org.androidannotations.api.rest.RestClientErrorHandling;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
@@ -19,7 +20,7 @@ import java.util.HashMap;
  */
 @Rest(rootUrl = Constants.BASE_URL, converters = {MappingJackson2HttpMessageConverter.class},
 		interceptors = HeadersRequestInterceptor.class)
-public interface CrittercismAPIService
+public interface CrittercismAPIService extends RestClientErrorHandling
 {
 
 	RestTemplate getRestTemplate();

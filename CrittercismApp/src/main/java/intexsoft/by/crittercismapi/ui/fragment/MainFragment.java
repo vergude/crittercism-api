@@ -1,27 +1,15 @@
 package intexsoft.by.crittercismapi.ui.fragment;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.ViewById;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-
 import intexsoft.by.crittercismapi.R;
 import intexsoft.by.crittercismapi.data.bean.DailyStatisticsItem;
 import intexsoft.by.crittercismapi.data.bean.sorting.SortedByCrashes;
@@ -34,6 +22,14 @@ import intexsoft.by.crittercismapi.ui.presenter.MainPresenter;
 import intexsoft.by.crittercismapi.ui.presenter.MainPresenterImpl;
 import intexsoft.by.crittercismapi.ui.view.MainView;
 import intexsoft.by.crittercismapi.utils.Launcher;
+import org.androidannotations.annotations.*;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by anastasya.konovalova on 11.07.2014.
@@ -81,6 +77,12 @@ public class MainFragment extends Fragment implements MainView, DatePickerFragme
 	}
 
 	@AfterViews
+	void errors()
+	{
+
+	}
+
+	@AfterViews
 	void initViews()
 	{
 		presenter.init(this);
@@ -89,7 +91,8 @@ public class MainFragment extends Fragment implements MainView, DatePickerFragme
 			@Override
 			public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
 			{
-				Launcher.showAppDetailsErrorActivity(getActivity(), mDailyStatisticsItems.get(i).getApplication().getId());
+				Launcher.showAppDetailsErrorActivity(getActivity(), mDailyStatisticsItems.get(i).getApplication().getId(),
+						mDailyStatisticsItems.get(i).getApplication().getName());
 			}
 		});
 	}
@@ -217,7 +220,7 @@ public class MainFragment extends Fragment implements MainView, DatePickerFragme
 
 	public void setNewAdapter()
 	{
-		AppInfoAdapter appInfoAdapter = new AppInfoAdapter(getActivity(), R.layout.appinfo_item, mDailyStatisticsItems);
-		gvAppInfo.setAdapter(appInfoAdapter);
+			AppInfoAdapter appInfoAdapter = new AppInfoAdapter(getActivity(), R.layout.appinfo_item, mDailyStatisticsItems);
+			gvAppInfo.setAdapter(appInfoAdapter);
 	}
 }

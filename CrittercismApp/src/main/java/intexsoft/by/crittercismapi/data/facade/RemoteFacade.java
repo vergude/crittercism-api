@@ -2,15 +2,6 @@ package intexsoft.by.crittercismapi.data.facade;
 
 import android.content.Context;
 import android.util.Log;
-
-import org.androidannotations.annotations.EBean;
-import org.androidannotations.annotations.RootContext;
-import org.androidannotations.annotations.rest.RestService;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import intexsoft.by.crittercismapi.Constants;
 import intexsoft.by.crittercismapi.data.bean.CrittercismApp;
 import intexsoft.by.crittercismapi.data.bean.DailyStatisticsItem;
@@ -23,18 +14,36 @@ import intexsoft.by.crittercismapi.data.remote.response.GraphResponse;
 import intexsoft.by.crittercismapi.data.remote.response.PieResponse;
 import intexsoft.by.crittercismapi.data.remote.response.SeriesData;
 import intexsoft.by.crittercismapi.data.remote.service.CrittercismAPIService;
+import intexsoft.by.crittercismapi.data.remote.service.CrittercismRestErrorHandler;
 import intexsoft.by.crittercismapi.utils.ThreadUtils;
+import org.androidannotations.annotations.AfterInject;
+import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.EBean;
+import org.androidannotations.annotations.RootContext;
+import org.androidannotations.annotations.rest.RestService;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 
 @EBean(scope = EBean.Scope.Singleton)
 public class RemoteFacade
 {
+	@Bean
+	CrittercismRestErrorHandler errorHandler;
 
 	@RootContext
 	protected Context context;
 
 	@RestService
 	protected CrittercismAPIService remoteService;
+
+	@AfterInject
+	void afterInject()
+	{
+		remoteService.setRestErrorHandler(errorHandler);
+	}
 
 	public static RemoteFacade getInstance(Context context)
 	{
@@ -53,8 +62,6 @@ public class RemoteFacade
 	public GraphResponse getErrorGraphOneApp(String appId, String graph)
 	{
 		ThreadUtils.checkAndThrowIfUIThread();
-
-		HashMap<String, AppSummaryData> responseApp = remoteService.getApps();
 
 		GraphRequest graphRequest = new GraphRequest();
 		GraphRequestInternal graphRequestInternal = new GraphRequestInternal();

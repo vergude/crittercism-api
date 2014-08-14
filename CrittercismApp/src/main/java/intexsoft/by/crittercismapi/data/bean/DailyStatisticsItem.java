@@ -1,6 +1,7 @@
 package intexsoft.by.crittercismapi.data.bean;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -18,6 +19,16 @@ public class DailyStatisticsItem implements Serializable
 	private int appLoadsCount;
 
 	private Date date;
+
+	public Date getDate()
+	{
+		return date;
+	}
+
+	public void setDate(Date date)
+	{
+		this.date = date;
+	}
 
 	public DailyStatisticsItem()
 	{

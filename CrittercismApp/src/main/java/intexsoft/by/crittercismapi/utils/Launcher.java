@@ -20,9 +20,9 @@ public final class Launcher
 //		context.startActivity(intent);
 	}
 
-	public static void showAppDetailsErrorActivity(Context context, String appId)
+	public static void showAppDetailsErrorActivity(Context context, String appId, String appName)
 	{
-		AppDetailsErrorActivity_.intent(context).appId(appId).start();
+		AppDetailsErrorActivity_.intent(context).appId(appId).appName(appName).start();
 	}
 
 	public static void showLoginActivity(Context context, boolean isFromLogout)

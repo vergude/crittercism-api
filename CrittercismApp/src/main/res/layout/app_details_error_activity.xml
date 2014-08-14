@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/orange"
+        android:padding="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:id="@+id/tvAppName"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:textSize="20sp" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:padding="8dip">
+
+        <TextView
+            style="@style/headGridView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:gravity="left"
+            android:textSize="17sp"
+            android:id="@+id/tvDate"
+            android:text="Date"/>
+
+        <TextView
+            style="@style/headGridView"
+            android:layout_width="0dp"
+            android:id="@+id/tvCrashes"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="right"
+            android:text="@string/crashes"
+            android:textSize="17sp" />
+
+        <TextView
+            style="@style/headGridView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="right"
+            android:text="@string/loads"
+            android:id="@+id/tvLoads"
+            android:textSize="17sp"/>
+
+        <TextView
+            style="@style/headGridView"
+            android:id="@+id/tvError"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="right"
+            android:text="@string/error_percent"
+            android:textSize="17sp"/>
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <GridView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/appDetailsGrid"
+            android:layout_margin="8dp"
+            android:background="@color/orange"
+            android:listSelector="@android:color/transparent"
+            android:verticalSpacing="2dip"/>
+    </FrameLayout>
+
+</LinearLayout>
