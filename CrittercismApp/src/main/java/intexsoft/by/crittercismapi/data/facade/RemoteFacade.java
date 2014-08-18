@@ -103,7 +103,7 @@ public class RemoteFacade
 
 		Map<String, CrittercismApp> appsMap = persistenceFacade.getAppsMapByCurrentUser();
 
-		if (responseApp == null)
+		if (appsMap.size() == 0)
 		{
 			return null;
 		}
