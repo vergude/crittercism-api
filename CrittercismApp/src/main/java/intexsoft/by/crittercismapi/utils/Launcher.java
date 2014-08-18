@@ -15,8 +15,6 @@ public class Launcher
 	public static void showMainActivity(Context context)
 	{
 		MainActivity_.intent(context).start();
-//		Intent intent = new Intent(context, MainActivity.class);
-//		context.startActivity(intent);
 	}
 
     public  static void showLoginActivity(Context context,boolean isFromLogout)

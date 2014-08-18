@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 
+import intexsoft.by.crittercismapi.utils.StringUtils;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
@@ -69,8 +70,14 @@ public class LoginActivity extends Activity implements LoginView
 	@Override
 	public void onFillStoredFields(String login, String password)
 	{
-		loginField.setText(login);
-		passwordField.setText(password);
+		if (StringUtils.isNotEmpty(login))
+		{
+			loginField.setText(login);
+		}
+		if (StringUtils.isNotEmpty(password))
+		{
+			passwordField.setText(password);
+		}
 	}
 
     @Override

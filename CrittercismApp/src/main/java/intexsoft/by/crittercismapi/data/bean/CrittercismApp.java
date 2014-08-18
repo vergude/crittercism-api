@@ -1,34 +1,39 @@
 package intexsoft.by.crittercismapi.data.bean;
 
-import java.io.Serializable;
+import nl.qbusict.cupboard.annotation.Column;
 
 /**
  * Created by anastasya.konovalova on 29.07.2014.
  */
-public class CrittercismApp implements Serializable
+public class CrittercismApp extends Entity
 {
-	private String id;
+	public static final String COLUMN_REMOTE_ID = "remote_id";
+	public static final String COLUMN_NAME = "name";
 
+	@Column(COLUMN_REMOTE_ID)
+	private String remoteId;
+
+	@Column(COLUMN_NAME)
 	private String name;
 
 	public CrittercismApp()
 	{
 	}
 
-	public CrittercismApp(String id, String name)
+	public CrittercismApp(String remoteId, String name)
 	{
-		this.id = id;
+		this.remoteId = remoteId;
 		this.name = name;
 	}
 
-	public String getId()
+	public String getRemoteId()
 	{
-		return id;
+		return remoteId;
 	}
 
-	public void setId(String id)
+	public void setRemoteId(String remoteId)
 	{
-		this.id = id;
+		this.remoteId = remoteId;
 	}
 
 	public String getName()

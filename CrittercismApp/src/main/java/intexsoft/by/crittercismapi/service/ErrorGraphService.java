@@ -6,6 +6,7 @@ import android.content.Intent;
 import intexsoft.by.crittercismapi.Constants;
 import intexsoft.by.crittercismapi.CrittercismApplication;
 import intexsoft.by.crittercismapi.data.bean.DailyStatisticsItem;
+import intexsoft.by.crittercismapi.data.facade.PersistenceFacade;
 import intexsoft.by.crittercismapi.data.facade.RemoteFacade;
 import intexsoft.by.crittercismapi.event.DailyStatisticsLoadedEvent;
 import intexsoft.by.crittercismapi.event.EventObserver;
@@ -27,12 +28,21 @@ public class ErrorGraphService extends IntentService
 	@Bean
 	RemoteFacade remoteFacade;
 
+	@Bean
+	PersistenceFacade persistenceFacade;
+
 	public ErrorGraphService()
 	{
 		super(ErrorGraphService.class.getSimpleName());
 	}
 
-	public static void getDailyStatistics()
+	public static void getTodayStatistics()
+	{
+		Context context = CrittercismApplication.getApplication();
+		ErrorGraphService_.intent(context).loadTodayStatistics().start();
+	}
+
+	public static void getAndSaveDailyStatistics()
 	{
 		Context context = CrittercismApplication.getApplication();
 		ErrorGraphService_.intent(context).fetchDailyStatistics().start();
@@ -44,13 +54,26 @@ public class ErrorGraphService extends IntentService
 		//Do nothing
 	}
 
-	@ServiceAction(Constants.Action.REQUEST_GET_DAILY_STATISTICS)
-	protected void fetchDailyStatistics()
+	@ServiceAction(Constants.Action.REQUEST_GET_TODAY_STATISTICS)
+	protected void loadTodayStatistics()
 	{
 		List<DailyStatisticsItem> items = remoteFacade.getErrorGraphAllApps(Constants.DURATION_ONE_DAY);
 
 		DailyStatisticsLoadedEvent event = new DailyStatisticsLoadedEvent();
 		event.setDailyStatisticsItems(items);
+
+		Context context = CrittercismApplication.getApplication();
+		EventObserver.sendEvent(context, event);
+	}
+
+	@ServiceAction(Constants.Action.REQUEST_GET_AND_SAVE_DAILY_STATISTICS)
+	protected void fetchDailyStatistics()
+	{
+		List<DailyStatisticsItem> items = remoteFacade.getErrorGraphAllApps(Constants.DURATION_ONE_DAY);
+
+		persistenceFacade.saveDailyStatisticsItems(items);
+
+		DailyStatisticsLoadedEvent event = new DailyStatisticsLoadedEvent();
 
 		Context context = CrittercismApplication.getApplication();
 		EventObserver.sendEvent(context, event);

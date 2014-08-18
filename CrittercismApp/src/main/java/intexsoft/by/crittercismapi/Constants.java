@@ -24,6 +24,7 @@ public class Constants
 
         public static final String REQUEST_LOGIN = BASE + ".REQUEST_LOGIN";
 		public static final String REQUEST_GET_APPS = BASE + ".REQUEST_GET_APPS";
-		public static final String REQUEST_GET_DAILY_STATISTICS = BASE + ".REQUEST_GET_DAILY_STATISTICS";
+		public static final String REQUEST_GET_AND_SAVE_DAILY_STATISTICS = BASE + ".REQUEST_GET_AND_SAVE_DAILY_STATISTICS";
+		public static final String REQUEST_GET_TODAY_STATISTICS = BASE + ".REQUEST_GET_TODAY_STATISTICS";
     }
 }
