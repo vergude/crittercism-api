@@ -42,14 +42,19 @@ public class ErrorGraphService extends IntentService
 		super(ErrorGraphService.class.getSimpleName());
 	}
 
-	public static void getDailyStatistics()
+	public static void getTodayStatistics()
+	{
+		ErrorGraphService_.intent(getContext()).loadTodayStatistics().start();
+	}
+
+	public static void getAndSaveDailyStatistics()
 	{
 		ErrorGraphService_.intent(getContext()).fetchDailyStatistics().start();
 	}
 
 	public static void getAppErrorDetails(String appId)
 	{
-			ErrorGraphService_.intent(getContext()).fetchAppDetailsError(appId).start();
+		ErrorGraphService_.intent(getContext()).fetchAppDetailsError(appId).start();
 	}
 
 	@Override
