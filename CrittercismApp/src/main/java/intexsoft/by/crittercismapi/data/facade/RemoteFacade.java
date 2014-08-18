@@ -82,6 +82,11 @@ public class RemoteFacade
 
 		HashMap<String, AppSummaryData> responseApp = remoteService.getApps();
 
+		if (responseApp == null)
+		{
+			return null;
+		}
+
 		PieRequest pieRequest = new PieRequest();
 		PieRequestInternal pieRequestInternal = new PieRequestInternal();
 		pieRequestInternal.setAppIds(responseApp.keySet().toArray(new String[responseApp.keySet().size()]));
@@ -91,11 +96,20 @@ public class RemoteFacade
 		pieRequest.setParams(pieRequestInternal);
 
 		PieResponse pieResponseCrashes = remoteService.getErrorGraphAllApps(pieRequest);
+		if (pieResponseCrashes == null)
+		{
+			return null;
+		}
 
 		pieRequestInternal.setGraph(Constants.GRAPH_APPLOADS);
 		pieRequest.setParams(pieRequestInternal);
 
 		PieResponse pieResponseAppLoads = remoteService.getErrorGraphAllApps(pieRequest);
+
+		if (pieResponseAppLoads == null)
+		{
+			return null;
+		}
 
 		HashMap<String, DailyStatisticsItem> statisticsHashMap = new HashMap<String, DailyStatisticsItem>();
 
