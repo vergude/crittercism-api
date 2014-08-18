@@ -39,6 +39,11 @@
         <service
             android:name=".service.ErrorGraphService_"
             android:exported="false" />
+
+        <provider
+            android:name=".data.CrittercismAPIContentProvider_"
+            android:authorities="intexsoft.by.crittercismapi"
+            android:exported="false" />
     </application>
 
 </manifest>

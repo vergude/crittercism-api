@@ -16,8 +16,6 @@ public final class Launcher
 	public static void showMainActivity(Context context)
 	{
 		MainActivity_.intent(context).start();
-//		Intent intent = new Intent(context, MainActivity.class);
-//		context.startActivity(intent);
 	}
 
 	public static void showAppDetailsErrorActivity(Context context, String appId, String appName)

@@ -55,6 +55,7 @@ dependencies {
     compile 'com.fasterxml.jackson.core:jackson-databind:2.3.0'
     compile "org.springframework.android:spring-android-rest-template:$springVersion"
     compile 'com.android.support:support-v4:19+'
+    compile 'nl.qbusict:cupboard:2.0.+'
 }
 
 apt {

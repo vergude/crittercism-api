@@ -1,10 +1,8 @@
 package intexsoft.by.crittercismapi.ui.fragment;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
-import android.content.DialogInterface;
 import android.view.View;
 import android.widget.*;
 import intexsoft.by.crittercismapi.R;
@@ -20,7 +18,11 @@ import intexsoft.by.crittercismapi.ui.presenter.MainPresenter;
 import intexsoft.by.crittercismapi.ui.presenter.MainPresenterImpl;
 import intexsoft.by.crittercismapi.ui.view.MainView;
 import intexsoft.by.crittercismapi.utils.Launcher;
-import org.androidannotations.annotations.*;
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.ViewById;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -112,7 +114,7 @@ public class MainFragment extends Fragment implements MainView, DatePickerFragme
 			@Override
 			public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
 			{
-				Launcher.showAppDetailsErrorActivity(getActivity(), mDailyStatisticsItems.get(i).getApplication().getId(),
+				Launcher.showAppDetailsErrorActivity(getActivity(), mDailyStatisticsItems.get(i).getApplication().getRemoteId(),
 						mDailyStatisticsItems.get(i).getApplication().getName());
 			}
 		});

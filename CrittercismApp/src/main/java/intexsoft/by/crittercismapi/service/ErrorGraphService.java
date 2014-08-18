@@ -6,6 +6,7 @@ import android.content.Intent;
 import intexsoft.by.crittercismapi.Constants;
 import intexsoft.by.crittercismapi.CrittercismApplication;
 import intexsoft.by.crittercismapi.data.bean.DailyStatisticsItem;
+import intexsoft.by.crittercismapi.data.facade.PersistenceFacade;
 import intexsoft.by.crittercismapi.data.facade.RemoteFacade;
 import intexsoft.by.crittercismapi.data.remote.response.GraphResponse;
 import intexsoft.by.crittercismapi.data.remote.response.SeriesData;
@@ -33,20 +34,27 @@ public class ErrorGraphService extends IntentService
 	@Bean
 	RemoteFacade remoteFacade;
 
+	@Bean
+	PersistenceFacade persistenceFacade;
+
 	public ErrorGraphService()
 	{
 		super(ErrorGraphService.class.getSimpleName());
 	}
 
+	public static void getTodayStatistics()
+	{
+		ErrorGraphService_.intent(getContext()).loadTodayStatistics().start();
+	}
 
-	public static void getDailyStatistics()
+	public static void getAndSaveDailyStatistics()
 	{
 		ErrorGraphService_.intent(getContext()).fetchDailyStatistics().start();
 	}
 
 	public static void getAppErrorDetails(String appId)
 	{
-			ErrorGraphService_.intent(getContext()).fetchAppDetailsError(appId).start();
+		ErrorGraphService_.intent(getContext()).fetchAppDetailsError(appId).start();
 	}
 
 	@Override
@@ -55,13 +63,26 @@ public class ErrorGraphService extends IntentService
 		//Do nothing
 	}
 
-	@ServiceAction(Constants.Action.REQUEST_GET_DAILY_STATISTICS)
-	protected void fetchDailyStatistics()
+	@ServiceAction(Constants.Action.REQUEST_GET_TODAY_STATISTICS)
+	protected void loadTodayStatistics()
 	{
 		List<DailyStatisticsItem> items = remoteFacade.getErrorGraphAllApps(Constants.DURATION_ONE_DAY);
 
 		DailyStatisticsLoadedEvent event = new DailyStatisticsLoadedEvent();
 		event.setDailyStatisticsItems(items);
+
+		Context context = CrittercismApplication.getApplication();
+		EventObserver.sendEvent(context, event);
+	}
+
+	@ServiceAction(Constants.Action.REQUEST_GET_AND_SAVE_DAILY_STATISTICS)
+	protected void fetchDailyStatistics()
+	{
+		List<DailyStatisticsItem> items = remoteFacade.getErrorGraphAllApps(Constants.DURATION_ONE_DAY);
+
+		persistenceFacade.saveDailyStatisticsItems(items);
+
+		DailyStatisticsLoadedEvent event = new DailyStatisticsLoadedEvent();
 
 		EventObserver.sendEvent(getContext(), event);
 	}

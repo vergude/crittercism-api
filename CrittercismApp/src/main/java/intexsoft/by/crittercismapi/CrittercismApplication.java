@@ -1,6 +1,7 @@
 package intexsoft.by.crittercismapi;
 
 import android.app.Application;
+import intexsoft.by.crittercismapi.data.CupboardConfigurator;
 import org.androidannotations.annotations.EApplication;
 
 /**
@@ -10,17 +11,21 @@ import org.androidannotations.annotations.EApplication;
 public class CrittercismApplication extends Application
 {
 
-	private static Application application;
+    private static Application application;
 
-	@Override
-	public void onCreate()
-	{
-		super.onCreate();
-		application = this;
+	static {
+		CupboardConfigurator.configure();
 	}
 
-	public static Application getApplication()
-	{
-		return application;
-	}
+    @Override
+    public void onCreate()
+    {
+        super.onCreate();
+        application = this;
+    }
+
+    public static Application getApplication()
+    {
+        return application;
+    }
 }

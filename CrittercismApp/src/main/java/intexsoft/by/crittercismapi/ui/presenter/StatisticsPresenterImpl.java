@@ -2,44 +2,36 @@ package intexsoft.by.crittercismapi.ui.presenter;
 
 import android.content.Context;
 import intexsoft.by.crittercismapi.CrittercismApplication;
-import intexsoft.by.crittercismapi.data.facade.RemoteFacade;
 import intexsoft.by.crittercismapi.event.DailyStatisticsLoadedEvent;
 import intexsoft.by.crittercismapi.event.EventObserver;
-import intexsoft.by.crittercismapi.manager.LoginManager;
 import intexsoft.by.crittercismapi.service.ErrorGraphService;
-import intexsoft.by.crittercismapi.ui.view.MainView;
-import org.androidannotations.annotations.Bean;
+import intexsoft.by.crittercismapi.ui.view.StatisticsView;
 import org.androidannotations.annotations.EBean;
 
 /**
  * Created by anastasya.konovalova on 22.06.2014.
  */
 @EBean
-public class MainPresenterImpl implements MainPresenter
+public class StatisticsPresenterImpl implements StatisticsPresenter
 {
-	@Bean
-	RemoteFacade remoteFacade;
 
-    private MainView mainView;
-
-    @Bean
-    LoginManager loginManager;
+    private StatisticsView statisticsView;
 
     private final EventObserver.Receiver dailyStatisticsReceiver = new EventObserver.Receiver()
     {
         @Override
         protected void onReceive(Context context, EventObserver.Event event)
         {
-			mainView.setDailyStatisticsItems(((DailyStatisticsLoadedEvent)event).getDailyStatisticsItems());
+			statisticsView.dataLoaded();
         }
     };
 
     @Override
-    public void init(MainView view)
+    public void init(StatisticsView statisticsView)
 	{
-        this.mainView = view;
+        this.statisticsView = statisticsView;
 
-		ErrorGraphService.getTodayStatistics();
+		ErrorGraphService.getAndSaveDailyStatistics();
     }
 
 
