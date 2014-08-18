@@ -4,10 +4,7 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.GridView;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 import intexsoft.by.crittercismapi.R;
 import intexsoft.by.crittercismapi.data.bean.DailyStatisticsItem;
 import intexsoft.by.crittercismapi.data.bean.sorting.SortedByCrashes;
@@ -15,6 +12,7 @@ import intexsoft.by.crittercismapi.data.bean.sorting.SortedByErrors;
 import intexsoft.by.crittercismapi.data.bean.sorting.SortedByLoads;
 import intexsoft.by.crittercismapi.data.bean.sorting.SortedByName;
 import intexsoft.by.crittercismapi.data.facade.RemoteFacade;
+import intexsoft.by.crittercismapi.event.OnSwipeTouchEvent;
 import intexsoft.by.crittercismapi.ui.adapters.AppInfoAdapter;
 import intexsoft.by.crittercismapi.ui.presenter.MainPresenter;
 import intexsoft.by.crittercismapi.ui.presenter.MainPresenterImpl;
@@ -51,6 +49,9 @@ public class MainFragment extends Fragment implements MainView, DatePickerFragme
 	TextView tvDate;
 
 	@ViewById
+	LinearLayout idFragmentLayout;
+
+	@ViewById
 	GridView gvAppInfo;
 
 	@Bean(MainPresenterImpl.class)
@@ -58,6 +59,25 @@ public class MainFragment extends Fragment implements MainView, DatePickerFragme
 
 	@Bean
 	RemoteFacade remoteFacade;
+
+	private final OnSwipeTouchEvent onSwipeTouchEvent = new OnSwipeTouchEvent(getActivity())
+	{
+
+		@Override
+		public void onSwipeLeft()
+		{
+			calendar.add(Calendar.DAY_OF_MONTH, -1);
+			setNewDate();
+		}
+
+		@Override
+		public void onSwipeRight()
+		{
+			calendar.add(Calendar.DAY_OF_MONTH, 1);
+			setNewDate();
+
+		}
+	};
 
 	public static MainFragment build()
 	{
@@ -79,9 +99,10 @@ public class MainFragment extends Fragment implements MainView, DatePickerFragme
 	}
 
 	@AfterViews
-	void errors()
+	void swipeDate()
 	{
-
+		idFragmentLayout.setOnTouchListener(onSwipeTouchEvent);
+		gvAppInfo.setOnTouchListener(onSwipeTouchEvent);
 	}
 
 	@AfterViews
@@ -222,7 +243,33 @@ public class MainFragment extends Fragment implements MainView, DatePickerFragme
 
 	public void setNewAdapter()
 	{
+		if (mDailyStatisticsItems == null)
+		{
+			showError();
+		}
+		else
+		{
 			AppInfoAdapter appInfoAdapter = new AppInfoAdapter(getActivity(), R.layout.appinfo_item, mDailyStatisticsItems);
 			gvAppInfo.setAdapter(appInfoAdapter);
+		}
+	}
+
+	public void showError()
+	{
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		builder.setTitle("Error!")
+				.setMessage("No data is loaded")
+				.setIcon(R.drawable.ic_launcher)
+				.setCancelable(false)
+				.setNegativeButton("Restart App",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								dialog.cancel();
+								getActivity().finish();
+								Launcher.showLoginActivity(getActivity(), false);
+							}
+						});
+		AlertDialog alert = builder.create();
+		alert.show();
 	}
 }

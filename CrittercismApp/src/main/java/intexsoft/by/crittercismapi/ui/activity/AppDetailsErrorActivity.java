@@ -1,6 +1,8 @@
 package intexsoft.by.crittercismapi.ui.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.widget.GridView;
 import android.widget.TextView;
 import intexsoft.by.crittercismapi.R;
@@ -11,6 +13,7 @@ import intexsoft.by.crittercismapi.ui.adapters.AppErrorDetailsAdapter;
 import intexsoft.by.crittercismapi.ui.presenter.AppDetailsErrorPresenter;
 import intexsoft.by.crittercismapi.ui.presenter.AppDetailsErrorPresenterImpl;
 import intexsoft.by.crittercismapi.ui.view.AppDetailsErrorView;
+import intexsoft.by.crittercismapi.utils.Launcher;
 import org.androidannotations.annotations.*;
 
 import java.util.Collections;
@@ -115,8 +118,15 @@ public class AppDetailsErrorActivity extends Activity implements AppDetailsError
 
 	public void setNewAdapter()
 	{
-		AppErrorDetailsAdapter appErrorDetailsAdapter = new AppErrorDetailsAdapter(this, R.layout.app_details_item, dailyStatisticsItemList);
-		appDetailsGrid.setAdapter(appErrorDetailsAdapter);
+		if (dailyStatisticsItemList == null)
+		{
+			showError();
+		}
+		else
+		{
+			AppErrorDetailsAdapter appErrorDetailsAdapter = new AppErrorDetailsAdapter(this, R.layout.app_details_item, dailyStatisticsItemList);
+			appDetailsGrid.setAdapter(appErrorDetailsAdapter);
+		}
 	}
 
 	public void startSort(java.util.Comparator<? super DailyStatisticsItem> sorting)
@@ -137,5 +147,24 @@ public class AppDetailsErrorActivity extends Activity implements AppDetailsError
 				clickResult = true;
 			}
 		}
+	}
+
+	public void showError()
+	{
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("Error!")
+				.setMessage("No data is loaded")
+				.setIcon(R.drawable.ic_launcher)
+				.setCancelable(false)
+				.setNegativeButton("Restart App",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								dialog.cancel();
+								finish();
+								Launcher.showLoginActivity(getApplication(), false);
+							}
+						});
+		AlertDialog alert = builder.create();
+		alert.show();
 	}
 }

@@ -95,6 +95,7 @@ public class ErrorGraphService extends IntentService
 		GraphResponse graphResponseItemsAppCrashes = remoteFacade.getErrorGraphOneApp(appId, Constants.GRAPH_CRASHES);
 		processCrashes(graphResponseItemsAppCrashes, appErrorDetailsMap, new DailyCrashesItemProcessor());
 
+
 		GraphResponse graphResponseItemsAppLoads = remoteFacade.getErrorGraphOneApp(appId, Constants.GRAPH_APPLOADS);
 		processCrashes(graphResponseItemsAppLoads, appErrorDetailsMap, new DailyLoadsItemProcessor());
 
@@ -109,7 +110,7 @@ public class ErrorGraphService extends IntentService
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
 		SeriesData[] seriesDataC = graphResponse.getData().getSeries();
-		Integer [] crashesCountC = seriesDataC[0].getPoints();
+		Integer[] crashesCountC = seriesDataC[0].getPoints();
 
 		try
 		{
@@ -124,12 +125,12 @@ public class ErrorGraphService extends IntentService
 				dailyItemProcessor.processItem(appErrorDetailsMap, setTime(graphResponse, calendar), crashesCountC[step]);
 				step++;
 			}
-			while(calendar.getTimeInMillis() < endDate.getTime());
+			while (calendar.getTimeInMillis() < endDate.getTime());
 
 		}
 		catch (ParseException e)
 		{
-			e.printStackTrace();
+				e.printStackTrace();
 		}
 	}
 
