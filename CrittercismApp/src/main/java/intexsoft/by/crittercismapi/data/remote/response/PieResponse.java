@@ -7,22 +7,26 @@ import intexsoft.by.crittercismapi.data.remote.request.PieRequestInternal;
  */
 public class PieResponse
 {
-    private PieRequestInternal params;
-    private SeriesCollection data;
+	private PieRequestInternal params;
+	private SeriesCollection data;
 
-    public PieRequestInternal getParams() {
-        return params;
-    }
+	public PieRequestInternal getParams()
+	{
+		return params;
+	}
 
-    public void setParams(PieRequestInternal params) {
-        this.params = params;
-    }
+	public void setParams(PieRequestInternal params)
+	{
+		this.params = params;
+	}
 
-    public SeriesCollection getData() {
-        return data;
-    }
+	public SeriesCollection getData()
+	{
+		return data;
+	}
 
-    public void setData(SeriesCollection data) {
-        this.data = data;
-    }
+	public void setData(SeriesCollection data)
+	{
+		this.data = data;
+	}
 }

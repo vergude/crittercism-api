@@ -23,6 +23,6 @@ public interface AppSettings
 	@DefaultLong(0)
 	long expiredDate();
 
-    @DefaultBoolean(false)
-    boolean autoLogin();
+	@DefaultBoolean(false)
+	boolean autoLogin();
 }

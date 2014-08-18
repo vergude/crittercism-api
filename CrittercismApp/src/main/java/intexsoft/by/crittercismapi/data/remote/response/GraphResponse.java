@@ -7,22 +7,26 @@ import intexsoft.by.crittercismapi.data.remote.request.GraphRequestInternal;
  */
 public class GraphResponse
 {
-    private GraphRequestInternal params;
-    private SeriesCollection data;
+	private GraphRequestInternal params;
+	private SeriesCollection data;
 
-    public GraphRequestInternal getParams() {
-        return params;
-    }
+	public GraphRequestInternal getParams()
+	{
+		return params;
+	}
 
-    public void setParams(GraphRequestInternal params) {
-        this.params = params;
-    }
+	public void setParams(GraphRequestInternal params)
+	{
+		this.params = params;
+	}
 
-    public SeriesCollection getData() {
-        return data;
-    }
+	public SeriesCollection getData()
+	{
+		return data;
+	}
 
-    public void setData(SeriesCollection data) {
-        this.data = data;
-    }
+	public void setData(SeriesCollection data)
+	{
+		this.data = data;
+	}
 }

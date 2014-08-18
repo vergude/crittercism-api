@@ -5,7 +5,7 @@ package intexsoft.by.crittercismapi.event;
  */
 public class LoginPerformedEvent implements EventObserver.Event
 {
-    private boolean isSuccessful;
+	private boolean isSuccessful;
 
 	private String errorMessage;
 
@@ -14,9 +14,9 @@ public class LoginPerformedEvent implements EventObserver.Event
 		return isSuccessful;
 	}
 
-	public void setSuccessful(boolean isSuccessful)
+	public void setSuccessful(boolean result)
 	{
-		this.isSuccessful = isSuccessful;
+		this.isSuccessful = result;
 	}
 
 	public String getErrorMessage()

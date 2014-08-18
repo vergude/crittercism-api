@@ -5,10 +5,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Base64;
 import android.util.Log;
-
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import intexsoft.by.crittercismapi.Constants;
+import intexsoft.by.crittercismapi.CrittercismApplication;
+import intexsoft.by.crittercismapi.data.remote.response.LoginResponse;
+import intexsoft.by.crittercismapi.event.EventObserver;
+import intexsoft.by.crittercismapi.event.LoginPerformedEvent;
+import intexsoft.by.crittercismapi.manager.LoginManager;
+import intexsoft.by.crittercismapi.utils.StringUtils;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EIntentService;
 import org.androidannotations.annotations.ServiceAction;
@@ -27,14 +32,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import intexsoft.by.crittercismapi.Constants;
-import intexsoft.by.crittercismapi.CrittercismApplication;
-import intexsoft.by.crittercismapi.data.remote.response.LoginResponse;
-import intexsoft.by.crittercismapi.event.EventObserver;
-import intexsoft.by.crittercismapi.event.LoginPerformedEvent;
-import intexsoft.by.crittercismapi.manager.LoginManager;
-import intexsoft.by.crittercismapi.utils.StringUtils;
-
 /**
  * Created by anastasya.konovalova on 20.06.14.
  */
@@ -43,6 +40,11 @@ import intexsoft.by.crittercismapi.utils.StringUtils;
 public class LoginService extends IntentService
 {
 	public static final String TAG = LoginService.class.getSimpleName();
+	public static final String PASSWORD_KEY = "password";
+	public static final String GRANT_TYPE = PASSWORD_KEY;
+	public static final int STATUS_CODE = 200;
+	public static final int NAME_VALUE_PAIR_SIZE = 3;
+
 
 	@Bean
 	LoginManager loginManager;
@@ -89,8 +91,26 @@ public class LoginService extends IntentService
 			loginManager.saveLoginData(userName, password, loginResponse.getAccessToken(), Integer.valueOf(loginResponse.getExpiresIn()));
 		}
 
-        Context context = CrittercismApplication.getApplication();
-        EventObserver.sendEvent(context, event);
+		Context context = CrittercismApplication.getApplication();
+		EventObserver.sendEvent(context, event);
+	}
+
+	private String getBase64EncodedCredentials(String password)
+	{
+		String base64EncodedCredentials = "Basic " + Base64.encodeToString(
+				(Constants.CRITTERCISM_API_CLIENT_ID + ":" + password).getBytes(),
+				Base64.NO_WRAP);
+		return base64EncodedCredentials;
+	}
+
+	private List<NameValuePair> getParameters(String userName, String password)
+	{
+		List<NameValuePair> parameters = new ArrayList<NameValuePair>(NAME_VALUE_PAIR_SIZE);
+		parameters.add(new BasicNameValuePair("grant_type", GRANT_TYPE));
+		parameters.add(new BasicNameValuePair("username", userName));
+		parameters.add(new BasicNameValuePair(PASSWORD_KEY, password));
+
+		return parameters;
 	}
 
 	LoginResponse doBasicAuth(String userName, String password)
@@ -101,29 +121,21 @@ public class LoginService extends IntentService
 
 		HttpResponse response;
 
-		try {
-
-			String base64EncodedCredentials = "Basic " + Base64.encodeToString(
-					(Constants.CRITTERCISM_API_CLIENT_ID + ":" + password).getBytes(),
-					Base64.NO_WRAP);
-
-
-			httppost.setHeader("Authorization", base64EncodedCredentials);
+		try
+		{
+			httppost.setHeader("Authorization", getBase64EncodedCredentials(password));
 			httppost.setHeader(HTTP.CONTENT_TYPE, "application/x-www-form-urlencoded");
-
-			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
-			nameValuePairs.add(new BasicNameValuePair("grant_type", "password"));
-			nameValuePairs.add(new BasicNameValuePair("username", userName));
-			nameValuePairs.add(new BasicNameValuePair("password", password));
-
-			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+			httppost.setEntity(new UrlEncodedFormEntity(getParameters(userName, password)));
 
 			// Execute HTTP Post Request
 			response = httpclient.execute(httppost);
 
-			if (response.getStatusLine().getStatusCode() == 200) {
+			if (response.getStatusLine().getStatusCode() == STATUS_CODE)
+			{
 				Log.d("response ok", "ok response :/");
-			} else {
+			}
+			else
+			{
 				Log.d("response not ok", "Something went wrong :/");
 			}
 
@@ -140,9 +152,13 @@ public class LoginService extends IntentService
 
 			return loginResponse;
 
-		} catch (ClientProtocolException e) {
+		}
+		catch (ClientProtocolException e)
+		{
 			e.printStackTrace();
-		} catch (IOException e) {
+		}
+		catch (IOException e)
+		{
 			e.printStackTrace();
 		}
 

@@ -11,7 +11,7 @@ import java.io.Serializable;
 /**
  * Created by anastasya.konovalova on 20.06.14.
  */
-public class EventObserver
+public final class EventObserver
 {
 	private static final String TAG = EventObserver.class.getSimpleName();
 	private static final String EXTRA_EVENT = TAG + ":EVENT";
@@ -56,7 +56,8 @@ public class EventObserver
 
 	// INTERNAL METHODS
 
-	private static <R extends Receiver, E extends Event> void registerInternal(Context context, R receiver, Class<E> eventClass, boolean sticky)
+	private static <R extends Receiver, E extends Event> void registerInternal(Context context,
+																			   R receiver, Class<E> eventClass, boolean sticky)
 	{
 		if (context != null && receiver != null && eventClass != null)
 		{
@@ -112,7 +113,7 @@ public class EventObserver
 	{
 	}
 
-	public static abstract class Receiver extends BroadcastReceiver
+	public abstract static class Receiver extends BroadcastReceiver
 	{
 		@Override
 		public void onReceive(Context context, Intent intent)

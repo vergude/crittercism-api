@@ -1,71 +1,73 @@
 package intexsoft.by.crittercismapi.data.remote.request;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import intexsoft.by.crittercismapi.data.remote.response.Filter;
 
 import java.io.Serializable;
-
-import intexsoft.by.crittercismapi.data.remote.response.Filter;
 
 /**
  * Created by Евгений on 24.07.2014.
  */
 public class GraphRequestInternal implements Serializable
 {
-    private String appId;
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private String [] applds;
-    private String graph;
-    private int duration;
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private Filter filters;
+	@JsonInclude(JsonInclude.Include.NON_EMPTY)
+	private String appId;
+	@JsonInclude(JsonInclude.Include.NON_EMPTY)
+	private String[] appIds;
+	@JsonInclude(JsonInclude.Include.NON_EMPTY)
+	private String graph;
+	private int duration;
 
-    public String[] getApplds()
-    {
-        return applds;
-    }
+	@JsonInclude(JsonInclude.Include.NON_EMPTY)
+	private Filter filters;
 
-    public void setApplds(String[] applds)
-    {
-        this.applds = applds;
-    }
+	public String[] getAppIds()
+	{
+		return appIds;
+	}
 
-    public Filter getFilters()
-    {
-        return filters;
-    }
+	public void setAppIds(String[] appIds)
+	{
+		this.appIds = appIds;
+	}
 
-    public void setFilters(Filter filters)
-    {
-        this.filters = filters;
-    }
+	public String getAppId()
+	{
+		return appId;
+	}
 
-    public String getAppId()
-    {
-        return appId;
-    }
+	public void setAppId(String appId)
+	{
+		this.appId = appId;
+	}
 
-    public void setAppId(String appId)
-    {
-        this.appId = appId;
-    }
+	public String getGraph()
+	{
+		return graph;
+	}
 
-    public String getGraph()
-    {
-        return graph;
-    }
+	public void setGraph(String graph)
+	{
+		this.graph = graph;
+	}
 
-    public void setGraph(String graph)
-    {
-        this.graph = graph;
-    }
+	public int getDuration()
+	{
+		return duration;
+	}
 
-    public int getDuration()
-    {
-        return duration;
-    }
+	public void setDuration(int duration)
+	{
+		this.duration = duration;
+	}
 
-    public void setDuration(int duration)
-    {
-        this.duration = duration;
-    }
+	public Filter getFilters()
+	{
+		return filters;
+	}
+
+	public void setFilters(Filter filters)
+	{
+		this.filters = filters;
+	}
 }

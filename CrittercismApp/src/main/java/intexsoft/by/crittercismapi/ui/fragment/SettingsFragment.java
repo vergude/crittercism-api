@@ -16,39 +16,40 @@ import intexsoft.by.crittercismapi.R;
 @EFragment
 public class SettingsFragment extends PreferenceFragment
 {
-    private static final String TAG = SettingsFragment.class.getSimpleName();
-    private static final String KEY_APP_VERSION = "app_version_key";
+	private static final String TAG = SettingsFragment.class.getSimpleName();
+	private static final String KEY_APP_VERSION = "app_version_key";
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.settings);
+	@Override
+	public void onCreate(Bundle savedInstanceState)
+	{
+		super.onCreate(savedInstanceState);
+		addPreferencesFromResource(R.xml.settings);
 
-        Preference appVersionPreference = getPreferenceManager() == null ? null : getPreferenceManager().findPreference(KEY_APP_VERSION);
-        if (appVersionPreference != null)
-        {
-            appVersionPreference.setSummary(getString(R.string.setting_hint_version) + getAppVersion());
-        }
-    }
+		Preference appVersionPreference = getPreferenceManager() == null ? null : getPreferenceManager().findPreference(KEY_APP_VERSION);
+		if (appVersionPreference != null)
+		{
+			appVersionPreference.setSummary(getString(R.string.setting_hint_version) + getAppVersion());
+		}
+	}
 
-    private String getAppVersion()
-    {
-        String versionName = "";
-        if (isAdded())
-        {
-            PackageManager pm = getActivity().getPackageManager();
-            if (pm != null)
-            {
-                try
-                {
-                    versionName = pm.getPackageInfo(getActivity().getPackageName(), 0).versionName;
-                }
-                catch (PackageManager.NameNotFoundException e)
-                {
-                    Log.d(TAG, "Error while get app version.");
-                }
-            }
-        }
-        return versionName;
-    }
+	private String getAppVersion()
+	{
+		String versionName = "";
+		if (isAdded())
+		{
+			PackageManager pm = getActivity().getPackageManager();
+			if (pm != null)
+			{
+				try
+				{
+					versionName = pm.getPackageInfo(getActivity().getPackageName(), 0).versionName;
+				}
+				catch (PackageManager.NameNotFoundException e)
+				{
+					Log.d(TAG, "Error while get app version.");
+				}
+			}
+		}
+		return versionName;
+	}
 }

@@ -35,9 +35,9 @@ public class MainPresenterImpl implements MainPresenter
     };
 
     @Override
-    public void init(MainView mainView)
+    public void init(MainView view)
 	{
-        this.mainView = mainView;
+        this.mainView = view;
 
 		ErrorGraphService.getTodayStatistics();
     }

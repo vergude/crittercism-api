@@ -21,36 +21,36 @@ import intexsoft.by.crittercismapi.utils.Launcher;
 @EBean
 public class LoginPresenterImpl implements LoginPresenter
 {
-    private final EventObserver.Receiver loginReceiver = new EventObserver.Receiver()
-    {
-        @Override
-        protected void onReceive(Context context, EventObserver.Event event)
-        {
-            LoginPerformedEvent loginPerformedEvent = (LoginPerformedEvent) event;
-            if(loginPerformedEvent.isSuccessful())
-            {
-                closeLoginAndShowMain();
-            }
-            else
-            {
-                loginView.hideProgressBar();
-                Toast.makeText(context,loginPerformedEvent.getErrorMessage(),Toast.LENGTH_LONG).show();
-            }
-        }
-    };
+	private final EventObserver.Receiver loginReceiver = new EventObserver.Receiver()
+	{
+		@Override
+		protected void onReceive(Context context, EventObserver.Event event)
+		{
+			LoginPerformedEvent loginPerformedEvent = (LoginPerformedEvent) event;
+			if (loginPerformedEvent.isSuccessful())
+			{
+				closeLoginAndShowMain();
+			}
+			else
+			{
+				loginView.hideProgressBar();
+				Toast.makeText(context, loginPerformedEvent.getErrorMessage(), Toast.LENGTH_LONG).show();
+			}
+		}
+	};
 
 	private LoginView loginView;
 
 	@Bean
 	LoginManager loginManager;
 
-    @Bean
-    SettingsFacade settingsFacade;
+	@Bean
+	SettingsFacade settingsFacade;
 
-    @Override
-    public void init(LoginView loginView)
+	@Override
+	public void init(LoginView view)
 	{
-		this.loginView = loginView;
+		this.loginView = view;
 
 		if (loginManager.isLoginNotExpired())
 		{
@@ -58,16 +58,22 @@ public class LoginPresenterImpl implements LoginPresenter
 			return;
 		}
 
-		if (loginManager.isLoginExpired() && loginManager.isLoginAndPasswordSaved() &&  settingsFacade.getAutoLogin() && !loginView.isFromLogout())
+		if (isLoginCanBePerformed())
 		{
-            doLogin(loginManager.getLogin(),loginManager.getPassword());
-        }
-        else
-        {
-            this.loginView.onFillStoredFields(loginManager.getLogin(), loginManager.getPassword());
-            return;
-        }
-    }
+			doLogin(loginManager.getLogin(), loginManager.getPassword());
+		}
+		else
+		{
+			this.loginView.onFillStoredFields(loginManager.getLogin(), loginManager.getPassword());
+			return;
+		}
+	}
+
+	private boolean isLoginCanBePerformed()
+	{
+		return loginManager.isLoginExpired() && loginManager.isLoginAndPasswordSaved()
+				&& settingsFacade.getAutoLogin() && !loginView.isFromLogout();
+	}
 
 	private void closeLoginAndShowMain()
 	{
@@ -76,26 +82,27 @@ public class LoginPresenterImpl implements LoginPresenter
 	}
 
 	@Override
-    public void onStart()
-    {
-        EventObserver.register(getContext(), loginReceiver, LoginPerformedEvent.class);
-    }
+	public void onStart()
+	{
+		EventObserver.register(getContext(), loginReceiver, LoginPerformedEvent.class);
+	}
 
-    @Override
-    public void onStop()
-    {
-        EventObserver.unregister(getContext(), loginReceiver);
-    }
+	@Override
+	public void onStop()
+	{
+		EventObserver.unregister(getContext(), loginReceiver);
+	}
 
-    private Context getContext()
-    {
-        return CrittercismApplication.getApplication().getApplicationContext();
-    }
+	private Context getContext()
+	{
+		return CrittercismApplication.getApplication().getApplicationContext();
+	}
 
 	@Override
 	public void doLogin(String login, String password)
 	{
-        loginView.showProgressBar();
+		loginView.showProgressBar();
 		LoginService.login(login, password);
 	}
+
 }

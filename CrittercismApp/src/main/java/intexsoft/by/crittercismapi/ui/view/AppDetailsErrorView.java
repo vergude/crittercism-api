@@ -1,13 +1,14 @@
 package intexsoft.by.crittercismapi.ui.view;
 
-import java.util.List;
-
 import intexsoft.by.crittercismapi.data.bean.DailyStatisticsItem;
 
+import java.util.List;
+
 /**
- * Created by Евгений on 22.07.2014.
+ * Created by Евгений on 04.08.2014.
  */
-public interface MainView extends BaseView
+public interface AppDetailsErrorView extends BaseView
 {
+    String getAppId();
 	void setDailyStatisticsItems(List<DailyStatisticsItem> dailyStatisticsItems);
 }

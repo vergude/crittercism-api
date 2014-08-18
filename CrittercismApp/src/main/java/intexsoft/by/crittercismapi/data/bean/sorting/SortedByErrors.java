@@ -1,6 +1,7 @@
 package intexsoft.by.crittercismapi.data.bean.sorting;
 
 import java.util.Comparator;
+
 import intexsoft.by.crittercismapi.data.bean.DailyStatisticsItem;
 
 /**
@@ -10,23 +11,23 @@ import intexsoft.by.crittercismapi.data.bean.DailyStatisticsItem;
 public class SortedByErrors implements Comparator<DailyStatisticsItem>
 {
 
-    @Override
-    public int compare(DailyStatisticsItem dailyStatisticsItemFirst, DailyStatisticsItem dailyStatisticsItemSecond)
-    {
-        double errorsPercentFirst = dailyStatisticsItemFirst.getErrorsPercent();
-        double errorsPercentSecond = dailyStatisticsItemSecond.getErrorsPercent();
+	@Override
+	public int compare(DailyStatisticsItem dailyStatisticsItemFirst, DailyStatisticsItem dailyStatisticsItemSecond)
+	{
+		double errorsPercentFirst = dailyStatisticsItemFirst.getErrorsPercent();
+		double errorsPercentSecond = dailyStatisticsItemSecond.getErrorsPercent();
 
-        if(errorsPercentFirst > errorsPercentSecond)
-        {
-            return 1;
-        }
-        else if(errorsPercentFirst < errorsPercentSecond)
-        {
-            return -1;
-        }
-        else
-        {
-            return 0;
-        }
-    }
+		if (errorsPercentFirst > errorsPercentSecond)
+		{
+			return 1;
+		}
+		else if (errorsPercentFirst < errorsPercentSecond)
+		{
+			return -1;
+		}
+		else
+		{
+			return 0;
+		}
+	}
 }

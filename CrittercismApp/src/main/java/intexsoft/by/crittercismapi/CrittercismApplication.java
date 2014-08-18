@@ -8,7 +8,8 @@ import org.androidannotations.annotations.EApplication;
  * Created by user on 25.05.2014.
  */
 @EApplication
-public class CrittercismApplication extends Application {
+public class CrittercismApplication extends Application
+{
 
     private static Application application;
 
