@@ -64,4 +64,19 @@ public class DatabaseQueryHelper
 			return -1;
 		}
 	}
+
+	@Nullable
+	public Cursor getCursor(Class className, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+		ThreadUtils.checkAndThrowIfUIThread();
+
+		try {
+			Cursor result = CupboardFactory.cupboard().withDatabase(getReadableDb()).query(className).
+					withProjection(projection).withSelection(selection, selectionArgs).
+					orderBy(sortOrder).getCursor();
+			return result;
+		} catch (SQLException e) {
+			handleException(e);
+			return null;
+		}
+	}
 }

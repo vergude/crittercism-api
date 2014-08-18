@@ -1,7 +1,6 @@
 package intexsoft.by.crittercismapi.data.facade;
 
 import android.content.Context;
-import android.util.Log;
 import intexsoft.by.crittercismapi.Constants;
 import intexsoft.by.crittercismapi.data.bean.CrittercismApp;
 import intexsoft.by.crittercismapi.data.bean.DailyStatisticsItem;
@@ -21,10 +20,13 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
 import org.androidannotations.annotations.rest.RestService;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @EBean(scope = EBean.Scope.Singleton)
@@ -32,6 +34,9 @@ public class RemoteFacade
 {
 	@Bean
 	CrittercismRestErrorHandler errorHandler;
+
+	@Bean
+	PersistenceFacade persistenceFacade;
 
 	@RootContext
 	protected Context context;
@@ -50,13 +55,29 @@ public class RemoteFacade
 		return RemoteFacade_.getInstance_(context);
 	}
 
-	public void getApps()
+	@NotNull
+	public List<CrittercismApp> getAppsForUser(String userLogin)
 	{
 		ThreadUtils.checkAndThrowIfUIThread();
 
 		HashMap<String, AppSummaryData> response = remoteService.getApps();
 
-		Log.d("**********", response.size() + "");
+		if (response == null)
+		{
+			return Collections.EMPTY_LIST;
+		}
+
+		List<CrittercismApp> appsList = new ArrayList<CrittercismApp>();
+
+		for (Map.Entry<String, AppSummaryData> entry : response.entrySet())
+		{
+			CrittercismApp app = new CrittercismApp(entry.getKey(), entry.getValue().getAppName());
+			app.setUserLogin(userLogin);
+
+			appsList.add(app);
+		}
+
+		return appsList;
 	}
 
 	public GraphResponse getErrorGraphOneApp(String appId, String graph)
@@ -80,11 +101,11 @@ public class RemoteFacade
 	{
 		ThreadUtils.checkAndThrowIfUIThread();
 
-		HashMap<String, AppSummaryData> responseApp = remoteService.getApps();
+		Map<String, CrittercismApp> appsMap = persistenceFacade.getAppsMapByCurrentUser();
 
 		PieRequest pieRequest = new PieRequest();
 		PieRequestInternal pieRequestInternal = new PieRequestInternal();
-		pieRequestInternal.setAppIds(responseApp.keySet().toArray(new String[responseApp.keySet().size()]));
+		pieRequestInternal.setAppIds(appsMap.keySet().toArray(new String[appsMap.keySet().size()]));
 		pieRequestInternal.setDuration(duration);
 		pieRequestInternal.setGroupBy(Constants.GROUP_BY_APP_ID);
 		pieRequestInternal.setGraph(Constants.GRAPH_CRASHES);
@@ -102,8 +123,7 @@ public class RemoteFacade
 		for (SeriesData seriesData : pieResponseAppLoads.getData().getSlices())
 		{
 			String appId = seriesData.getLabel();
-			CrittercismApp app = new CrittercismApp(seriesData.getLabel(), responseApp.get(appId).getAppName());
-			DailyStatisticsItem item = new DailyStatisticsItem(app, 0, seriesData.getValue());
+			DailyStatisticsItem item = new DailyStatisticsItem(appsMap.get(appId), 0, seriesData.getValue());
 
 			statisticsHashMap.put(appId, item);
 		}
@@ -113,8 +133,7 @@ public class RemoteFacade
 			String appId = seriesData.getLabel();
 			if (!statisticsHashMap.containsKey(appId))
 			{
-				CrittercismApp app = new CrittercismApp(seriesData.getLabel(), responseApp.get(appId).getAppName());
-				DailyStatisticsItem item = new DailyStatisticsItem(app, seriesData.getValue(), 0);
+				DailyStatisticsItem item = new DailyStatisticsItem(appsMap.get(appId), seriesData.getValue(), 0);
 				statisticsHashMap.put(appId, item);
 			}
 			else
