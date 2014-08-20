@@ -3,7 +3,10 @@ package intexsoft.by.crittercismapi.ui.activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.view.Menu;
-
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import intexsoft.by.crittercismapi.R;
 import intexsoft.by.crittercismapi.ui.fragment.MainFragment;
 import intexsoft.by.crittercismapi.ui.fragment.NavigationItem;
@@ -89,5 +92,29 @@ public class NavigationActivity extends BaseNavigationActivity
 				break;
 		}
 		updateTitle();
+	}
+
+	@Override
+	protected void onStart()
+	{
+		super.onStart();
+	}
+
+	@Override
+	protected void onResume()
+	{
+		ViewGroup relativeLayout = (ViewGroup) this.getWindow().getDecorView();
+		View fadeView =  relativeLayout.findViewWithTag("TAG_FADE_VIEW");
+
+		if (fadeView != null)
+		{
+			Animation animation = new AlphaAnimation(1, 0);
+			animation.setDuration(1000);
+			fadeView.startAnimation(animation);
+
+			relativeLayout.removeView(fadeView);
+		}
+
+		super.onResume();
 	}
 }
