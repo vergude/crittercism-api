@@ -1,9 +1,13 @@
 package intexsoft.by.crittercismapi.ui.fragment;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.*;
 import intexsoft.by.crittercismapi.R;
 import intexsoft.by.crittercismapi.data.bean.DailyStatisticsItem;
@@ -18,11 +22,7 @@ import intexsoft.by.crittercismapi.ui.presenter.MainPresenter;
 import intexsoft.by.crittercismapi.ui.presenter.MainPresenterImpl;
 import intexsoft.by.crittercismapi.ui.view.MainView;
 import intexsoft.by.crittercismapi.utils.Launcher;
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -43,10 +43,13 @@ public class MainFragment extends Fragment implements MainView, DatePickerFragme
 	private Calendar calendar = Calendar.getInstance();
 	private boolean clickResult = true;
 	private List<DailyStatisticsItem> mDailyStatisticsItems;
-
+	Animation animationStart = null;
 
 	@ViewById
 	TextView tvDate;
+
+	@ViewById(R.id.progressContainer)
+	FrameLayout progressContainer;
 
 	@ViewById
 	LinearLayout idFragmentLayout;
@@ -62,12 +65,15 @@ public class MainFragment extends Fragment implements MainView, DatePickerFragme
 
 	private final OnSwipeTouchEvent onSwipeTouchEvent = new OnSwipeTouchEvent(getActivity())
 	{
-
 		@Override
 		public void onSwipeLeft()
 		{
 			calendar.add(Calendar.DAY_OF_MONTH, -1);
 			setNewDate();
+			tvDate.startAnimation(animationStart);
+			progressContainer.setVisibility(View.VISIBLE);
+			hideProgressBar();
+
 		}
 
 		@Override
@@ -75,7 +81,9 @@ public class MainFragment extends Fragment implements MainView, DatePickerFragme
 		{
 			calendar.add(Calendar.DAY_OF_MONTH, 1);
 			setNewDate();
-
+			tvDate.startAnimation(animationStart);
+			progressContainer.setVisibility(View.VISIBLE);
+			hideProgressBar();
 		}
 	};
 
@@ -101,6 +109,7 @@ public class MainFragment extends Fragment implements MainView, DatePickerFragme
 	@AfterViews
 	void swipeDate()
 	{
+		animationStart = AnimationUtils.loadAnimation(getActivity(), R.anim.scale);
 		idFragmentLayout.setOnTouchListener(onSwipeTouchEvent);
 		gvAppInfo.setOnTouchListener(onSwipeTouchEvent);
 	}
@@ -271,5 +280,11 @@ public class MainFragment extends Fragment implements MainView, DatePickerFragme
 						});
 		AlertDialog alert = builder.create();
 		alert.show();
+	}
+
+	@UiThread(delay = 2000)
+	void hideProgressBar()
+	{
+		progressContainer.setVisibility(View.INVISIBLE);
 	}
 }
