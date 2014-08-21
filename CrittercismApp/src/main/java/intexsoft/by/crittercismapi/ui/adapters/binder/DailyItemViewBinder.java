@@ -1,18 +1,17 @@
 package intexsoft.by.crittercismapi.ui.adapters.binder;
 
 import android.content.Context;
-import android.database.CharArrayBuffer;
 import android.database.Cursor;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import intexsoft.by.crittercismapi.R;
 import intexsoft.by.crittercismapi.data.bean.DailyStatisticsItem;
-import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
+
+import java.util.Date;
 
 /**
  * Created by dmitry.lomako on 29.07.2014.
@@ -57,7 +56,9 @@ public class DailyItemViewBinder extends RelativeLayout {
 		tvAppName.setText(data.getString(data.getColumnIndex(DailyStatisticsItem.COLUMN_APP_REMOTE_ID)));
 		tvCrashesCount.setText(String.valueOf(crashesCount));
 		tvAppLoadsCount.setText(String.valueOf(appLoadsCount));
-		tvAppErrorPersent.setText(data.getString(data.getColumnIndex(DailyStatisticsItem.COLUMN_APP_REMOTE_ID)));
+
+		String date = (new Date(data.getLong(data.getColumnIndex(DailyStatisticsItem.COLUMN_DATE)))).toString();
+		tvAppErrorPersent.setText(date);
 
         return this;
     }

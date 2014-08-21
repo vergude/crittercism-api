@@ -3,26 +3,41 @@ package intexsoft.by.crittercismapi.data.loader;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.database.Cursor;
+import intexsoft.by.crittercismapi.data.bean.DailyStatisticsItem;
 import intexsoft.by.crittercismapi.data.db.DatabaseQueryHelper;
 import intexsoft.by.crittercismapi.data.db.DatabaseQueryHelper_;
+import intexsoft.by.crittercismapi.utils.DateTimeUtils;
+
+import java.util.Date;
 
 /**
  * Created by anastasya.konovalova on 05.08.2014.
  */
 public class DailyStatisticsCursorLoader extends CursorLoader
 {
-	DatabaseQueryHelper queryHelper;
+	private DatabaseQueryHelper queryHelper;
 
-	public DailyStatisticsCursorLoader(Context context)
+	private Date date;
+
+	public DailyStatisticsCursorLoader(Context context, Date date)
 	{
 		super(context);
 
-		queryHelper = DatabaseQueryHelper_.getInstance_(context);
+		this.date = date;
+		this.queryHelper = DatabaseQueryHelper_.getInstance_(context);
 	}
 
 	@Override
 	public Cursor loadInBackground() {
-		Cursor cursor = queryHelper.getDailyStatisticsItem(null, null, null, null);
+
+		String startDate = DateTimeUtils.getFormatedStartOfDay(date);
+		String endDate = DateTimeUtils.getFormatedEndOfDay(date);
+
+		Cursor cursor = queryHelper.getDailyStatisticsItem(
+				null,
+				DailyStatisticsItem.COLUMN_DATE + " >= ? and " + DailyStatisticsItem.COLUMN_DATE +" < ? " ,
+				new String[]{startDate, endDate},
+				null);
 
 		return cursor;
 	}

@@ -4,7 +4,6 @@ import android.content.Context;
 import intexsoft.by.crittercismapi.CrittercismApplication;
 import intexsoft.by.crittercismapi.event.DailyStatisticsLoadedEvent;
 import intexsoft.by.crittercismapi.event.EventObserver;
-import intexsoft.by.crittercismapi.service.ErrorGraphService;
 import intexsoft.by.crittercismapi.ui.view.StatisticsView;
 import org.androidannotations.annotations.EBean;
 
@@ -30,8 +29,6 @@ public class StatisticsPresenterImpl implements StatisticsPresenter
     public void init(StatisticsView statisticsView)
 	{
         this.statisticsView = statisticsView;
-
-		ErrorGraphService.getAndSaveDailyStatistics();
     }
 
 

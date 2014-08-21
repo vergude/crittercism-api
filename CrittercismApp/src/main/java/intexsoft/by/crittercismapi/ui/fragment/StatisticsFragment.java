@@ -68,6 +68,9 @@ public class StatisticsFragment extends Fragment implements StatisticsView, Date
 	public void onStart()
 	{
 		super.onStart();
+
+		getLoaderManager().initLoader(0, null, this);
+
 		presenter.onStart();
 	}
 
@@ -151,12 +154,14 @@ public class StatisticsFragment extends Fragment implements StatisticsView, Date
 		String year = Integer.toString(mCalendar.get(Calendar.YEAR));
 		String date = dayOfMonth.concat(", ").concat(month).concat(" ").concat(year);
 		tvDate.setText(date);
+
+		getLoaderManager().restartLoader(0, null, this);
 	}
 
 	@Override
 	public void dataLoaded()
 	{
-		getLoaderManager().initLoader(0, null, this);
+
 	}
 
 	@AfterViews
@@ -203,7 +208,7 @@ public class StatisticsFragment extends Fragment implements StatisticsView, Date
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args)
 	{
-		return new DailyStatisticsCursorLoader(getActivity());
+		return new DailyStatisticsCursorLoader(getActivity(), mCalendar.getTime());
 	}
 
 	@Override
