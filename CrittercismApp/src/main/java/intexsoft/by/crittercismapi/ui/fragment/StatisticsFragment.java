@@ -7,7 +7,7 @@ import android.app.LoaderManager;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.widget.GridView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import intexsoft.by.crittercismapi.R;
@@ -36,7 +36,7 @@ import java.util.Date;
 /**
  * Created by anastasya.konovalova on 11.07.2014.
  */
-@EFragment(R.layout.fragment_main)
+@EFragment(R.layout.fragment_statistics)
 public class StatisticsFragment extends Fragment implements StatisticsView, DatePickerFragment.FragmentDatePickerInterface, LoaderManager.LoaderCallbacks<Cursor>
 {
 
@@ -48,7 +48,7 @@ public class StatisticsFragment extends Fragment implements StatisticsView, Date
 	TextView tvDate;
 
 	@ViewById
-	GridView gvAppInfo;
+	ListView gvAppInfo;
 
 	@Bean(StatisticsPresenterImpl.class)
 	StatisticsPresenter presenter;
