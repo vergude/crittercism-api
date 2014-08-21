@@ -6,9 +6,17 @@ import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.view.View;
+
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.*;
+
+import android.widget.AdapterView;
+import android.widget.GridView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import intexsoft.by.crittercismapi.R;
 import intexsoft.by.crittercismapi.data.bean.DailyStatisticsItem;
 import intexsoft.by.crittercismapi.data.bean.sorting.SortedByCrashes;

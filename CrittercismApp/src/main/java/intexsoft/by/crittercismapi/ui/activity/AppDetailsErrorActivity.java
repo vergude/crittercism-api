@@ -3,18 +3,27 @@ package intexsoft.by.crittercismapi.ui.activity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.view.MenuItem;
 import android.widget.GridView;
 import android.widget.TextView;
 import intexsoft.by.crittercismapi.R;
 import intexsoft.by.crittercismapi.data.bean.DailyStatisticsItem;
-import intexsoft.by.crittercismapi.data.bean.sorting.*;
+import intexsoft.by.crittercismapi.data.bean.sorting.SortedByCrashes;
+import intexsoft.by.crittercismapi.data.bean.sorting.SortedByDate;
+import intexsoft.by.crittercismapi.data.bean.sorting.SortedByErrors;
+import intexsoft.by.crittercismapi.data.bean.sorting.SortedByLoads;
 import intexsoft.by.crittercismapi.data.remote.response.GraphResponse;
 import intexsoft.by.crittercismapi.ui.adapters.AppErrorDetailsAdapter;
 import intexsoft.by.crittercismapi.ui.presenter.AppDetailsErrorPresenter;
 import intexsoft.by.crittercismapi.ui.presenter.AppDetailsErrorPresenterImpl;
 import intexsoft.by.crittercismapi.ui.view.AppDetailsErrorView;
 import intexsoft.by.crittercismapi.utils.Launcher;
-import org.androidannotations.annotations.*;
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
+import org.androidannotations.annotations.ViewById;
 
 import java.util.Collections;
 import java.util.List;
@@ -166,5 +175,28 @@ public class AppDetailsErrorActivity extends Activity implements AppDetailsError
 						});
 		AlertDialog alert = builder.create();
 		alert.show();
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		int id = item.getItemId();
+
+		switch (id)
+		{
+			case android.R.id.home:
+				onBackPressed();
+				return true;
+		}
+		// Handle your other action bar items...
+		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void onBackPressed()
+	{
+		super.onBackPressed();
+
+		(this).overridePendingTransition(R.anim.empty_animation, R.anim.slide_left_out);
 	}
 }

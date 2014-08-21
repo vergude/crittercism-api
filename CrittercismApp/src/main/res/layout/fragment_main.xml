@@ -133,5 +133,4 @@
             android:id="@+id/progressBar2"
             android:layout_gravity="center" />
     </FrameLayout>
-
 </RelativeLayout>

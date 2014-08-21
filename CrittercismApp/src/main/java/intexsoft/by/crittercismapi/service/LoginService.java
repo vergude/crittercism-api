@@ -9,6 +9,9 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import intexsoft.by.crittercismapi.Constants;
 import intexsoft.by.crittercismapi.CrittercismApplication;
+import intexsoft.by.crittercismapi.data.bean.CrittercismApp;
+import intexsoft.by.crittercismapi.data.facade.PersistenceFacade;
+import intexsoft.by.crittercismapi.data.facade.RemoteFacade;
 import intexsoft.by.crittercismapi.data.remote.response.LoginResponse;
 import intexsoft.by.crittercismapi.event.EventObserver;
 import intexsoft.by.crittercismapi.event.LoginPerformedEvent;
@@ -49,6 +52,12 @@ public class LoginService extends IntentService
 	@Bean
 	LoginManager loginManager;
 
+	@Bean
+	PersistenceFacade persistenceFacade;
+
+	@Bean
+	RemoteFacade remoteFacade;
+
 	public LoginService()
 	{
 		super(LoginService.class.getSimpleName());
@@ -57,7 +66,7 @@ public class LoginService extends IntentService
 	public static void login(String userName, String password)
 	{
 		Context context = CrittercismApplication.getApplication();
-		LoginService_.intent(context).fetchLogin(userName, password).start();
+		LoginService_.intent(context).fetchLoginAndSaveApps(userName, password).start();
 	}
 
 
@@ -68,7 +77,7 @@ public class LoginService extends IntentService
 	}
 
 	@ServiceAction(Constants.Action.REQUEST_LOGIN)
-	protected void fetchLogin(String userName, String password)
+	protected void fetchLoginAndSaveApps(String userName, String password)
 	{
 		LoginResponse loginResponse = doBasicAuth(userName, password);
 
@@ -89,18 +98,29 @@ public class LoginService extends IntentService
 		{
 			event.setSuccessful(true);
 			loginManager.saveLoginData(userName, password, loginResponse.getAccessToken(), Integer.valueOf(loginResponse.getExpiresIn()));
+
+			fetchApps(userName);
 		}
 
 		Context context = CrittercismApplication.getApplication();
 		EventObserver.sendEvent(context, event);
 	}
 
+	private void fetchApps(String userLogin)
+	{
+		//TODO implement merge of apps list
+		List<CrittercismApp> oldAppsList = persistenceFacade.getAppsByUser(userLogin);
+
+		if (oldAppsList == null || oldAppsList.size() == 0)
+		{
+			List<CrittercismApp> appsList = remoteFacade.getAppsForUser(userLogin);
+			persistenceFacade.saveApps(appsList);
+		}
+	}
+
 	private String getBase64EncodedCredentials(String password)
 	{
-		String base64EncodedCredentials = "Basic " + Base64.encodeToString(
-				(Constants.CRITTERCISM_API_CLIENT_ID + ":" + password).getBytes(),
-				Base64.NO_WRAP);
-		return base64EncodedCredentials;
+		return "Basic " + Base64.encodeToString((Constants.CRITTERCISM_API_CLIENT_ID + ":" + password).getBytes(), Base64.NO_WRAP);
 	}
 
 	private List<NameValuePair> getParameters(String userName, String password)

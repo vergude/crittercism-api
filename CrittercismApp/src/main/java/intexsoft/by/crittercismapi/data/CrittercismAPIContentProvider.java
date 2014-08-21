@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.net.Uri;
+import intexsoft.by.crittercismapi.data.bean.CrittercismApp;
 import intexsoft.by.crittercismapi.data.bean.DailyStatisticsItem;
 import intexsoft.by.crittercismapi.data.db.DatabaseQueryHelper;
 import org.androidannotations.annotations.Bean;
@@ -22,15 +23,20 @@ public class CrittercismAPIContentProvider extends ContentProvider {
 
     public static final Uri DAILY_STATISTIC_URI = Uri.parse("content://" + AUTHORITY + "/DailyStatisticsItem");
 
+	public static final Uri CRITTERCISM_APP_URI = Uri.parse("content://" + AUTHORITY + "/CrittercismApp");
+
     private static UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
     private static final int URI_CODE_DAILY_STATISTIC = 0;
+
+	private static final int URI_CODE_CRITTERCISM_APP = 1;
 
     @Bean
 	DatabaseQueryHelper queryHelper;
 
     static {
         uriMatcher.addURI(AUTHORITY, "DailyStatisticsItem", URI_CODE_DAILY_STATISTIC);
+		uriMatcher.addURI(AUTHORITY, "CrittercismApp", URI_CODE_CRITTERCISM_APP);
     }
 
     @Override
@@ -44,6 +50,9 @@ public class CrittercismAPIContentProvider extends ContentProvider {
             case URI_CODE_DAILY_STATISTIC: {
                 return queryHelper.getDailyStatisticsItem(projection, selection, selectionArgs, sortOrder);
             }
+			case URI_CODE_CRITTERCISM_APP: {
+				return queryHelper.getCursor(CrittercismApp.class, projection, selection, selectionArgs, sortOrder);
+			}
         }
         return null;
     }
@@ -60,6 +69,10 @@ public class CrittercismAPIContentProvider extends ContentProvider {
                 long id = queryHelper.save(DailyStatisticsItem.class, values);
                 return ContentUris.withAppendedId(uri, id);
             }
+			case URI_CODE_CRITTERCISM_APP: {
+				long id = queryHelper.save(CrittercismApp.class, values);
+				return ContentUris.withAppendedId(uri, id);
+			}
         }
         return null;
     }
