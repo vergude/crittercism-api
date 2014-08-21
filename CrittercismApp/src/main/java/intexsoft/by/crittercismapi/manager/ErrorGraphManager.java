@@ -1,0 +1,127 @@
+package intexsoft.by.crittercismapi.manager;
+
+import android.content.Context;
+import intexsoft.by.crittercismapi.Constants;
+import intexsoft.by.crittercismapi.data.bean.DailyStatisticsItem;
+import intexsoft.by.crittercismapi.data.facade.RemoteFacade;
+import intexsoft.by.crittercismapi.data.remote.response.GraphResponse;
+import intexsoft.by.crittercismapi.data.remote.response.SeriesData;
+import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.EBean;
+import org.androidannotations.annotations.RootContext;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Created by anastasya.konovalova on 21.07.2014.
+ */
+@EBean(scope = EBean.Scope.Singleton)
+public class ErrorGraphManager
+{
+	@Bean
+	RemoteFacade remoteFacade;
+
+	@RootContext
+	Context context;
+
+	public List<DailyStatisticsItem> getMonthlyStatistics(String appId)
+	{
+		LinkedHashMap<Date, DailyStatisticsItem> appErrorDetailsMap = new LinkedHashMap<Date, DailyStatisticsItem>();
+
+		GraphResponse graphResponseItemsAppCrashes = remoteFacade.getErrorGraphOneApp(appId, Constants.GRAPH_CRASHES);
+		processCrashes(graphResponseItemsAppCrashes, appErrorDetailsMap, new DailyCrashesItemProcessor(), appId);
+
+
+		GraphResponse graphResponseItemsAppLoads = remoteFacade.getErrorGraphOneApp(appId, Constants.GRAPH_APPLOADS);
+		processCrashes(graphResponseItemsAppLoads, appErrorDetailsMap, new DailyLoadsItemProcessor(), appId);
+		
+		return new ArrayList<DailyStatisticsItem>(appErrorDetailsMap.values());
+	}
+
+	private void processCrashes(GraphResponse graphResponse, LinkedHashMap<Date, DailyStatisticsItem> appErrorDetailsMap,
+								DailyItemProcessor dailyItemProcessor, String appId)
+	{
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+
+		SeriesData[] seriesDataC = graphResponse.getData().getSeries();
+		Integer[] crashesCountC = seriesDataC[0].getPoints();
+
+		try
+		{
+			Date startDate = dateFormat.parse(graphResponse.getData().getStart());
+			Date endDate = dateFormat.parse(graphResponse.getData().getEnd());
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(startDate);
+			int step = 0;
+
+			do
+			{
+				dailyItemProcessor.processItem(appErrorDetailsMap, setTime(graphResponse, calendar), crashesCountC[step], appId);
+				step++;
+			}
+			while (calendar.getTimeInMillis() < endDate.getTime());
+
+		}
+		catch (ParseException e)
+		{
+			e.printStackTrace();
+		}
+	}
+
+	Date setTime(GraphResponse graphResponse, Calendar calendar)
+	{
+		calendar.add(Calendar.SECOND, graphResponse.getData().getInterval());
+		Date date = new Date();
+		date.setTime(calendar.getTimeInMillis());
+		return date;
+	}
+
+
+	interface DailyItemProcessor
+	{
+		void processItem(Map<Date, DailyStatisticsItem> dataDailyStatisticsItemMap, Date date, int count, String appId);
+	}
+
+	class DailyCrashesItemProcessor implements DailyItemProcessor
+	{
+		@Override
+		public void processItem(Map<Date, DailyStatisticsItem> dataDailyStatisticsItemMap, Date date, int count, String appId)
+		{
+			DailyStatisticsItem dailyStatisticsItem = new DailyStatisticsItem();
+			dailyStatisticsItem.setCrashesCount(count);
+			dailyStatisticsItem.setDate(date);
+			dailyStatisticsItem.setAppRemoteId(appId);
+
+			dataDailyStatisticsItemMap.put(date, dailyStatisticsItem);
+		}
+	}
+
+	class DailyLoadsItemProcessor implements DailyItemProcessor
+	{
+
+		@Override
+		public void processItem(Map<Date, DailyStatisticsItem> dataDailyStatisticsItemMap, Date date, int count, String appId)
+		{
+			if (!dataDailyStatisticsItemMap.containsKey(date))
+			{
+				DailyStatisticsItem dailyStatisticsItem = new DailyStatisticsItem();
+				dailyStatisticsItem.setAppLoadsCount(count);
+				dailyStatisticsItem.setAppRemoteId(appId);
+
+				dataDailyStatisticsItemMap.put(date, dailyStatisticsItem);
+			}
+			else
+			{
+				dataDailyStatisticsItemMap.get(date).setAppLoadsCount(count);
+			}
+		}
+	}
+}

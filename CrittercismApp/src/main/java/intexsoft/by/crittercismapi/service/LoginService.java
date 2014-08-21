@@ -10,11 +10,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import intexsoft.by.crittercismapi.Constants;
 import intexsoft.by.crittercismapi.CrittercismApplication;
 import intexsoft.by.crittercismapi.data.bean.CrittercismApp;
+import intexsoft.by.crittercismapi.data.bean.DailyStatisticsItem;
 import intexsoft.by.crittercismapi.data.facade.PersistenceFacade;
 import intexsoft.by.crittercismapi.data.facade.RemoteFacade;
 import intexsoft.by.crittercismapi.data.remote.response.LoginResponse;
 import intexsoft.by.crittercismapi.event.EventObserver;
 import intexsoft.by.crittercismapi.event.LoginPerformedEvent;
+import intexsoft.by.crittercismapi.manager.ErrorGraphManager;
 import intexsoft.by.crittercismapi.manager.LoginManager;
 import intexsoft.by.crittercismapi.utils.StringUtils;
 import org.androidannotations.annotations.Bean;
@@ -57,6 +59,9 @@ public class LoginService extends IntentService
 
 	@Bean
 	RemoteFacade remoteFacade;
+
+	@Bean
+	ErrorGraphManager errorGraphManager;
 
 	public LoginService()
 	{
@@ -115,6 +120,12 @@ public class LoginService extends IntentService
 		{
 			List<CrittercismApp> appsList = remoteFacade.getAppsForUser(userLogin);
 			persistenceFacade.saveApps(appsList);
+
+			for (CrittercismApp app :appsList)
+			{
+				List<DailyStatisticsItem> dailyStatisticsItems = errorGraphManager.getMonthlyStatistics(app.getRemoteId());
+				persistenceFacade.saveDailyStatisticsItems(dailyStatisticsItems);
+			}
 		}
 	}
 
