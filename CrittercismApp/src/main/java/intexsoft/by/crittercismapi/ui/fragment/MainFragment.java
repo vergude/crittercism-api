@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.View;
 
 import android.view.ViewGroup;
@@ -141,18 +142,22 @@ public class MainFragment extends Fragment implements MainView, DatePickerFragme
 
 
 				Animation animationAlpha = new AlphaAnimation(0, 1);
-				//animationAlpha.setDuration(200);
+				animationAlpha.setDuration(200);
+                animationAlpha.setStartOffset(100);
 
 				Animation animationScale = new ScaleAnimation(0, 1, 0, 1, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-				//animationScale.setDuration(200);
+				animationScale.setDuration(300);
+
 
 				AnimationSet animationSet = new AnimationSet(true);
 				animationSet.setFillEnabled(true);
-				animationSet.setInterpolator(new BounceInterpolator());
-				animationSet.setDuration(400);
 
-				animationSet.addAnimation(animationAlpha);
+				animationSet.setInterpolator(new LinearInterpolator());
+				animationSet.setDuration(300);
+
+
 				animationSet.addAnimation(animationScale);
+                animationSet.addAnimation(animationAlpha);
 
 				fadeView.startAnimation(animationSet);
 				animationSet.setAnimationListener(new Animation.AnimationListener()
@@ -166,7 +171,9 @@ public class MainFragment extends Fragment implements MainView, DatePickerFragme
 					@Override
 					public void onAnimationEnd(Animation animation)
 					{
-						((ViewGroup) view).removeView(fadeView);
+                        fadeView.setAnimation(null);
+                        Log.d("**", "End "+animation.getDuration());
+                        ((ViewGroup) view).removeView(fadeView);
 					}
 
 					@Override
