@@ -7,8 +7,8 @@ import android.app.Fragment;
 import android.content.DialogInterface;
 import android.view.View;
 
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
+import android.view.ViewGroup;
+import android.view.animation.*;
 import android.widget.*;
 
 import android.widget.AdapterView;
@@ -129,10 +129,56 @@ public class MainFragment extends Fragment implements MainView, DatePickerFragme
 		gvAppInfo.setOnItemClickListener(new AdapterView.OnItemClickListener()
 		{
 			@Override
-			public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
+			public void onItemClick(AdapterView<?> adapterView, final View view, int i, long l)
 			{
-				Launcher.showAppDetailsErrorActivity(getActivity(), mDailyStatisticsItems.get(i).getApplication().getRemoteId(),
-						mDailyStatisticsItems.get(i).getApplication().getName());
+				final View fadeView = new View(getActivity());
+				fadeView.setTag("TAG_FADE_ITEM_VIEW");
+
+				RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, view.getHeight());
+				fadeView.setLayoutParams(layoutParams);
+				fadeView.setBackgroundColor(0x55000000);
+
+
+
+				Animation animationAlpha = new AlphaAnimation(0, 1);
+				//animationAlpha.setDuration(200);
+
+				Animation animationScale = new ScaleAnimation(0, 1, 0, 1, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+				//animationScale.setDuration(200);
+
+				AnimationSet animationSet = new AnimationSet(true);
+				animationSet.setFillEnabled(true);
+				animationSet.setInterpolator(new BounceInterpolator());
+				animationSet.setDuration(400);
+
+				animationSet.addAnimation(animationAlpha);
+				animationSet.addAnimation(animationScale);
+
+				fadeView.startAnimation(animationSet);
+				animationSet.setAnimationListener(new Animation.AnimationListener()
+				{
+					@Override
+					public void onAnimationStart(Animation animation)
+					{
+
+					}
+
+					@Override
+					public void onAnimationEnd(Animation animation)
+					{
+						((ViewGroup) view).removeView(fadeView);
+					}
+
+					@Override
+					public void onAnimationRepeat(Animation animation)
+					{
+
+					}
+				});
+
+				((ViewGroup) view).addView(fadeView, 0);
+//				Launcher.showAppDetailsErrorActivity(getActivity(), mDailyStatisticsItems.get(i).getApplication().getRemoteId(),
+//				mDailyStatisticsItems.get(i).getApplication().getName());
 			}
 		});
 	}

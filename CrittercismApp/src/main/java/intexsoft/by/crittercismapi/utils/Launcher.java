@@ -29,12 +29,14 @@ public final class Launcher
 	{
 		View fadeView = new View(context);
 		fadeView.setTag("TAG_FADE_VIEW");
+
 		FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
 		fadeView.setLayoutParams(layoutParams);
 		fadeView.setBackgroundColor(0x55000000);
 
 		Animation animation = new AlphaAnimation(0, 1);
 		animation.setDuration(200);
+
 		fadeView.startAnimation(animation);
 		ViewGroup relativeLayout = (ViewGroup) ((Activity)context).getWindow().getDecorView();
 		relativeLayout.addView(fadeView);
