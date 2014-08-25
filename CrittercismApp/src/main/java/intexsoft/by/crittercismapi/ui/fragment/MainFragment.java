@@ -7,15 +7,18 @@ import android.app.Fragment;
 import android.content.DialogInterface;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.*;
-import android.widget.*;
-
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.AnimationUtils;
+import android.view.animation.ScaleAnimation;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import intexsoft.by.crittercismapi.R;
 import intexsoft.by.crittercismapi.data.bean.DailyStatisticsItem;
 import intexsoft.by.crittercismapi.data.bean.sorting.SortedByCrashes;
@@ -131,73 +134,75 @@ public class MainFragment extends Fragment implements MainView, DatePickerFragme
 	void initViews()
 	{
 		presenter.init(this);
-		gvAppInfo.setOnItemClickListener(new AdapterView.OnItemClickListener()
-		{
-			@Override
-			public void onItemClick(AdapterView<?> adapterView, final View view, final int i, long l)
-			{
-				if (((ViewGroup) view).findViewWithTag("TAG_FADE_ITEM_VIEW") == null)
-			{
-				final View fadeView = new View(getActivity());
-				fadeView.setTag("TAG_FADE_ITEM_VIEW");
-				RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, view.getHeight());
-				fadeView.setLayoutParams(layoutParams);
-					fadeView.setBackgroundColor(0xA9FEA20F);
-
-				AnimationSet animationSet = new AnimationSet(true);
-
-					fadeView.startAnimation(getAnimationSet(animationSet));
-					getAnimationSet(animationSet).setAnimationListener(new Animation.AnimationListener()
+		gvAppInfo.setOnItemClickListener(
+				new AdapterView.OnItemClickListener()
 				{
 					@Override
-					public void onAnimationStart(Animation animation)
+					public void onItemClick(AdapterView<?> adapterView, final View view, final int i, long l)
 					{
+						if (((ViewGroup) view).findViewWithTag("TAG_FADE_ITEM_VIEW") == null)
+						{
+							final View fadeView = new View(getActivity());
+							fadeView.setTag("TAG_FADE_ITEM_VIEW");
+							RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, view.getHeight());
+							fadeView.setLayoutParams(layoutParams);
+							fadeView.setBackgroundColor(0x99FEA20F);
 
-					}
+							AnimationSet animationSet = new AnimationSet(true);
 
-					@Override
-					public void onAnimationEnd(Animation animation)
-					{
-							removeView(view, fadeView, i);
-					}
+							fadeView.startAnimation(getAnimationSet(animationSet));
+							getAnimationSet(animationSet).setAnimationListener(
+									new Animation.AnimationListener()
+									{
+										@Override
+										public void onAnimationStart(Animation animation)
+										{
 
-					@Override
-					public void onAnimationRepeat(Animation animation)
-					{
+										}
 
+										@Override
+										public void onAnimationEnd(Animation animation)
+										{
+											removeView(view, fadeView, i);
+										}
+
+										@Override
+										public void onAnimationRepeat(Animation animation)
+										{
+
+										}
+									});
+							((ViewGroup) view).addView(fadeView, 0);
+						}
 					}
 				});
-					((ViewGroup) view).addView(fadeView, 0);
-				}
-			}
-		});
 	}
 
 	@UiThread
 	void removeView(View view, View fadeView, int i)
 	{
 		((ViewGroup) view).removeView(fadeView);
-//				Launcher.showAppDetailsErrorActivity(getActivity(), mDailyStatisticsItems.get(i).getApplication().getRemoteId(),
-//				mDailyStatisticsItems.get(i).getApplication().getName());
-			}
+		Launcher.showAppDetailsErrorActivity(getActivity(), mDailyStatisticsItems.get(i).getApplication().getRemoteId(),
+			mDailyStatisticsItems.get(i).getApplication().getName());
+	}
 
 	private AnimationSet getAnimationSet(AnimationSet animationSet)
 	{
 		Animation animationScale = new ScaleAnimation(0, 1, 0, 1, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-		animationScale.setDuration(100);
+		animationScale.setDuration(300);
+		animationScale.setInterpolator(new AccelerateInterpolator());
 
 		Animation animationAlpha = new AlphaAnimation(0, 1);
-		animationAlpha.setDuration(100);
+		animationAlpha.setDuration(300);
 		animationAlpha.setStartOffset(50);
+		animationAlpha.setInterpolator(new AccelerateInterpolator());
 
 		Animation animationAlphaEnd = new AlphaAnimation(1, 0);
-		animationAlphaEnd.setDuration(700);
-		animationAlphaEnd.setStartOffset(150);
+		animationAlphaEnd.setDuration(450);
+		animationAlphaEnd.setStartOffset(300);
+		animationAlphaEnd.setInterpolator(new AccelerateInterpolator());
 
-		animationSet.setFillEnabled(true);
 
-		animationSet.setInterpolator(new LinearInterpolator());
-		animationSet.setDuration(850);
 
 		animationSet.addAnimation(animationScale);
 		animationSet.addAnimation(animationAlpha);
