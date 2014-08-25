@@ -1,7 +1,9 @@
 package intexsoft.by.crittercismapi.utils;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by anastasya.konovalova on 21.07.2014.
@@ -44,5 +46,13 @@ public final class DateTimeUtils
 		calendar.set(Calendar.MILLISECOND, 0);
 
 		return String.valueOf(calendar.getTime().getTime());
+	}
+
+
+	public static String getFormattedDate(Date date, String dateFormat)
+	{
+		SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.getDefault());
+
+		return sdf.format(date);
 	}
 }

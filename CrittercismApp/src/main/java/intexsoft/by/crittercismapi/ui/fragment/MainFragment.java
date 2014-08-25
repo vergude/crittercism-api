@@ -7,17 +7,19 @@ import android.app.Fragment;
 import android.content.DialogInterface;
 import android.util.Log;
 import android.view.View;
-
 import android.view.ViewGroup;
-import android.view.animation.*;
-import android.widget.*;
-
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.ScaleAnimation;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import intexsoft.by.crittercismapi.R;
 import intexsoft.by.crittercismapi.data.bean.DailyStatisticsItem;
 import intexsoft.by.crittercismapi.data.bean.sorting.SortedByCrashes;
@@ -30,11 +32,15 @@ import intexsoft.by.crittercismapi.ui.adapters.AppInfoAdapter;
 import intexsoft.by.crittercismapi.ui.presenter.MainPresenter;
 import intexsoft.by.crittercismapi.ui.presenter.MainPresenterImpl;
 import intexsoft.by.crittercismapi.ui.view.MainView;
+import intexsoft.by.crittercismapi.utils.DateTimeUtils;
 import intexsoft.by.crittercismapi.utils.Launcher;
-import org.androidannotations.annotations.*;
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.UiThread;
+import org.androidannotations.annotations.ViewById;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -47,7 +53,8 @@ import java.util.List;
 @EFragment(R.layout.fragment_main)
 public class MainFragment extends Fragment implements MainView, DatePickerFragment.FragmentDatePickerInterface
 {
-	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("d, MMM yyyy");
+	private static final String DATE_FORMAT = "d, MMM yyyy";
+
 	public static final String TAG = MainFragment.class.getSimpleName();
 	private Calendar calendar = Calendar.getInstance();
 	private boolean clickResult = true;
@@ -225,29 +232,16 @@ public class MainFragment extends Fragment implements MainView, DatePickerFragme
 	}
 
 	@Override
-	public Calendar getCalendar()
+	public Date getCurrentDate()
 	{
-		return calendar;
+		return calendar.getTime();
 	}
 
 	@Override
-	public void setDate(String date)
+	public void setSelectedDate(Date date)
 	{
-		tvDate.setText(date);
-		parseNewDate(date);
-	}
-
-	public void parseNewDate(String date)
-	{
-		try
-		{
-			Date parsedDate = DATE_FORMAT.parse(date);
-			calendar.setTime(parsedDate);
-		}
-		catch (ParseException e)
-		{
-			Toast.makeText(getActivity(), getResources().getString(R.string.error_parse_date), Toast.LENGTH_LONG).show();
-		}
+		tvDate.setText(DateTimeUtils.getFormattedDate(date, DATE_FORMAT));
+		calendar.setTime(date);
 	}
 
 	public void setNewDate()

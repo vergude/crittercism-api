@@ -9,7 +9,6 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 import intexsoft.by.crittercismapi.R;
 import intexsoft.by.crittercismapi.data.bean.DailyStatisticsItem;
 import intexsoft.by.crittercismapi.data.bean.sorting.SortedByCrashes;
@@ -22,14 +21,13 @@ import intexsoft.by.crittercismapi.ui.adapters.DailyStatisticsAdapter;
 import intexsoft.by.crittercismapi.ui.presenter.StatisticsPresenter;
 import intexsoft.by.crittercismapi.ui.presenter.StatisticsPresenterImpl;
 import intexsoft.by.crittercismapi.ui.view.StatisticsView;
+import intexsoft.by.crittercismapi.utils.DateTimeUtils;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -40,9 +38,9 @@ import java.util.Date;
 public class StatisticsFragment extends Fragment implements StatisticsView, DatePickerFragment.FragmentDatePickerInterface, LoaderManager.LoaderCallbacks<Cursor>
 {
 
-	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("d, MMM yyyy");
+	private static final String DATE_FORMAT = "d, MMM yyyy";
+
 	public static final String TAG = MainFragment.class.getSimpleName();
-	private Calendar mCalendar = Calendar.getInstance();
 
 	@ViewById
 	TextView tvDate;
@@ -56,6 +54,7 @@ public class StatisticsFragment extends Fragment implements StatisticsView, Date
 	@Bean
 	RemoteFacade remoteFacade;
 
+	Date selectedDate;
 
 	private DailyStatisticsAdapter adapter;
 
@@ -65,12 +64,24 @@ public class StatisticsFragment extends Fragment implements StatisticsView, Date
 	}
 
 	@Override
+	public void onCreate(Bundle savedInstanceState)
+	{
+		super.onActivityCreated(savedInstanceState);
+
+		if (savedInstanceState == null)
+		{
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(new Date());
+			calendar.add(Calendar.DATE, -1);
+
+			selectedDate = calendar.getTime();
+		}
+	}
+
+	@Override
 	public void onStart()
 	{
 		super.onStart();
-
-		getLoaderManager().initLoader(0, null, this);
-
 		presenter.onStart();
 	}
 
@@ -81,22 +92,25 @@ public class StatisticsFragment extends Fragment implements StatisticsView, Date
 		presenter.onStop();
 	}
 
+	@Override
+	public void onResume()
+	{
+		super.onResume();
+		getLoaderManager().initLoader(0, null, this);
+	}
+
 	@AfterViews
 	void initViews()
 	{
 		presenter.init(this);
+
+		setNewDate();
 	}
 
 	@Override
 	public Activity getContainer()
 	{
 		return getActivity();
-	}
-
-	@AfterViews
-	public void setCurrentDate()
-	{
-		setNewDate();
 	}
 
 	@Click(R.id.tvDate)
@@ -110,50 +124,48 @@ public class StatisticsFragment extends Fragment implements StatisticsView, Date
 	@Click(R.id.ibPreviousDay)
 	public void previousDay()
 	{
+		Calendar mCalendar = Calendar.getInstance();
+		mCalendar.setTime(selectedDate);
 		mCalendar.add(Calendar.DAY_OF_MONTH, -1);
+
+		selectedDate = mCalendar.getTime();
+
 		setNewDate();
 	}
 
 	@Click(R.id.ibNextDay)
 	public void nextDay()
 	{
+		Calendar mCalendar = Calendar.getInstance();
+		mCalendar.setTime(selectedDate);
 		mCalendar.add(Calendar.DAY_OF_MONTH, 1);
+
+		selectedDate = mCalendar.getTime();
+
 		setNewDate();
 	}
 
 	@Override
-	public Calendar getCalendar()
+	public Date getCurrentDate()
 	{
-		return mCalendar;
+		return selectedDate;
 	}
 
 	@Override
-	public void setDate(String date)
+	public void setSelectedDate(Date date)
 	{
-		tvDate.setText(date);
-		parseNewDate(date);
-	}
-
-	public void parseNewDate(String date)
-	{
-		try
+		if (selectedDate.equals(date))
 		{
-			Date parsedDate = DATE_FORMAT.parse(date);
-			mCalendar.setTime(parsedDate);
-		} catch (ParseException e)
-		{
-			Toast.makeText(getActivity(), getResources().getString(R.string.error_parse_date), Toast.LENGTH_LONG).show();
+			return;
 		}
+
+		selectedDate = date;
+		setNewDate();
 	}
 
 	public void setNewDate()
 	{
-		String[]mounts=getResources().getStringArray(R.array.year);
-		String dayOfMonth = Integer.toString(mCalendar.get(Calendar.DAY_OF_MONTH));
-		String month = mounts[(mCalendar.get(Calendar.MONTH))];
-		String year = Integer.toString(mCalendar.get(Calendar.YEAR));
-		String date = dayOfMonth.concat(", ").concat(month).concat(" ").concat(year);
-		tvDate.setText(date);
+		tvDate.setText(DateTimeUtils.getFormattedDate(selectedDate, DATE_FORMAT));
 
 		getLoaderManager().restartLoader(0, null, this);
 	}
@@ -208,7 +220,7 @@ public class StatisticsFragment extends Fragment implements StatisticsView, Date
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args)
 	{
-		return new DailyStatisticsCursorLoader(getActivity(), mCalendar.getTime());
+		return new DailyStatisticsCursorLoader(getActivity(), selectedDate);
 	}
 
 	@Override
