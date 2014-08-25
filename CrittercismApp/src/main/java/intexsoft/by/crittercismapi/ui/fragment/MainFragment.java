@@ -5,19 +5,10 @@ import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.DialogInterface;
-import android.util.Log;
 import android.view.View;
-
 import android.view.ViewGroup;
 import android.view.animation.*;
 import android.widget.*;
-
-import android.widget.AdapterView;
-import android.widget.GridView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import intexsoft.by.crittercismapi.R;
 import intexsoft.by.crittercismapi.data.bean.DailyStatisticsItem;
 import intexsoft.by.crittercismapi.data.bean.sorting.SortedByCrashes;
@@ -50,9 +41,10 @@ public class MainFragment extends Fragment implements MainView, DatePickerFragme
 	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("d, MMM yyyy");
 	public static final String TAG = MainFragment.class.getSimpleName();
 	private Calendar calendar = Calendar.getInstance();
-	private boolean clickResult = true;
+	private boolean clickShortResult = true;
 	private List<DailyStatisticsItem> mDailyStatisticsItems;
 	Animation animationStart = null;
+
 
 	@ViewById
 	TextView tvDate;
@@ -130,64 +122,76 @@ public class MainFragment extends Fragment implements MainView, DatePickerFragme
 		gvAppInfo.setOnItemClickListener(new AdapterView.OnItemClickListener()
 		{
 			@Override
-			public void onItemClick(AdapterView<?> adapterView, final View view, int i, long l)
+			public void onItemClick(AdapterView<?> adapterView, final View view, final int i, long l)
 			{
-				final View fadeView = new View(getActivity());
-				fadeView.setTag("TAG_FADE_ITEM_VIEW");
-
-				RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, view.getHeight());
-				fadeView.setLayoutParams(layoutParams);
-				fadeView.setBackgroundColor(0x55000000);
-
-
-
-				Animation animationAlpha = new AlphaAnimation(0, 1);
-				animationAlpha.setDuration(200);
-                animationAlpha.setStartOffset(100);
-
-				Animation animationScale = new ScaleAnimation(0, 1, 0, 1, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-				animationScale.setDuration(300);
-
-
-				AnimationSet animationSet = new AnimationSet(true);
-				animationSet.setFillEnabled(true);
-
-				animationSet.setInterpolator(new LinearInterpolator());
-				animationSet.setDuration(300);
-
-
-				animationSet.addAnimation(animationScale);
-                animationSet.addAnimation(animationAlpha);
-
-				fadeView.startAnimation(animationSet);
-				animationSet.setAnimationListener(new Animation.AnimationListener()
+				if (((ViewGroup) view).findViewWithTag("TAG_FADE_ITEM_VIEW") == null)
 				{
-					@Override
-					public void onAnimationStart(Animation animation)
+					final View fadeView = new View(getActivity());
+					fadeView.setTag("TAG_FADE_ITEM_VIEW");
+					RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, view.getHeight());
+					fadeView.setLayoutParams(layoutParams);
+					fadeView.setBackgroundColor(0xA9FEA20F);
+
+					AnimationSet animationSet = new AnimationSet(true);
+
+					fadeView.startAnimation(getAnimationSet(animationSet));
+					getAnimationSet(animationSet).setAnimationListener(new Animation.AnimationListener()
 					{
+						@Override
+						public void onAnimationStart(Animation animation)
+						{
 
-					}
+						}
 
-					@Override
-					public void onAnimationEnd(Animation animation)
-					{
-                        fadeView.setAnimation(null);
-                        Log.d("**", "End "+animation.getDuration());
-                        ((ViewGroup) view).removeView(fadeView);
-					}
+						@Override
+						public void onAnimationEnd(Animation animation)
+						{
+							removeView(view, fadeView, i);
+						}
 
-					@Override
-					public void onAnimationRepeat(Animation animation)
-					{
+						@Override
+						public void onAnimationRepeat(Animation animation)
+						{
 
-					}
-				});
-
-				((ViewGroup) view).addView(fadeView, 0);
-//				Launcher.showAppDetailsErrorActivity(getActivity(), mDailyStatisticsItems.get(i).getApplication().getRemoteId(),
-//				mDailyStatisticsItems.get(i).getApplication().getName());
+						}
+					});
+					((ViewGroup) view).addView(fadeView, 0);
+				}
 			}
 		});
+	}
+
+	@UiThread
+	void removeView(View view, View fadeView, int i)
+	{
+		((ViewGroup) view).removeView(fadeView);
+//		Launcher.showAppDetailsErrorActivity(getActivity(), mDailyStatisticsItems.get(i).getApplication().getRemoteId(),
+//				mDailyStatisticsItems.get(i).getApplication().getName());
+	}
+
+	private AnimationSet getAnimationSet(AnimationSet animationSet)
+	{
+		Animation animationScale = new ScaleAnimation(0, 1, 0, 1, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+		animationScale.setDuration(100);
+
+		Animation animationAlpha = new AlphaAnimation(0, 1);
+		animationAlpha.setDuration(100);
+		animationAlpha.setStartOffset(50);
+
+		Animation animationAlphaEnd = new AlphaAnimation(1, 0);
+		animationAlphaEnd.setDuration(700);
+		animationAlphaEnd.setStartOffset(150);
+
+		animationSet.setFillEnabled(true);
+
+		animationSet.setInterpolator(new LinearInterpolator());
+		animationSet.setDuration(850);
+
+		animationSet.addAnimation(animationScale);
+		animationSet.addAnimation(animationAlpha);
+		animationSet.addAnimation(animationAlphaEnd);
+
+		return animationSet;
 	}
 
 	@Override
@@ -296,17 +300,17 @@ public class MainFragment extends Fragment implements MainView, DatePickerFragme
 
 		if (mDailyStatisticsItems != null)
 		{
-			if (clickResult)
+			if (clickShortResult)
 			{
 				Collections.sort(mDailyStatisticsItems, sorting);
 				setNewAdapter();
-				clickResult = false;
+				clickShortResult = false;
 			}
 			else
 			{
 				Collections.reverse(mDailyStatisticsItems);
 				setNewAdapter();
-				clickResult = true;
+				clickShortResult = true;
 			}
 		}
 	}

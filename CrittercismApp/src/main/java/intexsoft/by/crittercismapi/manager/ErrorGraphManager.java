@@ -67,7 +67,7 @@ public class ErrorGraphManager
 				dailyItemProcessor.processItem(appErrorDetailsMap, setTime(graphResponse, calendar), crashesCountC[step], appId);
 				step++;
 			}
-			while (calendar.getTimeInMillis() < endDate.getTime());
+			while (calendar.getTime().before(endDate));
 
 		}
 		catch (ParseException e)
@@ -76,12 +76,10 @@ public class ErrorGraphManager
 		}
 	}
 
-	Date setTime(GraphResponse graphResponse, Calendar calendar)
+	private Date setTime(GraphResponse graphResponse, Calendar calendar)
 	{
 		calendar.add(Calendar.SECOND, graphResponse.getData().getInterval());
-		Date date = new Date();
-		date.setTime(calendar.getTimeInMillis());
-		return date;
+		return calendar.getTime();
 	}
 
 
