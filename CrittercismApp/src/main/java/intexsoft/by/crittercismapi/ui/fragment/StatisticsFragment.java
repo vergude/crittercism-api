@@ -148,7 +148,7 @@ public class StatisticsFragment extends Fragment implements StatisticsView, Date
 
 	public void setNewDate()
 	{
-		String[]mounts=getResources().getStringArray(R.array.year);
+		String[]mounts = getResources().getStringArray(R.array.year);
 		String dayOfMonth = Integer.toString(mCalendar.get(Calendar.DAY_OF_MONTH));
 		String month = mounts[(mCalendar.get(Calendar.MONTH))];
 		String year = Integer.toString(mCalendar.get(Calendar.YEAR));
