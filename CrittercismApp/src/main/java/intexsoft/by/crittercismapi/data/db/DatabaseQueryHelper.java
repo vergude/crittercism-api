@@ -6,9 +6,6 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
-
-import intexsoft.by.crittercismapi.data.bean.CrittercismApp;
-import intexsoft.by.crittercismapi.data.bean.DailyStatisticsItem;
 import intexsoft.by.crittercismapi.utils.ThreadUtils;
 import nl.qbusict.cupboard.CupboardFactory;
 import org.androidannotations.annotations.EBean;
@@ -45,7 +42,7 @@ public class DatabaseQueryHelper
 		try {
             String table = "DailyStatisticsItem as DS inner join CrittercismApp as CA on DS.app_remote_id = CA.remote_id ";
             String columns[] = { "DS._id as _id","DS.crashes_count as crashes_count", "DS.app_loads_count as app_loads_count",
-                    "DS.date as date, CA.name as name" };
+                    "DS.date as date, CA.name as name", "DS.app_remote_id as app_remote_id" };
 
 			Cursor result =  getReadableDb().query(table, columns, selection, selectionArgs, null, null, sortOrder);
 			return result;

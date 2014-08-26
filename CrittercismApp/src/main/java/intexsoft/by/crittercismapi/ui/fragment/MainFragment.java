@@ -2,23 +2,13 @@ package intexsoft.by.crittercismapi.ui.fragment;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.AnimationUtils;
-import android.view.animation.ScaleAnimation;
-import android.widget.AdapterView;
-import android.widget.FrameLayout;
-import android.widget.GridView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.view.animation.*;
+import android.widget.*;
 import intexsoft.by.crittercismapi.R;
 import intexsoft.by.crittercismapi.data.bean.DailyStatisticsItem;
 import intexsoft.by.crittercismapi.data.bean.sorting.SortedByCrashes;
@@ -26,19 +16,15 @@ import intexsoft.by.crittercismapi.data.bean.sorting.SortedByErrors;
 import intexsoft.by.crittercismapi.data.bean.sorting.SortedByLoads;
 import intexsoft.by.crittercismapi.data.bean.sorting.SortedByName;
 import intexsoft.by.crittercismapi.data.facade.RemoteFacade;
-import intexsoft.by.crittercismapi.event.OnSwipeTouchEvent;
 import intexsoft.by.crittercismapi.ui.adapters.AppInfoAdapter;
 import intexsoft.by.crittercismapi.ui.presenter.MainPresenter;
 import intexsoft.by.crittercismapi.ui.presenter.MainPresenterImpl;
 import intexsoft.by.crittercismapi.ui.view.MainView;
+import intexsoft.by.crittercismapi.ui.view.animation.EndAnimationListener;
+import intexsoft.by.crittercismapi.ui.view.animation.MyAnimationSet;
 import intexsoft.by.crittercismapi.utils.DateTimeUtils;
 import intexsoft.by.crittercismapi.utils.Launcher;
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.UiThread;
-import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.*;
 
 import java.util.Calendar;
 import java.util.Collections;
@@ -58,7 +44,8 @@ public class MainFragment extends Fragment implements MainView, DatePickerFragme
 	private Calendar calendar = Calendar.getInstance();
 	private boolean clickShortResult = true;
 	private List<DailyStatisticsItem> mDailyStatisticsItems;
-	Animation animationStart = null;
+	private MyAnimationSet myAnimationSet;
+	private boolean clickResult = false;
 
 
 	@ViewById
@@ -79,33 +66,16 @@ public class MainFragment extends Fragment implements MainView, DatePickerFragme
 	@Bean
 	RemoteFacade remoteFacade;
 
-	private final OnSwipeTouchEvent onSwipeTouchEvent = new OnSwipeTouchEvent(getActivity())
-	{
-		@Override
-		public void onSwipeLeft()
-		{
-			calendar.add(Calendar.DAY_OF_MONTH, -1);
-			setNewDate();
-			tvDate.startAnimation(animationStart);
-			progressContainer.setVisibility(View.VISIBLE);
-			hideProgressBar();
-
-		}
-
-		@Override
-		public void onSwipeRight()
-		{
-			calendar.add(Calendar.DAY_OF_MONTH, 1);
-			setNewDate();
-			tvDate.startAnimation(animationStart);
-			progressContainer.setVisibility(View.VISIBLE);
-			hideProgressBar();
-		}
-	};
-
 	public static MainFragment build()
 	{
 		return MainFragment_.builder().build();
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState)
+	{
+		super.onCreate(savedInstanceState);
+		myAnimationSet = new MyAnimationSet(true);
 	}
 
 	@Override
@@ -123,14 +93,6 @@ public class MainFragment extends Fragment implements MainView, DatePickerFragme
 	}
 
 	@AfterViews
-	void swipeDate()
-	{
-		animationStart = AnimationUtils.loadAnimation(getActivity(), R.anim.scale);
-		idFragmentLayout.setOnTouchListener(onSwipeTouchEvent);
-		gvAppInfo.setOnTouchListener(onSwipeTouchEvent);
-	}
-
-	@AfterViews
 	void initViews()
 	{
 		presenter.init(this);
@@ -140,75 +102,27 @@ public class MainFragment extends Fragment implements MainView, DatePickerFragme
 					@Override
 					public void onItemClick(AdapterView<?> adapterView, final View view, final int i, long l)
 					{
-						if (((ViewGroup) view).findViewWithTag("TAG_FADE_ITEM_VIEW") == null)
+						if (((ViewGroup) view).findViewById(R.id.animationView).getVisibility() == View.INVISIBLE && !clickResult)
 						{
-							final View fadeView = new View(getActivity());
-							fadeView.setTag("TAG_FADE_ITEM_VIEW");
-							RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, view.getHeight());
-							fadeView.setLayoutParams(layoutParams);
-							fadeView.setBackgroundColor(0x99FEA20F);
-
-							AnimationSet animationSet = new AnimationSet(true);
-
-							fadeView.startAnimation(getAnimationSet(animationSet));
-							getAnimationSet(animationSet).setAnimationListener(
-									new Animation.AnimationListener()
+							clickResult = true;
+							((ViewGroup) view).findViewById(R.id.animationView).startAnimation(myAnimationSet);
+							myAnimationSet.setAnimationListener(
+									new EndAnimationListener()
 									{
-										@Override
-										public void onAnimationStart(Animation animation)
-										{
-
-										}
-
 										@Override
 										public void onAnimationEnd(Animation animation)
 										{
-											removeView(view, fadeView, i);
+											((ViewGroup) view).findViewById(R.id.animationView).setVisibility(View.INVISIBLE);
+											Launcher.showAppDetailsErrorActivity(getActivity(), mDailyStatisticsItems.get(i).getApplication().getRemoteId(),
+													mDailyStatisticsItems.get(i).getApplication().getName());
+											clickResult = false;
 										}
-
-										@Override
-										public void onAnimationRepeat(Animation animation)
-										{
-
-										}
-									});
-							((ViewGroup) view).addView(fadeView, 0);
+									}
+							);
+							((ViewGroup) view).findViewById(R.id.animationView).setVisibility(View.VISIBLE);
 						}
 					}
 				});
-	}
-
-	@UiThread
-	void removeView(View view, View fadeView, int i)
-	{
-		((ViewGroup) view).removeView(fadeView);
-		Launcher.showAppDetailsErrorActivity(getActivity(), mDailyStatisticsItems.get(i).getApplication().getRemoteId(),
-			mDailyStatisticsItems.get(i).getApplication().getName());
-	}
-
-	private AnimationSet getAnimationSet(AnimationSet animationSet)
-	{
-		Animation animationScale = new ScaleAnimation(0, 1, 0, 1, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-		animationScale.setDuration(300);
-		animationScale.setInterpolator(new AccelerateInterpolator());
-
-		Animation animationAlpha = new AlphaAnimation(0, 1);
-		animationAlpha.setDuration(300);
-		animationAlpha.setStartOffset(50);
-		animationAlpha.setInterpolator(new AccelerateInterpolator());
-
-		Animation animationAlphaEnd = new AlphaAnimation(1, 0);
-		animationAlphaEnd.setDuration(450);
-		animationAlphaEnd.setStartOffset(300);
-		animationAlphaEnd.setInterpolator(new AccelerateInterpolator());
-
-
-
-		animationSet.addAnimation(animationScale);
-		animationSet.addAnimation(animationAlpha);
-		animationSet.addAnimation(animationAlphaEnd);
-
-		return animationSet;
 	}
 
 	@Override
@@ -220,28 +134,6 @@ public class MainFragment extends Fragment implements MainView, DatePickerFragme
 	@AfterViews
 	public void setCurrentDate()
 	{
-		setNewDate();
-	}
-
-	@Click(R.id.tvDate)
-	public void setDateFromCalendar()
-	{
-		DialogFragment datePickerFragment = new DatePickerFragment();
-		datePickerFragment.setTargetFragment(this, 0);
-		datePickerFragment.show(getFragmentManager(), "datePicker");
-	}
-
-	@Click(R.id.ibPreviousDay)
-	public void previousDay()
-	{
-		calendar.add(Calendar.DAY_OF_MONTH, -1);
-		setNewDate();
-	}
-
-	@Click(R.id.ibNextDay)
-	public void nextDay()
-	{
-		calendar.add(Calendar.DAY_OF_MONTH, 1);
 		setNewDate();
 	}
 
