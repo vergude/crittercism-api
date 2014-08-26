@@ -7,8 +7,7 @@ import android.os.Bundle;
 import android.widget.DatePicker;
 
 import java.util.Calendar;
-
-import intexsoft.by.crittercismapi.R;
+import java.util.Date;
 
 /**
  * Created by vadim on 26.07.2014.
@@ -22,7 +21,10 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 	public Dialog onCreateDialog(Bundle savedInstanceState)
 	{
 		fragmentDatePickerInterface = (FragmentDatePickerInterface) getTargetFragment();
-		final Calendar calendar = fragmentDatePickerInterface.getCalendar();
+
+		final Calendar calendar = Calendar.getInstance();
+		calendar.setTime(fragmentDatePickerInterface.getCurrentDate());
+
 		int year = calendar.get(Calendar.YEAR);
 		int month = calendar.get(Calendar.MONTH);
 		int day = calendar.get(Calendar.DAY_OF_MONTH);
@@ -30,21 +32,20 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 		return new DatePickerDialog(getActivity(), this, year, month, day);
 	}
 
+	@Override
 	public void onDateSet(DatePicker view, int intYear, int intMonth, int intDay)
 	{
-		String[] mounts = getResources().getStringArray(R.array.year);
-		String strDay = Integer.toString(intDay);
-		String strMonth = mounts[intMonth];
-		String strYear = Integer.toString(intYear);
-		String date = strDay.concat(", ").concat(strMonth).concat(" ").concat(strYear);
-		fragmentDatePickerInterface.setDate(date);
+		final Calendar calendar = Calendar.getInstance();
+		calendar.setTime(fragmentDatePickerInterface.getCurrentDate());
+		calendar.set(intYear, intMonth, intDay);
 
+		fragmentDatePickerInterface.setSelectedDate(calendar.getTime());
 	}
 
 	public interface FragmentDatePickerInterface
 	{
-		Calendar getCalendar();
+		Date getCurrentDate();
 
-		void setDate(String date);
+		void setSelectedDate(Date date);
 	}
 }

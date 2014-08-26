@@ -7,8 +7,18 @@ import android.app.Fragment;
 import android.content.DialogInterface;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.*;
-import android.widget.*;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.AnimationUtils;
+import android.view.animation.ScaleAnimation;
+import android.widget.AdapterView;
+import android.widget.FrameLayout;
+import android.widget.GridView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import intexsoft.by.crittercismapi.R;
 import intexsoft.by.crittercismapi.data.bean.DailyStatisticsItem;
 import intexsoft.by.crittercismapi.data.bean.sorting.SortedByCrashes;
@@ -21,11 +31,15 @@ import intexsoft.by.crittercismapi.ui.adapters.AppInfoAdapter;
 import intexsoft.by.crittercismapi.ui.presenter.MainPresenter;
 import intexsoft.by.crittercismapi.ui.presenter.MainPresenterImpl;
 import intexsoft.by.crittercismapi.ui.view.MainView;
+import intexsoft.by.crittercismapi.utils.DateTimeUtils;
 import intexsoft.by.crittercismapi.utils.Launcher;
-import org.androidannotations.annotations.*;
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.UiThread;
+import org.androidannotations.annotations.ViewById;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -38,7 +52,8 @@ import java.util.List;
 @EFragment(R.layout.fragment_main)
 public class MainFragment extends Fragment implements MainView, DatePickerFragment.FragmentDatePickerInterface
 {
-	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("d, MMM yyyy");
+	private static final String DATE_FORMAT = "d, MMM yyyy";
+
 	public static final String TAG = MainFragment.class.getSimpleName();
 	private Calendar calendar = Calendar.getInstance();
 	private boolean clickShortResult = true;
@@ -119,73 +134,75 @@ public class MainFragment extends Fragment implements MainView, DatePickerFragme
 	void initViews()
 	{
 		presenter.init(this);
-		gvAppInfo.setOnItemClickListener(new AdapterView.OnItemClickListener()
-		{
-			@Override
-			public void onItemClick(AdapterView<?> adapterView, final View view, final int i, long l)
-			{
-				if (((ViewGroup) view).findViewWithTag("TAG_FADE_ITEM_VIEW") == null)
+		gvAppInfo.setOnItemClickListener(
+				new AdapterView.OnItemClickListener()
 				{
-					final View fadeView = new View(getActivity());
-					fadeView.setTag("TAG_FADE_ITEM_VIEW");
-					RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, view.getHeight());
-					fadeView.setLayoutParams(layoutParams);
-					fadeView.setBackgroundColor(0xA9FEA20F);
-
-					AnimationSet animationSet = new AnimationSet(true);
-
-					fadeView.startAnimation(getAnimationSet(animationSet));
-					getAnimationSet(animationSet).setAnimationListener(new Animation.AnimationListener()
+					@Override
+					public void onItemClick(AdapterView<?> adapterView, final View view, final int i, long l)
 					{
-						@Override
-						public void onAnimationStart(Animation animation)
+						if (((ViewGroup) view).findViewWithTag("TAG_FADE_ITEM_VIEW") == null)
 						{
+							final View fadeView = new View(getActivity());
+							fadeView.setTag("TAG_FADE_ITEM_VIEW");
+							RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, view.getHeight());
+							fadeView.setLayoutParams(layoutParams);
+							fadeView.setBackgroundColor(0x99FEA20F);
 
+							AnimationSet animationSet = new AnimationSet(true);
+
+							fadeView.startAnimation(getAnimationSet(animationSet));
+							getAnimationSet(animationSet).setAnimationListener(
+									new Animation.AnimationListener()
+									{
+										@Override
+										public void onAnimationStart(Animation animation)
+										{
+
+										}
+
+										@Override
+										public void onAnimationEnd(Animation animation)
+										{
+											removeView(view, fadeView, i);
+										}
+
+										@Override
+										public void onAnimationRepeat(Animation animation)
+										{
+
+										}
+									});
+							((ViewGroup) view).addView(fadeView, 0);
 						}
-
-						@Override
-						public void onAnimationEnd(Animation animation)
-						{
-							removeView(view, fadeView, i);
-						}
-
-						@Override
-						public void onAnimationRepeat(Animation animation)
-						{
-
-						}
-					});
-					((ViewGroup) view).addView(fadeView, 0);
-				}
-			}
-		});
+					}
+				});
 	}
 
 	@UiThread
 	void removeView(View view, View fadeView, int i)
 	{
 		((ViewGroup) view).removeView(fadeView);
-//		Launcher.showAppDetailsErrorActivity(getActivity(), mDailyStatisticsItems.get(i).getApplication().getRemoteId(),
-//				mDailyStatisticsItems.get(i).getApplication().getName());
+		Launcher.showAppDetailsErrorActivity(getActivity(), mDailyStatisticsItems.get(i).getApplication().getRemoteId(),
+			mDailyStatisticsItems.get(i).getApplication().getName());
 	}
 
 	private AnimationSet getAnimationSet(AnimationSet animationSet)
 	{
 		Animation animationScale = new ScaleAnimation(0, 1, 0, 1, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-		animationScale.setDuration(100);
+		animationScale.setDuration(300);
+		animationScale.setInterpolator(new AccelerateInterpolator());
 
 		Animation animationAlpha = new AlphaAnimation(0, 1);
-		animationAlpha.setDuration(100);
+		animationAlpha.setDuration(300);
 		animationAlpha.setStartOffset(50);
+		animationAlpha.setInterpolator(new AccelerateInterpolator());
 
 		Animation animationAlphaEnd = new AlphaAnimation(1, 0);
-		animationAlphaEnd.setDuration(700);
-		animationAlphaEnd.setStartOffset(150);
+		animationAlphaEnd.setDuration(450);
+		animationAlphaEnd.setStartOffset(300);
+		animationAlphaEnd.setInterpolator(new AccelerateInterpolator());
 
-		animationSet.setFillEnabled(true);
 
-		animationSet.setInterpolator(new LinearInterpolator());
-		animationSet.setDuration(850);
 
 		animationSet.addAnimation(animationScale);
 		animationSet.addAnimation(animationAlpha);
@@ -229,29 +246,16 @@ public class MainFragment extends Fragment implements MainView, DatePickerFragme
 	}
 
 	@Override
-	public Calendar getCalendar()
+	public Date getCurrentDate()
 	{
-		return calendar;
+		return calendar.getTime();
 	}
 
 	@Override
-	public void setDate(String date)
-	{
-		tvDate.setText(date);
-		parseNewDate(date);
-	}
-
-	public void parseNewDate(String date)
-	{
-		try
+	public void setSelectedDate(Date date)
 		{
-			Date parsedDate = DATE_FORMAT.parse(date);
-			calendar.setTime(parsedDate);
-		}
-		catch (ParseException e)
-		{
-			Toast.makeText(getActivity(), getResources().getString(R.string.error_parse_date), Toast.LENGTH_LONG).show();
-		}
+		tvDate.setText(DateTimeUtils.getFormattedDate(date, DATE_FORMAT));
+		calendar.setTime(date);
 	}
 
 	public void setNewDate()

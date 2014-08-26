@@ -76,7 +76,7 @@ public class DailyStatisticsItem extends Entity
 
 	public double getErrorsPercent()
 	{
-		return ((double) crashesCount / appLoadsCount);
+		return calculateErrorsPercent(crashesCount, appLoadsCount);
 	}
 
 	public String getAppRemoteId()
@@ -98,4 +98,30 @@ public class DailyStatisticsItem extends Entity
 	{
 		this.date = date;
 	}
+
+    public String getFormatedCrashesPercent()
+    {
+        return getFormatedCrashesPercent(getErrorsPercent());
+    }
+
+    public static String getFormatedCrashesPercent(double errorsPercent)
+    {
+        return String.format("%.3f", errorsPercent) + "%";
+    }
+
+    public static String getFormatedCrashesPercent(int crashesCount, int appLoadsCount)
+    {
+        return getFormatedCrashesPercent(calculateErrorsPercent(crashesCount, appLoadsCount));
+    }
+
+    private static double calculateErrorsPercent(int crashesCount, int appLoadsCount)
+    {
+        if (appLoadsCount == 0)
+        {
+            return 0;
+        }
+        return ((double) crashesCount / appLoadsCount);
+    }
+
+
 }

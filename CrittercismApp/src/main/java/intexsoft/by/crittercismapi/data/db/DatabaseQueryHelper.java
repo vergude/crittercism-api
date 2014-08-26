@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+
+import intexsoft.by.crittercismapi.data.bean.CrittercismApp;
 import intexsoft.by.crittercismapi.data.bean.DailyStatisticsItem;
 import intexsoft.by.crittercismapi.utils.ThreadUtils;
 import nl.qbusict.cupboard.CupboardFactory;
@@ -41,9 +43,11 @@ public class DatabaseQueryHelper
 		ThreadUtils.checkAndThrowIfUIThread();
 
 		try {
-			Cursor result = CupboardFactory.cupboard().withDatabase(getReadableDb()).query(DailyStatisticsItem.class).
-					withProjection(projection).withSelection(selection, selectionArgs).
-					orderBy(sortOrder).getCursor();
+            String table = "DailyStatisticsItem as DS inner join CrittercismApp as CA on DS.app_remote_id = CA.remote_id ";
+            String columns[] = { "DS._id as _id","DS.crashes_count as crashes_count", "DS.app_loads_count as app_loads_count",
+                    "DS.date as date, CA.name as name" };
+
+			Cursor result =  getReadableDb().query(table, columns, selection, selectionArgs, null, null, sortOrder);
 			return result;
 		} catch (SQLException e) {
 			handleException(e);

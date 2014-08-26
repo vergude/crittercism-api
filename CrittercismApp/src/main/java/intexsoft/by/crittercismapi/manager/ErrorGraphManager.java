@@ -58,16 +58,23 @@ public class ErrorGraphManager
 		{
 			Date startDate = dateFormat.parse(graphResponse.getData().getStart());
 			Date endDate = dateFormat.parse(graphResponse.getData().getEnd());
-			Calendar calendar = Calendar.getInstance();
-			calendar.setTime(startDate);
+
+			Calendar startDateCalendar = Calendar.getInstance();
+			startDateCalendar.setTime(startDate);
+
+			//We don't need the data from last night
+			Calendar endDateCalendar = Calendar.getInstance();
+			endDateCalendar.setTime(endDate);
+			endDateCalendar.add(Calendar.DATE, -1);
+
 			int step = 0;
 
 			do
 			{
-				dailyItemProcessor.processItem(appErrorDetailsMap, setTime(graphResponse, calendar), crashesCountC[step], appId);
+				dailyItemProcessor.processItem(appErrorDetailsMap, setTime(graphResponse, startDateCalendar), crashesCountC[step], appId);
 				step++;
 			}
-			while (calendar.getTime().before(endDate));
+			while (startDateCalendar.getTime().before(endDateCalendar.getTime()));
 
 		}
 		catch (ParseException e)
