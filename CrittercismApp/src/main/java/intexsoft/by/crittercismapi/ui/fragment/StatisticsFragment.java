@@ -190,7 +190,9 @@ public class StatisticsFragment extends Fragment implements StatisticsView, Date
 	public void onResume()
 	{
 		super.onResume();
+
 		progressContainer.setVisibility(View.VISIBLE);
+
 		getLoaderManager().initLoader(0, null, this);
 	}
 
@@ -336,6 +338,7 @@ public class StatisticsFragment extends Fragment implements StatisticsView, Date
 	public void onLoadFinished(Loader loader, Cursor data)
 	{
 		adapter.swapCursor(data);
+
 		hideProgressBar();
 	}
 

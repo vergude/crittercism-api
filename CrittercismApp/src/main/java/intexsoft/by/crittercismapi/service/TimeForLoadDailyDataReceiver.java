@@ -8,12 +8,13 @@ import android.widget.Toast;
 /**
  * Created by Евгений on 29.07.2014.
  */
-public class Receiver extends BroadcastReceiver
+public class TimeForLoadDailyDataReceiver extends BroadcastReceiver
 {
 
 	@Override
 	public void onReceive(Context context, Intent intent)
 	{
+		ErrorGraphService.getAndSaveDailyStatistics();
 		Toast.makeText(context, "30 секунд", Toast.LENGTH_LONG).show();
 	}
 }

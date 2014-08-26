@@ -2,6 +2,7 @@ package intexsoft.by.crittercismapi;
 
 import android.app.Application;
 import intexsoft.by.crittercismapi.data.CupboardConfigurator;
+import intexsoft.by.crittercismapi.receiver.DeviceRebootReceiver;
 import org.androidannotations.annotations.EApplication;
 
 /**
@@ -22,7 +23,9 @@ public class CrittercismApplication extends Application
     {
         super.onCreate();
         application = this;
-    }
+
+		DeviceRebootReceiver.scheduleAlarms(this);
+	}
 
     public static Application getApplication()
     {
