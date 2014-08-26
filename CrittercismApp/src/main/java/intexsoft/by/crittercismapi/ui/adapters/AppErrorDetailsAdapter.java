@@ -50,7 +50,7 @@ public class AppErrorDetailsAdapter extends ArrayAdapter
 		viewHolder.tvAppDate.setText(simpleDateFormat.format(dailyStatisticsItems.getDate()).toString());
 		viewHolder.tvCrashesCount.setText(Integer.toString(dailyStatisticsItems.getCrashesCount()));
 		viewHolder.tvLoadsCount.setText(Integer.toString(dailyStatisticsItems.getAppLoadsCount()));
-		viewHolder.tvAppError.setText((String.format("%.3f", dailyStatisticsItems.getErrorsPercent())) + "%");
+		viewHolder.tvAppError.setText(dailyStatisticsItems.getFormatedCrashesPercent());
 
 		return convertView;
 	}

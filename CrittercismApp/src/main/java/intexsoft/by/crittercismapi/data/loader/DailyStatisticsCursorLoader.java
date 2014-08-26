@@ -18,12 +18,14 @@ public class DailyStatisticsCursorLoader extends CursorLoader
 	private DatabaseQueryHelper queryHelper;
 
 	private Date date;
+    private String orderBy;
 
-	public DailyStatisticsCursorLoader(Context context, Date date)
+	public DailyStatisticsCursorLoader(Context context, Date date, String sortColumnName)
 	{
 		super(context);
 
 		this.date = date;
+        this.orderBy = sortColumnName;
 		this.queryHelper = DatabaseQueryHelper_.getInstance_(context);
 	}
 
@@ -37,7 +39,7 @@ public class DailyStatisticsCursorLoader extends CursorLoader
 				null,
 				DailyStatisticsItem.COLUMN_DATE + " >= ? and " + DailyStatisticsItem.COLUMN_DATE +" < ? " ,
 				new String[]{startDate, endDate},
-				null);
+                orderBy);
 
 		return cursor;
 	}

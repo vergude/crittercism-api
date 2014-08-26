@@ -11,6 +11,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import intexsoft.by.crittercismapi.R;
+import intexsoft.by.crittercismapi.data.bean.CrittercismApp;
 import intexsoft.by.crittercismapi.data.bean.DailyStatisticsItem;
 import intexsoft.by.crittercismapi.data.bean.sorting.SortedByCrashes;
 import intexsoft.by.crittercismapi.data.bean.sorting.SortedByErrors;
@@ -58,6 +59,9 @@ public class StatisticsFragment extends Fragment implements StatisticsView, Date
 
 
 	private DailyStatisticsAdapter adapter;
+
+    private String sortColumnName;
+    private String sortOrder;
 
 	public static StatisticsFragment build()
 	{
@@ -175,40 +179,44 @@ public class StatisticsFragment extends Fragment implements StatisticsView, Date
 	@Click(R.id.tvHeadAppName)
 	public void sortAppNAme()
 	{
-		startSort(new SortedByName());
+		startSort(CrittercismApp.COLUMN_NAME);
 	}
 
 	@Click(R.id.tvHeadCrashes)
 	public void sortAppCrashes()
 	{
-		startSort(new SortedByCrashes());
+		startSort(DailyStatisticsItem.COLUMN_CRASHES_COUNT);
 	}
 
 	@Click(R.id.tvHeadLoads)
 	public void sortAppLoads()
 	{
-		startSort(new SortedByLoads());
+		startSort(DailyStatisticsItem.COLUMN_APP_LOADS_COUNT);
 	}
 
 	@Click(R.id.tvHeadAppErrors)
 	public void sortAppErrors()
 	{
-		startSort(new SortedByErrors());
+		startSort(DailyStatisticsItem.COLUMN_APP_LOADS_COUNT);
 	}
 
-	public void startSort(java.util.Comparator<? super DailyStatisticsItem> sorting){
-//        if(mDailyStatisticsItems!=null)
-//        {
-//            Collections.sort(mDailyStatisticsItems, sorting);
-//            //setNewAdapter();
-//        }
+	public void startSort(String columnName)
+    {
+        if (columnName.equals(sortColumnName) || sortColumnName == null)
+        {
+            sortOrder = ("ASC".equals(sortOrder)) ? "DESC" : "ASC";
+        }
+        sortColumnName = columnName;
+
+        getLoaderManager().restartLoader(0, null, this);
 	}
 
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args)
 	{
-		return new DailyStatisticsCursorLoader(getActivity(), mCalendar.getTime());
+        String sortBy = (sortColumnName != null) ? sortColumnName + " " + sortOrder : null;
+		return new DailyStatisticsCursorLoader(getActivity(), mCalendar.getTime(), sortBy);
 	}
 
 	@Override

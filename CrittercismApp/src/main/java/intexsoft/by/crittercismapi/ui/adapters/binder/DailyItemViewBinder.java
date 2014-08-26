@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import intexsoft.by.crittercismapi.R;
+import intexsoft.by.crittercismapi.data.bean.CrittercismApp;
 import intexsoft.by.crittercismapi.data.bean.DailyStatisticsItem;
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
@@ -53,12 +54,10 @@ public class DailyItemViewBinder extends RelativeLayout {
 		int crashesCount = data.getInt(data.getColumnIndex(DailyStatisticsItem.COLUMN_CRASHES_COUNT));
 		int appLoadsCount = data.getInt(data.getColumnIndex(DailyStatisticsItem.COLUMN_APP_LOADS_COUNT));
 
-		tvAppName.setText(data.getString(data.getColumnIndex(DailyStatisticsItem.COLUMN_APP_REMOTE_ID)));
+		tvAppName.setText(data.getString(data.getColumnIndex(CrittercismApp.COLUMN_NAME)));
 		tvCrashesCount.setText(String.valueOf(crashesCount));
 		tvAppLoadsCount.setText(String.valueOf(appLoadsCount));
-
-		String date = (new Date(data.getLong(data.getColumnIndex(DailyStatisticsItem.COLUMN_DATE)))).toString();
-		tvAppErrorPersent.setText(date);
+		tvAppErrorPersent.setText(DailyStatisticsItem.getFormatedCrashesPercent(crashesCount, appLoadsCount));
 
         return this;
     }
