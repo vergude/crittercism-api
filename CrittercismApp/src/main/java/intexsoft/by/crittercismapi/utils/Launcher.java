@@ -25,7 +25,7 @@ public final class Launcher
 		MainActivity_.intent(context).start();
 	}
 
-	public static void showAppDetailsErrorActivity(Context context, String appId, String appName)
+	public static void showAppDetailsErrorActivity(final Context context, final String appId, final String appName)
 	{
 		View fadeView = new View(context);
 		fadeView.setTag("TAG_FADE_VIEW");
@@ -36,6 +36,28 @@ public final class Launcher
 
 		Animation animation = new AlphaAnimation(0, 1);
 		animation.setDuration(200);
+		animation.setAnimationListener(new Animation.AnimationListener()
+									   {
+										   @Override
+										   public void onAnimationStart(Animation animation)
+										   {
+
+										   }
+
+										   @Override
+										   public void onAnimationEnd(Animation animation)
+										   {
+											   AppDetailsErrorActivity_.intent(context).appId(appId).appName(appName).start();
+
+											   ((Activity)context).overridePendingTransition(R.anim.slide_left_in, R.anim.empty_animation);
+										   }
+
+										   @Override
+										   public void onAnimationRepeat(Animation animation)
+										   {
+
+										   }
+									   });
 
 		fadeView.startAnimation(animation);
 		ViewGroup relativeLayout = (ViewGroup) ((Activity)context).getWindow().getDecorView();
@@ -43,9 +65,7 @@ public final class Launcher
 		fadeView.setClickable(true);
 		fadeView.bringToFront();
 
-		AppDetailsErrorActivity_.intent(context).appId(appId).appName(appName).start();
 
-		((Activity)context).overridePendingTransition(R.anim.slide_left_in, R.anim.empty_animation);
 	}
 
 	public static void showLoginActivity(Context context, boolean isFromLogout)
