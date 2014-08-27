@@ -80,10 +80,6 @@ public class ErrorGraphService extends IntentService
 		List<DailyStatisticsItem> items = remoteFacade.getErrorGraphAllApps(Constants.DURATION_ONE_DAY);
 
 		persistenceFacade.saveDailyStatisticsItems(items);
-
-		DailyStatisticsLoadedEvent event = new DailyStatisticsLoadedEvent();
-
-		EventObserver.sendEvent(getContext(), event);
 	}
 
 	@ServiceAction(Constants.Action.REQUEST_GET_APP_DETAILS_ERROR)
