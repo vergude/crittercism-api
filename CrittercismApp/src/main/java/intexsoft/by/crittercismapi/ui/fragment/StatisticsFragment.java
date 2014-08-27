@@ -311,7 +311,7 @@ public class StatisticsFragment extends Fragment implements StatisticsView, Date
 	@Click(R.id.tvHeadAppErrors)
 	public void sortAppErrors()
 	{
-		startSort(DailyStatisticsItem.COLUMN_APP_LOADS_COUNT);
+		startSort(DailyStatisticsItem.COLUMN_CRASHES_PERCENT);
 	}
 
 	public void startSort(String columnName)

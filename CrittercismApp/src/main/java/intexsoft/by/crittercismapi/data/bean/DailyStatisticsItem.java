@@ -15,6 +15,7 @@ public class DailyStatisticsItem extends Entity
 	public static final String COLUMN_CRASHES_COUNT = "crashes_count";
 	public static final String COLUMN_APP_LOADS_COUNT = "app_loads_count";
 	public static final String COLUMN_DATE = "date";
+	public static final String COLUMN_CRASHES_PERCENT = "crashes_percent";
 
 	@Ignore
 	private CrittercismApp application;

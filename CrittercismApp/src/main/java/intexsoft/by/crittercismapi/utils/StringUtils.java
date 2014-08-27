@@ -21,4 +21,5 @@ public final class StringUtils
 	{
 		return value == null || EMPTY.equals(value);
 	}
+
 }

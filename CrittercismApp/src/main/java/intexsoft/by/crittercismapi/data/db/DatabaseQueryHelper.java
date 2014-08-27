@@ -42,7 +42,8 @@ public class DatabaseQueryHelper
 		try {
             String table = "DailyStatisticsItem as DS inner join CrittercismApp as CA on DS.app_remote_id = CA.remote_id ";
             String columns[] = { "DS._id as _id","DS.crashes_count as crashes_count", "DS.app_loads_count as app_loads_count",
-                    "DS.date as date, CA.name as name", "DS.app_remote_id as app_remote_id" };
+                    "DS.date as date, CA.name as name", "DS.app_remote_id as app_remote_id",
+					"CAST (crashes_count AS REAL)/(CAST (app_loads_count AS REAL)) as crashes_percent" };
 
 			Cursor result =  getReadableDb().query(table, columns, selection, selectionArgs, null, null, sortOrder);
 			return result;

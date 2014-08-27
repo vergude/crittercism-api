@@ -65,13 +65,15 @@ public class DailyItemViewBinder extends RelativeLayout {
 		int crashesCount = data.getInt(data.getColumnIndex(DailyStatisticsItem.COLUMN_CRASHES_COUNT));
 		int appLoadsCount = data.getInt(data.getColumnIndex(DailyStatisticsItem.COLUMN_APP_LOADS_COUNT));
 
+		double crashesPercent = data.getDouble(data.getColumnIndex(DailyStatisticsItem.COLUMN_CRASHES_PERCENT));
+
 		remoteId = data.getString(data.getColumnIndex(DailyStatisticsItem.COLUMN_APP_REMOTE_ID));
 		appName = data.getString(data.getColumnIndex(CrittercismApp.COLUMN_NAME));
 
 		tvAppName.setText(data.getString(data.getColumnIndex(CrittercismApp.COLUMN_NAME)));
 		tvCrashesCount.setText(String.valueOf(crashesCount));
 		tvAppLoadsCount.setText(String.valueOf(appLoadsCount));
-		tvAppErrorPersent.setText(DailyStatisticsItem.getFormatedCrashesPercent(crashesCount, appLoadsCount));
+		tvAppErrorPersent.setText(DailyStatisticsItem.getFormatedCrashesPercent(crashesPercent));
 
         return this;
     }
