@@ -2,40 +2,47 @@ package intexsoft.by.crittercismapi.ui.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.LoaderManager;
 import android.content.DialogInterface;
+import android.content.Loader;
+import android.database.Cursor;
+import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.GridView;
 import android.widget.TextView;
 import intexsoft.by.crittercismapi.R;
+import intexsoft.by.crittercismapi.data.bean.CrittercismApp;
 import intexsoft.by.crittercismapi.data.bean.DailyStatisticsItem;
-import intexsoft.by.crittercismapi.data.bean.sorting.SortedByCrashes;
-import intexsoft.by.crittercismapi.data.bean.sorting.SortedByDate;
-import intexsoft.by.crittercismapi.data.bean.sorting.SortedByErrors;
-import intexsoft.by.crittercismapi.data.bean.sorting.SortedByLoads;
+import intexsoft.by.crittercismapi.data.loader.StatisticsCursorLoader;
 import intexsoft.by.crittercismapi.data.remote.response.GraphResponse;
-import intexsoft.by.crittercismapi.ui.adapters.AppErrorDetailsAdapter;
+import intexsoft.by.crittercismapi.ui.adapters.DailyStatisticsAdapter;
 import intexsoft.by.crittercismapi.ui.presenter.AppDetailsErrorPresenter;
 import intexsoft.by.crittercismapi.ui.presenter.AppDetailsErrorPresenterImpl;
 import intexsoft.by.crittercismapi.ui.view.AppDetailsErrorView;
 import intexsoft.by.crittercismapi.utils.Launcher;
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.Extra;
-import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.*;
 
-import java.util.Collections;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
  * Created by Евгений on 04.08.2014.
  */
 @EActivity(R.layout.app_details_error_activity)
-public class AppDetailsErrorActivity extends Activity implements AppDetailsErrorView
+public class AppDetailsErrorActivity extends Activity implements AppDetailsErrorView, LoaderManager.LoaderCallbacks<Cursor>
 {
 	private List<DailyStatisticsItem> dailyStatisticsItemList;
 	private boolean clickResult = true;
+
+	private Date startDate;
+	private Date endDate;
+
+	private String sortColumnName;
+	private String sortOrder;
+
+	private DailyStatisticsAdapter adapter;
+
 
 	@ViewById(R.id.appDetailsGrid)
 	GridView appDetailsGrid;
@@ -54,6 +61,22 @@ public class AppDetailsErrorActivity extends Activity implements AppDetailsError
 	@Extra
 	String appName;
 
+	@Override
+	protected void onCreate(Bundle savedInstanceState)
+	{
+		super.onCreate(savedInstanceState);
+
+
+
+		endDate = new Date();
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(endDate);
+		calendar.add(Calendar.DAY_OF_MONTH, -30);
+		startDate = calendar.getTime();
+
+		getLoaderManager().initLoader(0, null, this);
+
+	}
 
 	@Override
 	protected void onStart()
@@ -69,11 +92,11 @@ public class AppDetailsErrorActivity extends Activity implements AppDetailsError
 		appDetailsErrorPresenter.onStop();
 	}
 
-	@AfterViews
-	void init()
-	{
-		appDetailsErrorPresenter.init(this);
-	}
+//	@AfterViews
+//	void init()
+//	{
+//		appDetailsErrorPresenter.init(this);
+//	}
 
 	@AfterViews
 	public void setAppName()
@@ -98,64 +121,43 @@ public class AppDetailsErrorActivity extends Activity implements AppDetailsError
 	public void setDailyStatisticsItems(List<DailyStatisticsItem> dailyStatisticsItems)
 	{
 		dailyStatisticsItemList = dailyStatisticsItems;
-		setNewAdapter();
+		//setNewAdapter();
 	}
 
 	@Click(R.id.tvDate)
 	public void sortDate()
 	{
-		startSort(new SortedByDate());
+		startSort(CrittercismApp.COLUMN_NAME);
 	}
 
 	@Click(R.id.tvCrashes)
 	public void sortCrashes()
 	{
-		startSort(new SortedByCrashes());
+		startSort(DailyStatisticsItem.COLUMN_CRASHES_COUNT);
 	}
 
 	@Click(R.id.tvLoads)
 	public void sortLoads()
 	{
-		startSort(new SortedByLoads());
+		startSort(DailyStatisticsItem.COLUMN_APP_LOADS_COUNT);
 	}
 
 	@Click(R.id.tvError)
 	public void sortError()
 	{
-		startSort(new SortedByErrors());
+		startSort(DailyStatisticsItem.COLUMN_APP_LOADS_COUNT);
 	}
 
-	public void setNewAdapter()
-	{
-		if (dailyStatisticsItemList == null)
-		{
-			showError();
-		}
-		else
-		{
-			AppErrorDetailsAdapter appErrorDetailsAdapter = new AppErrorDetailsAdapter(this, R.layout.app_details_item, dailyStatisticsItemList);
-			appDetailsGrid.setAdapter(appErrorDetailsAdapter);
-		}
-	}
 
-	public void startSort(java.util.Comparator<? super DailyStatisticsItem> sorting)
+	public void startSort(String columnName)
 	{
-
-		if (dailyStatisticsItemList != null)
+		if (columnName.equals(sortColumnName) || sortColumnName == null)
 		{
-			if (clickResult)
-			{
-				Collections.sort(dailyStatisticsItemList, sorting);
-				setNewAdapter();
-				clickResult = false;
-			}
-			else
-			{
-				Collections.reverse(dailyStatisticsItemList);
-				setNewAdapter();
-				clickResult = true;
-			}
+			sortOrder = ("ASC".equals(sortOrder)) ? "DESC" : "ASC";
 		}
+		sortColumnName = columnName;
+
+		getLoaderManager().restartLoader(0, null, this);
 	}
 
 	public void showError()
@@ -192,11 +194,39 @@ public class AppDetailsErrorActivity extends Activity implements AppDetailsError
 		return super.onOptionsItemSelected(item);
 	}
 
+	@AfterViews
+	protected void init() {
+		adapter = new DailyStatisticsAdapter(this, false);
+		if (appDetailsGrid != null) {
+			appDetailsGrid.setAdapter(adapter);
+		}
+	}
+
 	@Override
 	public void onBackPressed()
 	{
 		super.onBackPressed();
 
 		(this).overridePendingTransition(R.anim.empty_animation, R.anim.slide_left_out);
+	}
+
+	@Override
+	public Loader<Cursor> onCreateLoader(int i, Bundle bundle)
+	{
+		String sortBy = (sortColumnName != null) ? sortColumnName + " " + sortOrder : null;
+
+		return new StatisticsCursorLoader(this, startDate, endDate , sortBy, appId);
+	}
+
+	@Override
+	public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor)
+	{
+		adapter.swapCursor(cursor);
+	}
+
+	@Override
+	public void onLoaderReset(Loader<Cursor> cursorLoader)
+	{
+
 	}
 }
