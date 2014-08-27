@@ -282,7 +282,7 @@ public class StatisticsFragment extends Fragment implements StatisticsView, Date
 
 	@AfterViews
 	protected void init() {
-		adapter = new DailyStatisticsAdapter(getActivity());
+		adapter = new DailyStatisticsAdapter(getActivity(), true);
 		if (gvAppInfo != null) {
 			gvAppInfo.setAdapter(adapter);
 		}

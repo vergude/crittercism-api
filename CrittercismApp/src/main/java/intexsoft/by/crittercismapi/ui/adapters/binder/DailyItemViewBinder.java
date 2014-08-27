@@ -3,14 +3,18 @@ package intexsoft.by.crittercismapi.ui.adapters.binder;
 import android.content.Context;
 import android.database.Cursor;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import intexsoft.by.crittercismapi.R;
 import intexsoft.by.crittercismapi.data.bean.CrittercismApp;
 import intexsoft.by.crittercismapi.data.bean.DailyStatisticsItem;
+import intexsoft.by.crittercismapi.utils.DateTimeUtils;
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
+
+import java.util.Date;
 
 /**
  * Created by dmitry.lomako on 29.07.2014.
@@ -33,6 +37,8 @@ public class DailyItemViewBinder extends RelativeLayout {
 
 	private String remoteId;
 	private String appName;
+
+	private static final String DATE_FORMAT = "d, MMM (E)";
 
 	public String getAppName()
 	{
@@ -60,15 +66,26 @@ public class DailyItemViewBinder extends RelativeLayout {
         super(context, attrs, defStyle);
     }
 
-    public View bind(Cursor data) {
+    public View bind(Cursor data, boolean isAdapterWithName) {
 
 		int crashesCount = data.getInt(data.getColumnIndex(DailyStatisticsItem.COLUMN_CRASHES_COUNT));
 		int appLoadsCount = data.getInt(data.getColumnIndex(DailyStatisticsItem.COLUMN_APP_LOADS_COUNT));
 
 		remoteId = data.getString(data.getColumnIndex(DailyStatisticsItem.COLUMN_APP_REMOTE_ID));
 		appName = data.getString(data.getColumnIndex(CrittercismApp.COLUMN_NAME));
+		if(isAdapterWithName)
+		{
+			tvAppName.setText(data.getString(data.getColumnIndex(CrittercismApp.COLUMN_NAME)));
+		}
+		else
+		{
+			long date = data.getLong(data.getColumnIndex((DailyStatisticsItem.COLUMN_DATE)));
+			tvAppName.setText(DateTimeUtils.getFormattedDate(new Date(date),DATE_FORMAT));
+			Log.d("*******************", DateTimeUtils.getFormattedDate(new Date(date), DATE_FORMAT));
+			Log.d("*******************", Long.toString(new Date(date).getTime()));
 
-		tvAppName.setText(data.getString(data.getColumnIndex(CrittercismApp.COLUMN_NAME)));
+		}
+
 		tvCrashesCount.setText(String.valueOf(crashesCount));
 		tvAppLoadsCount.setText(String.valueOf(appLoadsCount));
 		tvAppErrorPersent.setText(DailyStatisticsItem.getFormatedCrashesPercent(crashesCount, appLoadsCount));

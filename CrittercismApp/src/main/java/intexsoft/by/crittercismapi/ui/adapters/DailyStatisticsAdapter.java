@@ -12,9 +12,12 @@ import intexsoft.by.crittercismapi.ui.adapters.binder.DailyItemViewBinder;
  */
 public class DailyStatisticsAdapter extends CursorAdapter
 {
-	public DailyStatisticsAdapter(Context context)
+	private boolean isAdapterWithName;
+
+	public DailyStatisticsAdapter(Context context, boolean isAdapterWithName)
 	{
 		super(context, null, 0);
+		this.isAdapterWithName = isAdapterWithName;
 	}
 
 	@Override
@@ -26,6 +29,6 @@ public class DailyStatisticsAdapter extends CursorAdapter
 	@Override
 	public void bindView(View view, Context context, Cursor cursor)
 	{
-		((DailyItemViewBinder) view).bind(cursor);
+		((DailyItemViewBinder) view).bind(cursor, isAdapterWithName);
 	}
 }
