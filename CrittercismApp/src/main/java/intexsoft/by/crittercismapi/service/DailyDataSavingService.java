@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.IBinder;
+import intexsoft.by.crittercismapi.receiver.TimeForLoadDailyDataReceiver;
 
 /**
  * Created by anastasya.konovalova on 26.08.2014.
