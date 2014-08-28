@@ -30,8 +30,6 @@ public final class DateTimeUtils
 		calendar.set(Calendar.MINUTE, 59);
 		calendar.set(Calendar.SECOND, 59);
 
-
-
 		return String.valueOf(calendar.getTime().getTime());
 	}
 
