@@ -24,6 +24,9 @@ public class NavigationDrawerFragment extends Fragment
 	@ViewById(R.id.item_statistics)
 	TextView bookmarksItem;
 
+	@ViewById(R.id.item_fast_statistics)
+	TextView fastStatistic;
+
 	@ViewById(R.id.item_settings)
 	View settingsItem;
 
@@ -84,6 +87,14 @@ public class NavigationDrawerFragment extends Fragment
 		closeDrawer();
 	}
 
+	@Click(R.id.item_fast_statistics)
+	void fastStatisticsClicked(View v)
+	{
+		selectNavigationItem(NavigationItem.NAVIGATION_FAST_STATISTICS);
+		performNavigation(NavigationItem.NAVIGATION_FAST_STATISTICS);
+		closeDrawer();
+	}
+
 	@Click(R.id.item_settings)
 	void settingsClicked(View v)
 	{
@@ -100,10 +111,17 @@ public class NavigationDrawerFragment extends Fragment
 			case NAVIGATION_APPS:
 				bookmarksItem.setTypeface(null, Typeface.NORMAL);
 				catalogsItem.setTypeface(null, Typeface.BOLD);
+				fastStatistic.setTypeface(null, Typeface.NORMAL);
 				break;
 			case NAVIGATION_STATISTICS:
 				catalogsItem.setTypeface(null, Typeface.NORMAL);
 				bookmarksItem.setTypeface(null, Typeface.BOLD);
+				fastStatistic.setTypeface(null, Typeface.NORMAL);
+				break;
+			case NAVIGATION_FAST_STATISTICS:
+				catalogsItem.setTypeface(null, Typeface.NORMAL);
+				bookmarksItem.setTypeface(null, Typeface.NORMAL);
+				fastStatistic.setTypeface(null, Typeface.BOLD);
 				break;
 			default:
 				break;

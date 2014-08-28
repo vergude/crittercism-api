@@ -30,7 +30,7 @@
             android:parentActivityName=".ui.activity.MainActivity_">
             </activity>
         <activity android:name=".ui.activity.AppDetailsErrorActivity_"
-            android:label="Statistic"
+            android:label="Last Month"
             android:parentActivityName=".ui.activity.MainActivity_">
         </activity>
 

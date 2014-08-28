@@ -11,6 +11,7 @@ public enum NavigationItem
 {
 	NAVIGATION_APPS(R.string.navigate_apps),
 	NAVIGATION_STATISTICS(R.string.navigate_statistics),
+	NAVIGATION_FAST_STATISTICS(R.string.navigate_fast_statistics),
 	NAVIGATION_SETTINGS(R.string.navigate_settings);
 
 	private final int titleResId;

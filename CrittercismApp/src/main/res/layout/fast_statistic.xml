@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp">
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scrollView" >
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ALL TIME"
+                android:textSize="15dp"
+                android:paddingLeft="7dp"
+                android:paddingBottom="4dp"
+                android:textStyle="bold"
+                android:id="@+id/CategoryAll" />
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="2dp"
+                android:background="@color/grey"></RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CrittercismApi"
+                android:textSize="17dp"
+                android:paddingLeft="7dp"
+                android:paddingBottom="5dp"
+                android:paddingTop="7dp"
+                android:textColor="#FF000000"
+                android:id="@+id/appNameLoadLeaderAll" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Download leader: "
+                android:textSize="15dp"
+                android:paddingLeft="7dp"
+                android:paddingBottom="7dp"
+                android:textColor="#FF5A5E5D"
+                android:id="@+id/detailLoadLeaderAll" />
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@color/grey"></RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CrittercismApi"
+                android:textSize="17dp"
+                android:paddingLeft="7dp"
+                android:paddingBottom="5dp"
+                android:paddingTop="7dp"
+                android:textColor="#FF000000"
+                android:id="@+id/appNameCrashesCountAll" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Crashes count: "
+                android:textSize="15dp"
+                android:paddingLeft="7dp"
+                android:paddingBottom="7dp"
+                android:textColor="#FF5A5E5D"
+                android:id="@+id/detailCrashesCountAll" />
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@color/grey"></RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CrittercismApi"
+                android:textSize="17dp"
+                android:paddingLeft="7dp"
+                android:paddingBottom="5dp"
+                android:paddingTop="7dp"
+                android:textColor="#FF000000"
+                android:id="@+id/appNameErrorPercentAll" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Error Percent: "
+                android:textSize="15dp"
+                android:paddingLeft="7dp"
+                android:paddingBottom="7dp"
+                android:textColor="#FF5A5E5D"
+                android:id="@+id/detailErrorPercentAll" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ONE MONTH"
+                android:textSize="15dp"
+                android:paddingLeft="7dp"
+                android:paddingBottom="4dp"
+                android:paddingTop="10dp"
+                android:textStyle="bold"
+                android:id="@+id/CategoryMonth" />
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="2dp"
+                android:background="@color/grey"></RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CrittercismApi"
+                android:textSize="17dp"
+                android:paddingLeft="7dp"
+                android:paddingBottom="5dp"
+                android:paddingTop="7dp"
+                android:textColor="#FF000000"
+                android:id="@+id/appNameLoadLeaderMonth" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Download leader: "
+                android:textSize="15dp"
+                android:paddingLeft="7dp"
+                android:paddingBottom="7dp"
+                android:textColor="#FF5A5E5D"
+                android:id="@+id/detailLoadLeaderMonth" />
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@color/grey"></RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CrittercismApi"
+                android:textSize="17dp"
+                android:paddingLeft="7dp"
+                android:paddingBottom="5dp"
+                android:paddingTop="7dp"
+                android:textColor="#FF000000"
+                android:id="@+id/appNameCrashesCountMonth" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Crashes count: "
+                android:textSize="15dp"
+                android:paddingLeft="7dp"
+                android:paddingBottom="7dp"
+                android:textColor="#FF5A5E5D"
+                android:id="@+id/detailCrashesCountMonth" />
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@color/grey"></RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CrittercismApi"
+                android:textSize="17dp"
+                android:paddingLeft="7dp"
+                android:paddingBottom="5dp"
+                android:paddingTop="7dp"
+                android:textColor="#FF000000"
+                android:id="@+id/appNameErrorPercentMonth" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Error Percent: "
+                android:textSize="15dp"
+                android:paddingLeft="7dp"
+                android:paddingBottom="7dp"
+                android:textColor="#FF5A5E5D"
+                android:id="@+id/detailErrorPercentMonth" />
+
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="LAST NIGHT:"
+                android:textSize="15dp"
+                android:paddingLeft="7dp"
+                android:paddingBottom="4dp"
+                android:paddingTop="10dp"
+                android:textStyle="bold"
+                android:id="@+id/CategoryLastNight" />
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="2dp"
+                android:background="@color/grey"></RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CrittercismApi"
+                android:textSize="17dp"
+                android:paddingLeft="7dp"
+                android:paddingBottom="7dp"
+                android:paddingTop="7dp"
+                android:textColor="#FF000000"
+                android:id="@+id/appNameLoadLeaderNight" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Download leader: "
+                android:textSize="15dp"
+                android:paddingLeft="7dp"
+                android:paddingBottom="7dp"
+                android:textColor="#FF5A5E5D"
+                android:id="@+id/detailLoadLeaderNight" />
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@color/grey"></RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CrittercismApi"
+                android:textSize="17dp"
+                android:paddingLeft="7dp"
+                android:paddingBottom="5dp"
+                android:paddingTop="7dp"
+                android:textColor="#FF000000"
+                android:id="@+id/appNameCrashesCountNight" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Crashes count: "
+                android:textSize="15dp"
+                android:paddingLeft="7dp"
+                android:paddingBottom="7dp"
+                android:textColor="#FF5A5E5D"
+                android:id="@+id/detailCrashesCountNight" />
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@color/grey"></RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CrittercismApi"
+                android:textSize="17dp"
+                android:paddingLeft="7dp"
+                android:paddingBottom="5dp"
+                android:paddingTop="7dp"
+                android:textColor="#FF000000"
+                android:id="@+id/appNameErrorPercentNight" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Error Percent: "
+                android:textSize="15dp"
+                android:paddingLeft="7dp"
+                android:paddingBottom="7dp"
+                android:textColor="#FF5A5E5D"
+                android:id="@+id/detailErrorPercentNight" />
+            </LinearLayout>
+    </ScrollView>
+</LinearLayout>

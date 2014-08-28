@@ -11,7 +11,6 @@ import android.view.MenuItem;
 import android.widget.GridView;
 import android.widget.TextView;
 import intexsoft.by.crittercismapi.R;
-import intexsoft.by.crittercismapi.data.bean.CrittercismApp;
 import intexsoft.by.crittercismapi.data.bean.DailyStatisticsItem;
 import intexsoft.by.crittercismapi.data.loader.StatisticsCursorLoader;
 import intexsoft.by.crittercismapi.data.remote.response.GraphResponse;
@@ -127,7 +126,7 @@ public class AppDetailsErrorActivity extends Activity implements AppDetailsError
 	@Click(R.id.tvDate)
 	public void sortDate()
 	{
-		startSort(CrittercismApp.COLUMN_NAME);
+		startSort(DailyStatisticsItem.COLUMN_DATE);
 	}
 
 	@Click(R.id.tvCrashes)
@@ -145,7 +144,7 @@ public class AppDetailsErrorActivity extends Activity implements AppDetailsError
 	@Click(R.id.tvError)
 	public void sortError()
 	{
-		startSort(DailyStatisticsItem.COLUMN_APP_LOADS_COUNT);
+		startSort(DailyStatisticsItem.COLUMN_CRASHES_PERCENT);
 	}
 
 

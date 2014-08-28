@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import intexsoft.by.crittercismapi.R;
+import intexsoft.by.crittercismapi.ui.fragment.FastStatisticFragment;
 import intexsoft.by.crittercismapi.ui.fragment.MainFragment;
 import intexsoft.by.crittercismapi.ui.fragment.NavigationItem;
 import intexsoft.by.crittercismapi.ui.fragment.StatisticsFragment;
@@ -36,6 +37,16 @@ public class NavigationActivity extends BaseNavigationActivity
 		if (fragment == null || !(fragment instanceof StatisticsFragment))
 		{
 			replaceContentFragment(StatisticsFragment.build(), StatisticsFragment.TAG);
+		}
+	}
+
+	private  void showFastStatisticFragment()
+	{
+		currentItem = NavigationItem.NAVIGATION_FAST_STATISTICS;
+		Fragment fragment = getContentFragment();
+		if (fragment == null || !(fragment instanceof FastStatisticFragment))
+		{
+			replaceContentFragment(FastStatisticFragment.build(), FastStatisticFragment.TAG);
 		}
 	}
 
@@ -83,6 +94,9 @@ public class NavigationActivity extends BaseNavigationActivity
 				break;
 			case NAVIGATION_STATISTICS:
 				showStatisticsFragment();
+				break;
+			case NAVIGATION_FAST_STATISTICS:
+				showFastStatisticFragment();
 				break;
 			case NAVIGATION_SETTINGS:
 				Intent intent = new Intent(this, SettingsActivity.class);
