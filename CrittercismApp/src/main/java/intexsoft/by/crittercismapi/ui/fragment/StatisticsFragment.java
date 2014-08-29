@@ -36,7 +36,8 @@ import java.util.Date;
  * Created by anastasya.konovalova on 11.07.2014.
  */
 @EFragment(R.layout.fragment_statistics)
-public class StatisticsFragment extends Fragment implements StatisticsView, DatePickerFragment.FragmentDatePickerInterface, LoaderManager.LoaderCallbacks<Cursor>
+public class StatisticsFragment extends Fragment implements StatisticsView,
+		DatePickerFragment.FragmentDatePickerInterface, LoaderManager.LoaderCallbacks<Cursor>
 {
 
 	private static final String DATE_FORMAT = "d, MMM yyyy";
@@ -68,8 +69,8 @@ public class StatisticsFragment extends Fragment implements StatisticsView, Date
 
 	private DailyStatisticsAdapter adapter;
 
-    private String sortColumnName;
-    private String sortOrder;
+	private String sortColumnName;
+	private String sortOrder;
 
 	public static StatisticsFragment build()
 	{
@@ -97,13 +98,7 @@ public class StatisticsFragment extends Fragment implements StatisticsView, Date
 		@Override
 		public void onSwipeLeft()
 		{
-			Calendar mCalendar = Calendar.getInstance();
-			mCalendar.setTime(selectedDate);
-			mCalendar.add(Calendar.DAY_OF_MONTH, 1);
-
-			selectedDate = mCalendar.getTime();
-
-			setNewDate();
+			setDate(1);
 
 			tvDate.startAnimation(animationStart);
 			progressContainer.setVisibility(View.VISIBLE);
@@ -113,18 +108,23 @@ public class StatisticsFragment extends Fragment implements StatisticsView, Date
 		@Override
 		public void onSwipeRight()
 		{
-			Calendar mCalendar = Calendar.getInstance();
-			mCalendar.setTime(selectedDate);
-			mCalendar.add(Calendar.DAY_OF_MONTH, -1);
-
-			selectedDate = mCalendar.getTime();
-
-			setNewDate();
+			setDate(-1);
 
 			tvDate.startAnimation(animationStart);
 			progressContainer.setVisibility(View.VISIBLE);
 		}
 	};
+
+	void setDate(int day)
+	{
+		Calendar mCalendar = Calendar.getInstance();
+		mCalendar.setTime(selectedDate);
+		mCalendar.add(Calendar.DAY_OF_MONTH, day);
+
+		selectedDate = mCalendar.getTime();
+
+		setNewDate();
+	}
 
 	@AfterViews
 	void swipeDate()
@@ -144,26 +144,31 @@ public class StatisticsFragment extends Fragment implements StatisticsView, Date
 			{
 				if (((ViewGroup) view).findViewById(R.id.animationView).getVisibility() == View.INVISIBLE && !clickResult)
 				{
-					clickResult = true;
-
-					((ViewGroup) view).findViewById(R.id.animationView).startAnimation(myAnimationSet);
-					myAnimationSet.setAnimationListener(
-							new EndAnimationListener()
-							{
-								@Override
-								public void onAnimationEnd(Animation animation)
-								{
-									((ViewGroup) view).findViewById(R.id.animationView).setVisibility(View.INVISIBLE);
-									clickResult = false;
-									Launcher.showAppDetailsErrorActivity(getActivity(),((DailyItemViewBinder) view).getRemoteId(),
-											((DailyItemViewBinder) view).getAppName());
-								}
-							}
-					);
-					((ViewGroup) view).findViewById(R.id.animationView).setVisibility(View.VISIBLE);
+					startAnimation(view, i);
 				}
 			}
 		});
+	}
+
+	void startAnimation(final View view, final int id)
+	{
+		clickResult = true;
+
+		((ViewGroup) view).findViewById(R.id.animationView).startAnimation(myAnimationSet);
+		myAnimationSet.setAnimationListener(
+				new EndAnimationListener()
+				{
+					@Override
+					public void onAnimationEnd(Animation animation)
+					{
+						((ViewGroup) view).findViewById(R.id.animationView).setVisibility(View.INVISIBLE);
+						clickResult = false;
+						Launcher.showAppDetailsErrorActivity(getActivity(), ((DailyItemViewBinder) view).getRemoteId(),
+								((DailyItemViewBinder) view).getAppName());
+					}
+				}
+		);
+		((ViewGroup) view).findViewById(R.id.animationView).setVisibility(View.VISIBLE);
 	}
 
 	@UiThread
@@ -283,9 +288,11 @@ public class StatisticsFragment extends Fragment implements StatisticsView, Date
 	}
 
 	@AfterViews
-	protected void init() {
+	protected void init()
+	{
 		adapter = new DailyStatisticsAdapter(getActivity(), true);
-		if (gvAppInfo != null) {
+		if (gvAppInfo != null)
+		{
 			gvAppInfo.setAdapter(adapter);
 		}
 	}
@@ -315,21 +322,21 @@ public class StatisticsFragment extends Fragment implements StatisticsView, Date
 	}
 
 	public void startSort(String columnName)
-    {
-        if (columnName.equals(sortColumnName) || sortColumnName == null)
-        {
-            sortOrder = ("ASC".equals(sortOrder)) ? "DESC" : "ASC";
-        }
-        sortColumnName = columnName;
+	{
+		if (columnName.equals(sortColumnName) || sortColumnName == null)
+		{
+			sortOrder = ("ASC".equals(sortOrder)) ? "DESC" : "ASC";
+		}
+		sortColumnName = columnName;
 
-        getLoaderManager().restartLoader(0, null, this);
+		getLoaderManager().restartLoader(0, null, this);
 	}
 
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args)
 	{
-        String sortBy = (sortColumnName != null) ? sortColumnName + " " + sortOrder : null;
+		String sortBy = (sortColumnName != null) ? sortColumnName + " " + sortOrder : null;
 
 		return new DailyStatisticsCursorLoader(getActivity(), selectedDate, sortBy);
 	}

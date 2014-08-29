@@ -104,25 +104,31 @@ public class MainFragment extends Fragment implements MainView, DatePickerFragme
 					{
 						if (((ViewGroup) view).findViewById(R.id.animationView).getVisibility() == View.INVISIBLE && !clickResult)
 						{
-							clickResult = true;
-							((ViewGroup) view).findViewById(R.id.animationView).startAnimation(myAnimationSet);
-							myAnimationSet.setAnimationListener(
-									new EndAnimationListener()
-									{
-										@Override
-										public void onAnimationEnd(Animation animation)
-										{
-											((ViewGroup) view).findViewById(R.id.animationView).setVisibility(View.INVISIBLE);
-											Launcher.showAppDetailsErrorActivity(getActivity(), mDailyStatisticsItems.get(i).getApplication().getRemoteId(),
-													mDailyStatisticsItems.get(i).getApplication().getName());
-											clickResult = false;
-										}
-									}
-							);
-							((ViewGroup) view).findViewById(R.id.animationView).setVisibility(View.VISIBLE);
+							startAnimation(view, i);
 						}
 					}
 				});
+	}
+
+	void startAnimation(final View view, final int id)
+	{
+		clickResult = true;
+		((ViewGroup) view).findViewById(R.id.animationView).startAnimation(myAnimationSet);
+		myAnimationSet.setAnimationListener(
+				new EndAnimationListener()
+				{
+					@Override
+					public void onAnimationEnd(Animation animation)
+					{
+						((ViewGroup) view).findViewById(R.id.animationView).setVisibility(View.INVISIBLE);
+						Launcher.showAppDetailsErrorActivity(getActivity(), mDailyStatisticsItems.get(id)
+										.getApplication().getRemoteId(),
+								mDailyStatisticsItems.get(id).getApplication().getName());
+						clickResult = false;
+					}
+				}
+		);
+		((ViewGroup) view).findViewById(R.id.animationView).setVisibility(View.VISIBLE);
 	}
 
 	@Override
@@ -232,8 +238,10 @@ public class MainFragment extends Fragment implements MainView, DatePickerFragme
 				.setIcon(R.drawable.ic_launcher)
 				.setCancelable(false)
 				.setNegativeButton("Restart App",
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int id) {
+						new DialogInterface.OnClickListener()
+						{
+							public void onClick(DialogInterface dialog, int id)
+							{
 								dialog.cancel();
 								getActivity().finish();
 								Launcher.showLoginActivity(getActivity(), false);

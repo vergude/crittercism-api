@@ -165,13 +165,16 @@ public class AppDetailsErrorActivity extends Activity implements AppDetailsError
 				.setIcon(R.drawable.ic_launcher)
 				.setCancelable(false)
 				.setNegativeButton("Restart App",
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int id) {
+						new DialogInterface.OnClickListener()
+						{
+							public void onClick(DialogInterface dialog, int id)
+							{
 								dialog.cancel();
 								finish();
 								Launcher.showLoginActivity(getApplication(), false);
 							}
-						});
+						}
+				);
 		AlertDialog alert = builder.create();
 		alert.show();
 	}
@@ -192,9 +195,11 @@ public class AppDetailsErrorActivity extends Activity implements AppDetailsError
 	}
 
 	@AfterViews
-	protected void init() {
+	protected void init()
+	{
 		adapter = new DailyStatisticsAdapter(this, false);
-		if (appDetailsGrid != null) {
+		if (appDetailsGrid != null)
+		{
 			appDetailsGrid.setAdapter(adapter);
 		}
 	}
@@ -212,7 +217,7 @@ public class AppDetailsErrorActivity extends Activity implements AppDetailsError
 	{
 		String sortBy = (sortColumnName != null) ? sortColumnName + " " + sortOrder : null;
 
-		return new StatisticsCursorLoader(this, startDate, endDate , sortBy, appId);
+		return new StatisticsCursorLoader(this, startDate, endDate, sortBy, appId);
 	}
 
 	@Override

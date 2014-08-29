@@ -13,22 +13,26 @@ public class DailyDataSavingService extends Service
 {
 	private TimeForLoadDailyDataReceiver broadcastTimeForLoadDailyDataReceiver;
 
-	public void onCreate() {
+	public void onCreate()
+	{
 		super.onCreate();
 
 		broadcastTimeForLoadDailyDataReceiver = new TimeForLoadDailyDataReceiver();
 		registerReceiver(broadcastTimeForLoadDailyDataReceiver, new IntentFilter("by.crittercismapi.alarm"));
 	}
 
-	public int onStartCommand(Intent intent, int flags, int startId) {
+	public int onStartCommand(Intent intent, int flags, int startId)
+	{
 		return super.onStartCommand(intent, flags, startId);
 	}
 
-	public void onDestroy() {
+	public void onDestroy()
+	{
 		super.onDestroy();
 	}
 
-	public IBinder onBind(Intent intent) {
+	public IBinder onBind(Intent intent)
+	{
 		return null;
 	}
 }

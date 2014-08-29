@@ -26,9 +26,9 @@ public class StatisticsPresenterImpl implements StatisticsPresenter
     };
 
     @Override
-    public void init(StatisticsView statisticsView)
+    public void init(StatisticsView statistics)
 	{
-        this.statisticsView = statisticsView;
+        this.statisticsView = statistics;
     }
 
 

@@ -34,18 +34,23 @@ public class PersistenceFacade
 	@Bean
 	DatabaseQueryHelper databaseQueryHelper;
 
-    public static PersistenceFacade getInstance(Context context) {
+    public static PersistenceFacade getInstance(Context context)
+	{
         return PersistenceFacade_.getInstance_(context);
     }
 
-	public void saveDailyStatisticsItems(List<DailyStatisticsItem> statisticsItems) {
+	public void saveDailyStatisticsItems(List<DailyStatisticsItem> statisticsItems)
+	{
 		ThreadUtils.checkAndThrowIfUIThread();
-		CupboardFactory.cupboard().withContext(context).put(CrittercismAPIContentProvider.DAILY_STATISTIC_URI, DailyStatisticsItem.class, statisticsItems);
+		CupboardFactory.cupboard().withContext(context).put(CrittercismAPIContentProvider.DAILY_STATISTIC_URI,
+				DailyStatisticsItem.class, statisticsItems);
 	}
 
-	public void saveApps(List<CrittercismApp> appList) {
+	public void saveApps(List<CrittercismApp> appList)
+	{
 		ThreadUtils.checkAndThrowIfUIThread();
-		CupboardFactory.cupboard().withContext(context).put(CrittercismAPIContentProvider.CRITTERCISM_APP_URI, CrittercismApp.class, appList);
+		CupboardFactory.cupboard().withContext(context).put(CrittercismAPIContentProvider.CRITTERCISM_APP_URI,
+				CrittercismApp.class, appList);
 	}
 
 	@Nullable
@@ -77,11 +82,13 @@ public class PersistenceFacade
 	@Nullable
 	public List<CrittercismApp> getAppsByUser(String user)
 	{
-		return CupboardFactory.cupboard().withContext(context).query(CrittercismAPIContentProvider.CRITTERCISM_APP_URI, CrittercismApp.class).
+		return CupboardFactory.cupboard().withContext(context).query(CrittercismAPIContentProvider.CRITTERCISM_APP_URI,
+				CrittercismApp.class).
 				withSelection(CrittercismApp.COLUMN_USER_LOGIN + " = ?", new String[]{user}).list();
 	}
 
-	private <T extends Entity> Uri save(Uri uri, T toSave) {
+	private <T extends Entity> Uri save(Uri uri, T toSave)
+	{
 		return CupboardFactory.cupboard().withContext(context).put(uri, toSave);
 	}
 
@@ -97,14 +104,14 @@ public class PersistenceFacade
 			DailyStatisticsItem.COLUMN_DATE + " >= ? and " + DailyStatisticsItem.COLUMN_DATE + " < ?" ,
 			new String[]{stringStartDate, stringEndDate}, DailyStatisticsItem.COLUMN_APP_REMOTE_ID, columnName);
 
-	if(cursor != null)
+	if (cursor != null)
 	{
 		cursor.moveToFirst();
 		maxCrashes = cursor.getDouble(cursor.getColumnIndex(valueSum));
 		appName = appName = cursor.getString(cursor.getColumnIndex(CrittercismApp.COLUMN_NAME));
-		while(cursor.moveToNext())
+		while (cursor.moveToNext())
 		{
-			if(cursor.getDouble(cursor.getColumnIndex(valueSum)) >  maxCrashes)
+			if (cursor.getDouble(cursor.getColumnIndex(valueSum)) >  maxCrashes)
 			{
 				appName = cursor.getString(cursor.getColumnIndex(CrittercismApp.COLUMN_NAME));
 				maxCrashes = cursor.getDouble(cursor.getColumnIndex(valueSum));
@@ -119,17 +126,17 @@ public class PersistenceFacade
 		double maxCrashes;
 		String appName = "";
 
-		Cursor cursor = databaseQueryHelper.getDailyStatisticsItemSum(null,null,
+		Cursor cursor = databaseQueryHelper.getDailyStatisticsItemSum(null, null,
 				null, DailyStatisticsItem.COLUMN_APP_REMOTE_ID,  columnName);
 
-		if(cursor != null)
+		if (cursor != null)
 		{
 			cursor.moveToFirst();
 			maxCrashes = cursor.getDouble(cursor.getColumnIndex(valueSum));
 			appName = appName = cursor.getString(cursor.getColumnIndex(CrittercismApp.COLUMN_NAME));
-			while(cursor.moveToNext())
+			while (cursor.moveToNext())
 			{
-				if(cursor.getDouble(cursor.getColumnIndex(valueSum)) >  maxCrashes)
+				if (cursor.getDouble(cursor.getColumnIndex(valueSum)) >  maxCrashes)
 				{
 					appName = cursor.getString(cursor.getColumnIndex(CrittercismApp.COLUMN_NAME));
 					maxCrashes = cursor.getDouble(cursor.getColumnIndex(valueSum));
@@ -139,7 +146,7 @@ public class PersistenceFacade
 		return appName;
 	}
 
-	public String getMaxCrashesAppNameNight(Date startDate, Date endDate,String columnName, String valueSum)
+	public String getMaxCrashesAppNameNight(Date startDate, Date endDate, String columnName, String valueSum)
 	{
 
 		String stringStartDate = DateTimeUtils.getFormatedStartOfDay(startDate);
@@ -151,14 +158,14 @@ public class PersistenceFacade
 				DailyStatisticsItem.COLUMN_DATE + " >= ? and " + DailyStatisticsItem.COLUMN_DATE + " < ?" ,
 				new String[]{stringStartDate, stringEndDate}, DailyStatisticsItem.COLUMN_APP_REMOTE_ID, columnName);
 
-		if(cursor != null)
+		if (cursor != null)
 		{
 			cursor.moveToFirst();
 			maxCrashes = cursor.getDouble(cursor.getColumnIndex(valueSum));
 			appName = appName = cursor.getString(cursor.getColumnIndex(CrittercismApp.COLUMN_NAME));
-			while(cursor.moveToNext())
+			while (cursor.moveToNext())
 			{
-				if(cursor.getDouble(cursor.getColumnIndex(valueSum)) >  maxCrashes)
+				if (cursor.getDouble(cursor.getColumnIndex(valueSum)) >  maxCrashes)
 				{
 					appName = cursor.getString(cursor.getColumnIndex(CrittercismApp.COLUMN_NAME));
 					maxCrashes = cursor.getDouble(cursor.getColumnIndex(valueSum));

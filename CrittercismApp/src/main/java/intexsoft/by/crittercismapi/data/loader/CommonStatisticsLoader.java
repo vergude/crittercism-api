@@ -14,7 +14,8 @@ import java.util.Date;
  */
 public class CommonStatisticsLoader extends OneTimeLoader<CommonStatisticsData>
 {
-
+	private static final String COLUMN_SUM = "count_sum";
+	private static final int ONE_MONTH_DAYS = -30;
 	private PersistenceFacade persistenceFacade;
 
 	private Date endDate;
@@ -27,29 +28,46 @@ public class CommonStatisticsLoader extends OneTimeLoader<CommonStatisticsData>
 	@Override
 	public CommonStatisticsData loadInBackground()
 	{
-		endDate = new Date();
 		persistenceFacade = PersistenceFacade_.getInstance_(getContext());
+
+		endDate = new Date();
+
 		CommonStatisticsData commonStatisticsData = new CommonStatisticsData();
 
-		commonStatisticsData.setMostCrashesByMonthAppName(persistenceFacade.getMaxCrashesAppNameMonth(getStartDate(endDate, -30), endDate, DailyStatisticsItem.COLUMN_CRASHES_COUNT, "count_sum"));
-		commonStatisticsData.setMostCrashesByAllTimeAppName(persistenceFacade.getMaxCrashesAppNameAllTime(DailyStatisticsItem.COLUMN_CRASHES_COUNT, "count_sum"));
-		commonStatisticsData.setMostCrashesByNightAppName(persistenceFacade.getMaxCrashesAppNameNight(getStartDate(endDate,-1), endDate, DailyStatisticsItem.COLUMN_CRASHES_COUNT, "count_sum"));
+		commonStatisticsData.setMostCrashesByMonthAppName(persistenceFacade.getMaxCrashesAppNameMonth(getStartDate(endDate, ONE_MONTH_DAYS),
+				endDate, DailyStatisticsItem.COLUMN_CRASHES_COUNT, COLUMN_SUM));
 
-		commonStatisticsData.setMostErrorByMonthAppName(persistenceFacade.getMaxCrashesAppNameMonth(getStartDate(endDate, -30), endDate, null, DailyStatisticsItem.COLUMN_CRASHES_PERCENT));
-		commonStatisticsData.setMostErrorByAllTimeAppName(persistenceFacade.getMaxCrashesAppNameAllTime(null, DailyStatisticsItem.COLUMN_CRASHES_PERCENT));
-		commonStatisticsData.setMostErrorByNightAppName(persistenceFacade.getMaxCrashesAppNameNight(getStartDate(endDate,-1), endDate, null, DailyStatisticsItem.COLUMN_CRASHES_PERCENT));
+		commonStatisticsData.setMostCrashesByAllTimeAppName(persistenceFacade.getMaxCrashesAppNameAllTime(
+				DailyStatisticsItem.COLUMN_CRASHES_COUNT, COLUMN_SUM));
 
-		commonStatisticsData.setMostDownloadsByMonthAppName(persistenceFacade.getMaxCrashesAppNameMonth(getStartDate(endDate, -30), endDate, DailyStatisticsItem.COLUMN_APP_LOADS_COUNT, "count_sum"));
-		commonStatisticsData.setMostDownloadsByAllTimeAppName(persistenceFacade.getMaxCrashesAppNameAllTime(DailyStatisticsItem.COLUMN_APP_LOADS_COUNT, "count_sum"));
-		commonStatisticsData.setMostDownloadsByNightAppName(persistenceFacade.getMaxCrashesAppNameNight(getStartDate(endDate,-1), endDate, DailyStatisticsItem.COLUMN_APP_LOADS_COUNT, "count_sum"));
+		commonStatisticsData.setMostCrashesByNightAppName(persistenceFacade.getMaxCrashesAppNameNight(getStartDate(endDate, -1),
+				endDate, DailyStatisticsItem.COLUMN_CRASHES_COUNT, COLUMN_SUM));
+
+		commonStatisticsData.setMostErrorByMonthAppName(persistenceFacade.getMaxCrashesAppNameMonth(getStartDate(endDate, ONE_MONTH_DAYS),
+				endDate, null, DailyStatisticsItem.COLUMN_CRASHES_PERCENT));
+
+		commonStatisticsData.setMostErrorByAllTimeAppName(persistenceFacade.getMaxCrashesAppNameAllTime(null,
+				DailyStatisticsItem.COLUMN_CRASHES_PERCENT));
+
+		commonStatisticsData.setMostErrorByNightAppName(persistenceFacade.getMaxCrashesAppNameNight(
+				getStartDate(endDate, -1), endDate, null, DailyStatisticsItem.COLUMN_CRASHES_PERCENT));
+
+		commonStatisticsData.setMostDownloadsByMonthAppName(persistenceFacade.getMaxCrashesAppNameMonth(
+				getStartDate(endDate, ONE_MONTH_DAYS), endDate, DailyStatisticsItem.COLUMN_APP_LOADS_COUNT, COLUMN_SUM));
+
+		commonStatisticsData.setMostDownloadsByAllTimeAppName(persistenceFacade.getMaxCrashesAppNameAllTime(
+				DailyStatisticsItem.COLUMN_APP_LOADS_COUNT, COLUMN_SUM));
+
+		commonStatisticsData.setMostDownloadsByNightAppName(persistenceFacade.getMaxCrashesAppNameNight(getStartDate(endDate, -1),
+				endDate, DailyStatisticsItem.COLUMN_APP_LOADS_COUNT, COLUMN_SUM));
 
 		return commonStatisticsData;
 	}
 
-	private Date getStartDate(Date endDate, int value)
+	private Date getStartDate(Date endDat, int value)
 	{
 		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(endDate);
+		calendar.setTime(endDat);
 		calendar.add(Calendar.DAY_OF_MONTH, value);
 
 		return calendar.getTime();

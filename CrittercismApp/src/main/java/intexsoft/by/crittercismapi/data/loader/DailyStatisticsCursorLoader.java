@@ -30,7 +30,8 @@ public class DailyStatisticsCursorLoader extends CursorLoader
 	}
 
 	@Override
-	public Cursor loadInBackground() {
+	public Cursor loadInBackground()
+	{
 
 		String startDate = DateTimeUtils.getFormatedStartOfDay(date);
 		String endDate = DateTimeUtils.getFormatedEndOfDay(date);

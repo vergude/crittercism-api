@@ -10,7 +10,7 @@ import java.util.Locale;
  */
 public final class DateTimeUtils
 {
-	private final static String SQL_DATE_FORMAT = "yyyyMMdd hh:mm:ss";
+	private static final String SQL_DATE_FORMAT = "yyyyMMdd hh:mm:ss";
 
 	private DateTimeUtils()
 	{

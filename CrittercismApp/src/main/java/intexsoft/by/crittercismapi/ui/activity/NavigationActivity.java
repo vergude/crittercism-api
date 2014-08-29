@@ -18,6 +18,7 @@ import intexsoft.by.crittercismapi.ui.fragment.StatisticsFragment;
  */
 public class NavigationActivity extends BaseNavigationActivity
 {
+	private static final int DURATION_ANIMATION = 1000;
 	NavigationItem currentItem;
 
 	private void showAppsFragment()
@@ -123,7 +124,7 @@ public class NavigationActivity extends BaseNavigationActivity
 		if (fadeView != null)
 		{
 			Animation animation = new AlphaAnimation(1, 0);
-			animation.setDuration(1000);
+			animation.setDuration(DURATION_ANIMATION);
 			fadeView.startAnimation(animation);
 
 			relativeLayout.removeView(fadeView);

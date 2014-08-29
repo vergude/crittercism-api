@@ -17,7 +17,7 @@ public final class Constants
     public static final String GRAPH_APPLOADS = "appLoads";
     public static final String GROUP_BY_APP_VERSION = "appVersion";
 	public static final String GROUP_BY_APP_ID = "appId";
-    public static final long INTERVAL = 3*60*1000;//24*60*60*1000;
+    public static final long INTERVAL = 3 * 60 * 1000; //24*60*60*1000;
 	public static final long MILLISECONDS_OF_MONTH = 2592000000L;
 
 	public static final class Action

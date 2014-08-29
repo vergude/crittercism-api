@@ -1,7 +1,6 @@
 package intexsoft.by.crittercismapi.ui.presenter;
 
 import android.content.Context;
-import intexsoft.by.crittercismapi.Constants;
 import intexsoft.by.crittercismapi.CrittercismApplication;
 import intexsoft.by.crittercismapi.event.AppDetailsLoadedEvent;
 import intexsoft.by.crittercismapi.event.EventObserver;

@@ -11,27 +11,34 @@ import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 public final class CupboardConfigurator
 {
 
-    private CupboardConfigurator() {}
+	private CupboardConfigurator()
+	{
+	}
 
-    private static Class<?>[] models = {DailyStatisticsItem.class, CrittercismApp.class};
+	private static Class<?>[] models = {DailyStatisticsItem.class, CrittercismApp.class};
 
-    public static void configure() {
-        setUseAnnotations();
-        registerModels();
-    }
+	public static void configure()
+	{
+		setUseAnnotations();
+		registerModels();
+	}
 
-    private static void setUseAnnotations() {
-        CupboardFactory.setCupboard(new CupboardBuilder().useAnnotations().build());
-    }
+	private static void setUseAnnotations()
+	{
+		CupboardFactory.setCupboard(new CupboardBuilder().useAnnotations().build());
+	}
 
-    private static void registerModels() {
-        for (Class<?> clazz : models) {
-            registerModel(clazz);
-        }
-    }
+	private static void registerModels()
+	{
+		for (Class<?> clazz : models)
+		{
+			registerModel(clazz);
+		}
+	}
 
-    private static void registerModel(Class<?> modelClazz) {
-        cupboard().register(modelClazz);
-    }
+	private static void registerModel(Class<?> modelClazz)
+	{
+		cupboard().register(modelClazz);
+	}
 
 }

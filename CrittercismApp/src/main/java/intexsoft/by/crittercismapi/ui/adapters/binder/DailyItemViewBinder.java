@@ -21,7 +21,8 @@ import java.util.Date;
  */
 
 @EViewGroup(R.layout.appinfo_item)
-public class DailyItemViewBinder extends RelativeLayout {
+public class DailyItemViewBinder extends RelativeLayout
+{
 
 	@ViewById(R.id.tvAppName)
 	TextView tvAppName;
@@ -50,23 +51,28 @@ public class DailyItemViewBinder extends RelativeLayout {
 		return remoteId;
 	}
 
-	public static DailyItemViewBinder build(Context context) {
-        return DailyItemViewBinder_.build(context);
-    }
+	public static DailyItemViewBinder build(Context context)
+	{
+		return DailyItemViewBinder_.build(context);
+	}
 
-    public DailyItemViewBinder(Context context) {
-        super(context);
-    }
+	public DailyItemViewBinder(Context context)
+	{
+		super(context);
+	}
 
-    public DailyItemViewBinder(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
+	public DailyItemViewBinder(Context context, AttributeSet attrs)
+	{
+		super(context, attrs);
+	}
 
-    public DailyItemViewBinder(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-    }
+	public DailyItemViewBinder(Context context, AttributeSet attrs, int defStyle)
+	{
+		super(context, attrs, defStyle);
+	}
 
-    public View bind(Cursor data, boolean isAdapterWithName) {
+	public View bind(Cursor data, boolean isAdapterWithName)
+	{
 
 		int crashesCount = data.getInt(data.getColumnIndex(DailyStatisticsItem.COLUMN_CRASHES_COUNT));
 		int appLoadsCount = data.getInt(data.getColumnIndex(DailyStatisticsItem.COLUMN_APP_LOADS_COUNT));
@@ -75,15 +81,15 @@ public class DailyItemViewBinder extends RelativeLayout {
 
 		remoteId = data.getString(data.getColumnIndex(DailyStatisticsItem.COLUMN_APP_REMOTE_ID));
 		appName = data.getString(data.getColumnIndex(CrittercismApp.COLUMN_NAME));
-		if(isAdapterWithName)
+		if (isAdapterWithName)
 		{
 			tvAppName.setText(data.getString(data.getColumnIndex(CrittercismApp.COLUMN_NAME)));
 		}
 		else
 		{
 			long date = data.getLong(data.getColumnIndex((DailyStatisticsItem.COLUMN_DATE)));
-			tvAppName.setText(DateTimeUtils.getFormattedDate(new Date(date),DATE_FORMAT));
-			Log.d("*******************", DateTimeUtils.getFormattedDate(new Date(date), DATE_FORMAT));
+			tvAppName.setText(DateTimeUtils.getFormattedDate(new Date(date), DATE_FORMAT));
+			Log.d("****************", DateTimeUtils.getFormattedDate(new Date(date), DATE_FORMAT));
 			Log.d("*******************", Long.toString(new Date(date).getTime()));
 
 		}
@@ -92,7 +98,7 @@ public class DailyItemViewBinder extends RelativeLayout {
 		tvAppLoadsCount.setText(String.valueOf(appLoadsCount));
 		tvAppErrorPersent.setText(DailyStatisticsItem.getFormatedCrashesPercent(crashesPercent));
 
-        return this;
-    }
+		return this;
+	}
 
 }

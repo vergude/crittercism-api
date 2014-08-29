@@ -77,19 +77,19 @@ public class FastStatisticFragment extends Fragment implements FastStatisticView
 	}
 
 	@Override
-	public void onLoadFinished(Loader<CommonStatisticsData> commonStatisticsDataLoader, CommonStatisticsData commonStatisticsData)
+	public void onLoadFinished(Loader<CommonStatisticsData> commonStatisticsDataLoader, CommonStatisticsData commonStatistics)
 	{
-		appNameCrashesCountMonth.setText(commonStatisticsData.getMostCrashesByMonthAppName());
-		appNameCrashesCountAll.setText(commonStatisticsData.getMostCrashesByAllTimeAppName());
-		appNameCrashesCountNight.setText(commonStatisticsData.getMostCrashesByNightAppName());
+		appNameCrashesCountMonth.setText(commonStatistics.getMostCrashesByMonthAppName());
+		appNameCrashesCountAll.setText(commonStatistics.getMostCrashesByAllTimeAppName());
+		appNameCrashesCountNight.setText(commonStatistics.getMostCrashesByNightAppName());
 
-		appNameErrorPercentMonth.setText(commonStatisticsData.getMostErrorByMonthAppName());
-		appNameErrorPercentAll.setText(commonStatisticsData.getMostErrorByAllTimeAppName());
-		appNameErrorPercentNight.setText(commonStatisticsData.getMostErrorByNightAppName());
+		appNameErrorPercentMonth.setText(commonStatistics.getMostErrorByMonthAppName());
+		appNameErrorPercentAll.setText(commonStatistics.getMostErrorByAllTimeAppName());
+		appNameErrorPercentNight.setText(commonStatistics.getMostErrorByNightAppName());
 
-		appNameLoadLeaderMonth.setText(commonStatisticsData.getMostDownloadsByMonthAppName());
-		appNameLoadLeaderAll.setText(commonStatisticsData.getMostDownloadsByAllTimeAppName());
-		appNameLoadLeaderNight.setText(commonStatisticsData.getMostDownloadsByNightAppName());
+		appNameLoadLeaderMonth.setText(commonStatistics.getMostDownloadsByMonthAppName());
+		appNameLoadLeaderAll.setText(commonStatistics.getMostDownloadsByAllTimeAppName());
+		appNameLoadLeaderNight.setText(commonStatistics.getMostDownloadsByNightAppName());
 	}
 
 	@Override
