@@ -40,8 +40,6 @@ public class StatisticsCursorLoader extends CursorLoader
 		String stringStartDate = DateTimeUtils.getFormatedStartOfDay(startDate);
 		String stringEndDate = DateTimeUtils.getFormatedStartOfDay(endDate);
 
-
-
 		Log.d("stringStartDate", stringStartDate);
 		Log.d("stringEndDate", (new Date(Long.parseLong(stringEndDate))).toString());
 

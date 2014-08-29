@@ -65,8 +65,6 @@ public class AppDetailsErrorActivity extends Activity implements AppDetailsError
 	{
 		super.onCreate(savedInstanceState);
 
-
-
 		endDate = new Date();
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(endDate);

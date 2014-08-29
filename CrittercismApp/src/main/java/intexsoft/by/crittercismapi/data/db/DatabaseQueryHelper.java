@@ -53,6 +53,25 @@ public class DatabaseQueryHelper
 		}
 	}
 
+
+	@Nullable
+	public Cursor getDailyStatisticsItemSum(String[] projection, String selection, String[] selectionArgs, String groupBy, String columnName) {
+		ThreadUtils.checkAndThrowIfUIThread();
+
+		try {
+			String table = "DailyStatisticsItem as DS inner join CrittercismApp as CA on DS.app_remote_id = CA.remote_id ";
+			String columns[] = { "DS._id as _id","DS.crashes_count as crashes_count", "DS.app_loads_count as app_loads_count",
+					"DS.date as date, CA.name as name", "DS.app_remote_id as app_remote_id",
+					"sum(CAST (crashes_count AS REAL)/(CAST (app_loads_count AS REAL))) as crashes_percent", "sum("+ columnName +") as count_sum"};
+
+			Cursor result =  getReadableDb().query(table, columns, selection, selectionArgs, groupBy, null, null);
+			return result;
+		} catch (SQLException e) {
+			handleException(e);
+			return null;
+		}
+	}
+
     private void handleException(SQLException e) {
 		Log.e("DatabaseQueryHelper", e.getMessage());
 	}

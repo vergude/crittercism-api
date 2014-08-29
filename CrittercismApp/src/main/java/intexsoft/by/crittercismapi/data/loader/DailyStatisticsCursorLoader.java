@@ -37,7 +37,7 @@ public class DailyStatisticsCursorLoader extends CursorLoader
 
 		Cursor cursor = queryHelper.getDailyStatisticsItem(
 				null,
-				DailyStatisticsItem.COLUMN_DATE + " >= ? and " + DailyStatisticsItem.COLUMN_DATE +" < ? " ,
+				DailyStatisticsItem.COLUMN_DATE + " >= ? and " + DailyStatisticsItem.COLUMN_DATE + " < ? " ,
 				new String[]{startDate, endDate},
                 orderBy);
 
