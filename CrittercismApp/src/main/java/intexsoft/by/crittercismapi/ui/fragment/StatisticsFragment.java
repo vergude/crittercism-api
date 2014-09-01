@@ -91,6 +91,18 @@ public class StatisticsFragment extends Fragment implements StatisticsView,
 
 			selectedDate = calendar.getTime();
 		}
+		else
+		{
+			Date date = new Date(savedInstanceState.getLong("selectedDate"));
+			selectedDate = date;
+		}
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState)
+	{
+		outState.putLong("selectedDate", selectedDate.getTime());
+		super.onSaveInstanceState(outState);
 	}
 
 	private final OnSwipeTouchEvent onSwipeTouchEvent = new OnSwipeTouchEvent(getActivity())
