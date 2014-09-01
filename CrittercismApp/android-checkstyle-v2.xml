@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC "-//Puppy Crawl//DTD Check Configuration 1.3//EN" "http://www.puppycrawl.com/dtds/configuration_1_3.dtd">
+
+<module name="Checker">
+    <property name="severity" value="error"/>
+    <module name="TreeWalker">
+
+        <!--******************
+             Block Checks
+        *******************-->
+        <module name="EmptyBlock"/>
+        <module name="NeedBraces">
+            <property name="tokens" value="LITERAL_DO, LITERAL_ELSE, LITERAL_IF, LITERAL_FOR, LITERAL_WHILE, LITERAL_SWITCH"/>
+        </module>
+        <module name="LeftCurly">
+            <property name="option" value="nl"/>
+        </module>
+        <module name="RightCurly">
+            <property name="option" value="alone"/>
+            <property name="tokens" value="LITERAL_TRY, LITERAL_CATCH, LITERAL_FINALLY, LITERAL_IF, LITERAL_ELSE"/>
+        </module>
+        <module name="AvoidNestedBlocks"/>
+
+
+        <!--******************
+             Class Design
+        *******************-->
+        <module name="VisibilityModifier">
+            <property name="packageAllowed" value="true"/>
+            <property name="protectedAllowed" value="true"/>
+        </module>
+        <module name="FinalClass"/> <!--??????????????????????-->
+        <module name="InterfaceIsType"/>
+        <module name="HideUtilityClassConstructor"/>
+        <!--module name="DesignForExtension"/-->
+        <module name="MutableException"/><!--??????????????????????-->
+        <module name="ThrowsCount">
+            <property name="max" value="5"/><!-- Need discuss -->
+        </module>
+        <module name="InnerTypeLast"/>
+
+
+
+        <!--******************
+             Coding
+        *******************-->
+        <module name="ArrayTrailingComma"/>
+        <module name="CovariantEquals"/>
+        <module name="EmptyStatement"/>
+        <module name="EqualsAvoidNull"/>
+        <module name="EqualsHashCode"/>
+        <!--module name="FinalLocalVariable"/-->
+        <module name="HiddenField">
+            <property name="ignoreConstructorParameter" value="true"/>
+            <property name="ignoreSetter" value="true"/>
+        </module>
+        <module name="IllegalInstantiation">
+            <property name="classes" value="java.lang.Boolean"/><!-- Need discuss -->
+        </module>
+        <!--module name="IllegalToken"/-->
+        <!--module name="IllegalTokenText"/-->
+        <module name="InnerAssignment">
+            <property name="tokens" value="DIV_ASSIGN,BXOR_ASSIGN,STAR_ASSIGN,BAND_ASSIGN,MOD_ASSIGN,PLUS_ASSIGN,SL_ASSIGN,MINUS_ASSIGN,SR_ASSIGN,BSR_ASSIGN,BOR_ASSIGN"/>
+        </module>
+        <module name="MagicNumber"/>
+        <module name="MissingSwitchDefault"/>
+        <module name="ModifiedControlVariable"/>
+        <module name="RedundantThrows">
+            <property name="suppressLoadErrors" value="true"/>
+        </module>
+        <module name="SimplifyBooleanExpression"/>
+        <module name="SimplifyBooleanReturn"/>
+        <module name="StringLiteralEquality"/>
+
+        <module name="NestedForDepth">
+            <property name="max" value="3"/>
+        </module>
+        <module name="NestedIfDepth">
+            <property name="max" value="2"/>
+        </module>
+        <module name="NestedTryDepth"/>
+
+        <module name="NoClone"/>
+        <module name="NoFinalizer"/>
+        <module name="SuperFinalize"/>
+        <module name="SuperClone"/>
+        <module name="IllegalCatch">
+            <property name="illegalClassNames" value="java.lang.Throwable, java.lang.RuntimeException"/>
+        </module>
+        <module name="IllegalThrows"/>
+        <module name="JUnitTestCase"/>
+        <module name="ReturnCount">
+            <property name="max" value="5"/>
+        </module>
+        <module name="PackageDeclaration"/>
+        <!--module name="IllegalType">
+            <property name="ignoredMethodNames" value="getInstance"/>   ??????????????????????
+        </module-->
+        <!--module name="DeclarationOrder">
+            <property name="severity" value="info"/>
+        </module-->
+        <!--module name="ParameterAssignment"/--><!--Need discuss-->
+        <!--module name="ExplicitInitialization"/--><!--Need discuss-->
+        <module name="DefaultComesLast"/>
+        <!--module name="MissingCtor"/-->
+        <module name="FallThrough"/>
+        <module name="MultipleStringLiterals"/>
+        <module name="MultipleVariableDeclarations"/>
+        <!--module name="RequireThis"/-->
+        <module name="UnnecessaryParentheses"/><!-- need check for boolean expressions -->
+        <module name="OneStatementPerLine"/>
+
+
+
+        <!--******************
+             Imports
+        *******************-->
+        <module name="AvoidStarImport"/>
+        <module name="IllegalImport"/>
+        <module name="RedundantImport"/>
+        <module name="UnusedImports"/>
+        <!--name="AvoidStaticImport"/>
+        <module name="ImportOrder"/>
+        <module name="ImportControl"/-->
+
+
+        <!--******************
+             Metrics
+        *******************-->
+        <module name="BooleanExpressionComplexity">
+            <property name="max" value="5"/>
+        </module>
+        <module name="ClassDataAbstractionCoupling"><!-- need check -->
+            <property name="max" value="10"/>
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="ClassFanOutComplexity">
+            <property name="max" value="30"/>
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="CyclomaticComplexity">
+            <property name="max" value="7"/>
+        </module>
+        <module name="NPathComplexity"/>
+        <module name="JavaNCSS"/>
+
+        <!--******************
+             Miscellaneous
+        *******************-->
+        <module name="TodoComment">
+            <property name="format" value="// TODO Auto-generated"/>
+        </module>
+        <module name="UpperEll"/>
+        <module name="ArrayTypeStyle"/>
+        <!--module name="FinalParameters"/-->
+        <module name="DescendantToken">
+            <property name="tokens" value="FOR_INIT"/>
+            <property name="limitedTokens" value="EXPR"/>
+            <property name="minimumNumber" value="1"/>
+        </module>
+        <module name="TrailingComment"/>
+        <!--module name="Regexp">
+            <property name="format" value="// This code is copyrighted"/>
+        </module-->
+        <module name="OuterTypeFilename"/>
+
+
+
+        <!--******************
+             Modifiers
+        *******************-->
+        <module name="ModifierOrder"/>
+        <module name="RedundantModifier">
+            <property name="tokens" value="METHOD_DEF, VARIABLE_DEF, ANNOTATION_FIELD_DEF"/>
+        </module>
+
+
+        <!--******************
+             Naming Conventions
+        *******************-->
+        <module name="ConstantName">
+          <property name="format" value="^([A-Z_][A-Z0-9_]*)|(log)$"/>
+        </module>
+        <module name="LocalFinalVariableName"/>
+        <module name="LocalVariableName"/>
+        <module name="MemberName"/>
+        <module name="MethodName"/>
+        <module name="PackageName"/>
+        <module name="ParameterName"/>
+        <module name="StaticVariableName"/>
+        <module name="TypeName"/>
+        <module name="MethodTypeParameterName"/>
+        <module name="ClassTypeParameterName"/>
+
+
+        <!--******************
+             Size Violations
+        *******************-->
+        <module name="LineLength">
+            <property name="ignorePattern" value="^\s*\*?\s*(\$URL:|\$Id:).*\$$"/>
+            <property name="max" value="140"/>
+            <property name="tabWidth" value="4"/>
+        </module>
+        <module name="MethodLength">
+            <property name="tokens" value="METHOD_DEF"/>
+            <property name="max" value="50"/>
+        </module>
+        <module name="AnonInnerLength">
+            <property name="max" value="20"/>
+        </module>
+        <module name="ParameterNumber"><!--  Need discuss-->
+            <property name="max" value="7"/>
+            <property name="tokens" value="METHOD_DEF"/>
+        </module>
+        <module name="OuterTypeNumber">
+            <property name="max" value="2"/>
+        </module>
+        <module name="MethodCount">
+            <property name="maxTotal" value="100"/>
+        </module>
+
+
+
+
+        <!--******************
+             Whitespace
+        *******************-->
+        <module name="GenericWhitespace"/>
+        <module name="EmptyForInitializerPad"/>
+        <module name="EmptyForIteratorPad"/>
+        <module name="MethodParamPad"/>
+
+        <module name="NoWhitespaceAfter">
+          <property name="tokens" value="BNOT,DEC,DOT,INC,LNOT,UNARY_MINUS,UNARY_PLUS"/>
+        </module>
+        <module name="NoWhitespaceBefore"/>
+        <module name="OperatorWrap"/>
+        <module name="ParenPad"/>
+
+        <module name="TypecastParenPad"/>
+        <module name="WhitespaceAfter">
+          <property name="tokens" value="COMMA,SEMI"/>
+        </module>
+        <module name="WhitespaceAround">
+          <property name="tokens" value="ASSIGN,BAND,BAND_ASSIGN,BOR,BOR_ASSIGN,BSR,BSR_ASSIGN,BXOR,BXOR_ASSIGN,COLON,DIV,DIV_ASSIGN,EQUAL,GE,GT,LAND,LE,LITERAL_ASSERT,LITERAL_CATCH,LITERAL_DO,LITERAL_ELSE,LITERAL_FINALLY,LITERAL_FOR,LITERAL_IF,LITERAL_RETURN,LITERAL_SYNCHRONIZED,LITERAL_TRY,LITERAL_WHILE,LOR,LT,MINUS,MINUS_ASSIGN,MOD,MOD_ASSIGN,NOT_EQUAL,PLUS,PLUS_ASSIGN,QUESTION,SL,SLIST,SL_ASSIGN,SR,SR_ASSIGN,STAR,STAR_ASSIGN,LITERAL_ASSERT,TYPE_EXTENSION_AND,WILDCARD_TYPE"/>
+          <property name="allowEmptyConstructors" value="true"/>
+          <property name="allowEmptyMethods" value="true"/>
+        </module>
+
+        
+        <!--******************
+              Annotation
+         *******************-->
+        <module name="AnnotationUseStyle"/>
+        <module name="MissingDeprecated"/>
+        <module name="MissingOverride"/>
+        <module name="PackageAnnotation"/>
+        <module name="SuppressWarnings"/>
+        
+        
+        <!--******************
+              Javadoc Comments
+         *******************-->
+         <!--module name="JavadocType"/>
+         <module name="JavadocMethod">
+		   <property name="scope" value="protected"/>
+		   <property name="allowUndeclaredRTE" value="true"/>
+		   <property name="allowMissingPropertyJavadoc" value="true"/>
+		</module-->
+		
+  </module>
+
+    <!--******************
+             Duplicate Code
+    *******************-->
+    <module name="StrictDuplicateCode">
+        <property name="min" value="50"/>
+        <property name="severity" value="info"/>
+    </module>
+
+    <!--******************
+             Regexp
+    *******************-->
+    <module name="RegexpSingleline">
+        <property name="severity" value="ignore"/>
+        <property name="format" value="^\s+$"/>
+        <property name="message" value="Line has only spaces."/>
+    </module>
+    <module name="RegexpMultiline">
+        <property name="severity" value="ignore"/>
+    </module>
+
+
+    <module name="NewlineAtEndOfFile"/>
+    <module name="FileLength"/>
+
+    <!--******************
+             Headers (not used)
+    *******************-->
+
+    <!-- DesignForExtension, static inner intarface  -->
+
+</module>

@@ -65,3 +65,20 @@ apt {
         resourcePackageName 'intexsoft.by.crittercismapi'
     }
 }
+
+//task checkStyle() {
+//    ant.taskdef(resource: 'checkstyletask.properties') {
+//        classpath {
+//            fileset(dir: 'libs', includes: '*.jar')
+//        }
+//    }
+//    ant.checkstyle(config: 'android-checkstyle-v2.xml') {
+//        fileset(dir: 'src') {
+//            patternset(id: '') {
+//                exclude(name: '**/com/**/*.java')
+//                include(name: '**/by/**/*.java')
+//            }
+//        }
+//        formatter(type: 'xml', toFile: 'build/checkstyle_errors.xml')
+//    }
+//}
