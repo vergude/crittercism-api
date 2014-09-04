@@ -47,12 +47,11 @@ public class DatabaseQueryHelper
 
 		try
 		{
-			String table = TABLE_DB;
-			String columns[] = {"DS._id as _id", "DS.crashes_count as crashes_count", "DS.app_loads_count as app_loads_count",
+			String [] columns = {"DS._id as _id", "DS.crashes_count as crashes_count", "DS.app_loads_count as app_loads_count",
 					"DS.date as date, CA.name as name", "DS.app_remote_id as app_remote_id",
-					"CAST (crashes_count AS REAL)/(CAST (app_loads_count AS REAL)) as crashes_percent"};
+					"CAST (crashes_count AS REAL)/(CAST (app_loads_count AS REAL)) as crashes_percent", };
 
-			Cursor result = getReadableDb().query(table, columns, selection, selectionArgs, null, null, sortOrder);
+			Cursor result = getReadableDb().query(TABLE_DB, columns, selection, selectionArgs, null, null, sortOrder);
 			return result;
 		}
 		catch (SQLException e)
@@ -71,13 +70,13 @@ public class DatabaseQueryHelper
 
 		try
 		{
-			String table = TABLE_DB;
-			String columns[] = {"DS._id as _id", "DS.crashes_count as crashes_count", "DS.app_loads_count as app_loads_count",
+			String [] columns =
+					{"DS._id as _id", "DS.crashes_count as crashes_count", "DS.app_loads_count as app_loads_count",
 					"DS.date as date, CA.name as name", "DS.app_remote_id as app_remote_id",
 					"sum(CAST (crashes_count AS REAL)/(CAST (app_loads_count AS REAL))) as crashes_percent",
-					"sum(" + columnName + ") as count_sum"};
+					"sum(" + columnName + ") as count_sum", };
 
-			Cursor result = getReadableDb().query(table, columns, selection, selectionArgs, groupBy, null, null);
+			Cursor result = getReadableDb().query(TABLE_DB, columns, selection, selectionArgs, groupBy, null, null);
 			return result;
 		}
 		catch (SQLException e)

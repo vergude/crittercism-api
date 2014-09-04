@@ -19,7 +19,12 @@ import intexsoft.by.crittercismapi.ui.presenter.AppDetailsErrorPresenter;
 import intexsoft.by.crittercismapi.ui.presenter.AppDetailsErrorPresenterImpl;
 import intexsoft.by.crittercismapi.ui.view.AppDetailsErrorView;
 import intexsoft.by.crittercismapi.utils.Launcher;
-import org.androidannotations.annotations.*;
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
+import org.androidannotations.annotations.ViewById;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -41,6 +46,9 @@ public class AppDetailsErrorActivity extends Activity implements AppDetailsError
 	private String sortOrder;
 
 	private DailyStatisticsAdapter adapter;
+
+	private static final String SORT_TYPE = "ASC";
+	private static final int DAY_MONTH = -30;
 
 
 	@ViewById(R.id.appDetailsGrid)
@@ -68,7 +76,7 @@ public class AppDetailsErrorActivity extends Activity implements AppDetailsError
 		endDate = new Date();
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(endDate);
-		calendar.add(Calendar.DAY_OF_MONTH, -30);
+		calendar.add(Calendar.DAY_OF_MONTH, DAY_MONTH);
 		startDate = calendar.getTime();
 
 		getLoaderManager().initLoader(0, null, this);
@@ -150,7 +158,7 @@ public class AppDetailsErrorActivity extends Activity implements AppDetailsError
 	{
 		if (columnName.equals(sortColumnName) || sortColumnName == null)
 		{
-			sortOrder = ("ASC".equals(sortOrder)) ? "DESC" : "ASC";
+			sortOrder = (SORT_TYPE.equals(sortOrder)) ? "DESC" : SORT_TYPE;
 		}
 		sortColumnName = columnName;
 
@@ -189,9 +197,10 @@ public class AppDetailsErrorActivity extends Activity implements AppDetailsError
 			case android.R.id.home:
 				onBackPressed();
 				return true;
+			default:
+				// Handle your other action bar items...
+				return super.onOptionsItemSelected(item);
 		}
-		// Handle your other action bar items...
-		return super.onOptionsItemSelected(item);
 	}
 
 	@AfterViews

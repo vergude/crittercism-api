@@ -11,7 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
 import intexsoft.by.crittercismapi.R;
 import intexsoft.by.crittercismapi.data.bean.CrittercismApp;
 import intexsoft.by.crittercismapi.data.bean.DailyStatisticsItem;
@@ -27,7 +31,12 @@ import intexsoft.by.crittercismapi.ui.view.animation.EndAnimationListener;
 import intexsoft.by.crittercismapi.ui.view.animation.MyAnimationSet;
 import intexsoft.by.crittercismapi.utils.DateTimeUtils;
 import intexsoft.by.crittercismapi.utils.Launcher;
-import org.androidannotations.annotations.*;
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.UiThread;
+import org.androidannotations.annotations.ViewById;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -44,6 +53,11 @@ public class StatisticsFragment extends Fragment implements StatisticsView,
 	private Animation animationStart = null;
 	private MyAnimationSet myAnimationSet;
 	private boolean clickResult = false;
+
+	private static final int DELAY_PROGRESS_BAR = 500;
+	private static final String SHORT_TYPE = "ASC";
+	private static final String SELECTED_KEY = "selectedDate";
+
 
 	public static final String TAG = MainFragment.class.getSimpleName();
 
@@ -93,7 +107,7 @@ public class StatisticsFragment extends Fragment implements StatisticsView,
 		}
 		else
 		{
-			Date date = new Date(savedInstanceState.getLong("selectedDate"));
+			Date date = new Date(savedInstanceState.getLong(SELECTED_KEY));
 			selectedDate = date;
 		}
 	}
@@ -101,7 +115,7 @@ public class StatisticsFragment extends Fragment implements StatisticsView,
 	@Override
 	public void onSaveInstanceState(Bundle outState)
 	{
-		outState.putLong("selectedDate", selectedDate.getTime());
+		outState.putLong(SELECTED_KEY, selectedDate.getTime());
 		super.onSaveInstanceState(outState);
 	}
 
@@ -337,7 +351,7 @@ public class StatisticsFragment extends Fragment implements StatisticsView,
 	{
 		if (columnName.equals(sortColumnName) || sortColumnName == null)
 		{
-			sortOrder = ("ASC".equals(sortOrder)) ? "DESC" : "ASC";
+			sortOrder = (SHORT_TYPE.equals(sortOrder)) ? "DESC" : SHORT_TYPE;
 		}
 		sortColumnName = columnName;
 
@@ -367,7 +381,7 @@ public class StatisticsFragment extends Fragment implements StatisticsView,
 
 	}
 
-	@UiThread(delay = 500)
+	@UiThread(delay = DELAY_PROGRESS_BAR)
 	void hideProgressBar()
 	{
 		progressContainer.setVisibility(View.INVISIBLE);

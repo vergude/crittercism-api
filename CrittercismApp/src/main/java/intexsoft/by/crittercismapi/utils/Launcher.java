@@ -16,6 +16,9 @@ public final class Launcher
 {
 	public static final String TAG = Launcher.class.getSimpleName();
 
+	private static final int ANIMATION_DURATION = 200;
+	private static final int ANIMATION_COLOR = 0x55000000;
+
 	private Launcher()
 	{
 	}
@@ -30,12 +33,13 @@ public final class Launcher
 		View fadeView = new View(context);
 		fadeView.setTag("TAG_FADE_VIEW");
 
-		FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
+		FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
+				FrameLayout.LayoutParams.MATCH_PARENT);
 		fadeView.setLayoutParams(layoutParams);
-		fadeView.setBackgroundColor(0x55000000);
+		fadeView.setBackgroundColor(ANIMATION_COLOR);
 
 		Animation animation = new AlphaAnimation(0, 1);
-		animation.setDuration(200);
+		animation.setDuration(ANIMATION_DURATION);
 		animation.setAnimationListener(new Animation.AnimationListener()
 									   {
 										   @Override
@@ -47,9 +51,7 @@ public final class Launcher
 										   @Override
 										   public void onAnimationEnd(Animation animation)
 										   {
-											   AppDetailsErrorActivity_.intent(context).appId(appId).appName(appName).start();
-
-											   ((Activity)context).overridePendingTransition(R.anim.slide_left_in, R.anim.empty_animation);
+											   startAppDetailErrorActitvity(context, appId, appName);
 										   }
 
 										   @Override
@@ -66,6 +68,12 @@ public final class Launcher
 		fadeView.bringToFront();
 
 
+	}
+
+	public static void startAppDetailErrorActitvity(Context context, String appId, String appName)
+	{
+		AppDetailsErrorActivity_.intent(context).appId(appId).appName(appName).start();
+		((Activity)context).overridePendingTransition(R.anim.slide_left_in, R.anim.empty_animation);
 	}
 
 	public static void showLoginActivity(Context context, boolean isFromLogout)

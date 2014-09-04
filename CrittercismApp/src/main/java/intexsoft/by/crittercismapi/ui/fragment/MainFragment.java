@@ -7,8 +7,12 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.*;
-import android.widget.*;
+import android.view.animation.Animation;
+import android.widget.AdapterView;
+import android.widget.FrameLayout;
+import android.widget.GridView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import intexsoft.by.crittercismapi.R;
 import intexsoft.by.crittercismapi.data.bean.DailyStatisticsItem;
 import intexsoft.by.crittercismapi.data.bean.sorting.SortedByCrashes;
@@ -24,7 +28,12 @@ import intexsoft.by.crittercismapi.ui.view.animation.EndAnimationListener;
 import intexsoft.by.crittercismapi.ui.view.animation.MyAnimationSet;
 import intexsoft.by.crittercismapi.utils.DateTimeUtils;
 import intexsoft.by.crittercismapi.utils.Launcher;
-import org.androidannotations.annotations.*;
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.UiThread;
+import org.androidannotations.annotations.ViewById;
 
 import java.util.Calendar;
 import java.util.Collections;
@@ -46,6 +55,8 @@ public class MainFragment extends Fragment implements MainView, DatePickerFragme
 	private List<DailyStatisticsItem> mDailyStatisticsItems;
 	private MyAnimationSet myAnimationSet;
 	private boolean clickResult = false;
+
+	private static final int DELAY_PROGRESS_BAR = 2000;
 
 
 	@ViewById
@@ -251,7 +262,7 @@ public class MainFragment extends Fragment implements MainView, DatePickerFragme
 		alert.show();
 	}
 
-	@UiThread(delay = 2000)
+	@UiThread(delay = DELAY_PROGRESS_BAR)
 	void hideProgressBar()
 	{
 		progressContainer.setVisibility(View.INVISIBLE);

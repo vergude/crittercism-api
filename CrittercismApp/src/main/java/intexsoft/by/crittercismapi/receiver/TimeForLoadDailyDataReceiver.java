@@ -13,15 +13,16 @@ import java.util.Date;
  */
 public class TimeForLoadDailyDataReceiver extends BroadcastReceiver
 {
+	private static final String LOG_KEY = "Alarm";
 
 	@Override
 	public void onReceive(Context context, Intent intent)
 	{
 
-		Log.d("Alarm", "onReceive: " + (new Date(System.currentTimeMillis())).toString());
+		Log.d(LOG_KEY, "onReceive: " + (new Date(System.currentTimeMillis())).toString());
 
 		ErrorGraphService.getAndSaveDailyStatistics();
 
-		Log.d("Alarm", "Data loaded: " + (new Date()).toString());
+		Log.d(LOG_KEY, "Data loaded: " + (new Date()).toString());
 	}
 }

@@ -23,6 +23,7 @@ import org.androidannotations.annotations.rest.RestService;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -131,13 +132,18 @@ public class RemoteFacade
 		{
 			return null;
 		}
+		return new ArrayList<DailyStatisticsItem>(getStatisticHashMap(pieResponseAppLoads, appsMap, pieResponseCrashes));
+	}
 
+	private Collection<DailyStatisticsItem> getStatisticHashMap(PieResponse pieResponseAppLoads, Map<String,
+			CrittercismApp> crittercismAppMap, PieResponse pieResponseCrashes)
+	{
 		HashMap<String, DailyStatisticsItem> statisticsHashMap = new HashMap<String, DailyStatisticsItem>();
 
 		for (SeriesData seriesData : pieResponseAppLoads.getData().getSlices())
 		{
 			String appId = seriesData.getLabel();
-			DailyStatisticsItem item = new DailyStatisticsItem(appsMap.get(appId), 0, seriesData.getValue());
+			DailyStatisticsItem item = new DailyStatisticsItem(crittercismAppMap.get(appId), 0, seriesData.getValue());
 
 			statisticsHashMap.put(appId, item);
 		}
@@ -147,7 +153,7 @@ public class RemoteFacade
 			String appId = seriesData.getLabel();
 			if (!statisticsHashMap.containsKey(appId))
 			{
-				DailyStatisticsItem item = new DailyStatisticsItem(appsMap.get(appId), seriesData.getValue(), 0);
+				DailyStatisticsItem item = new DailyStatisticsItem(crittercismAppMap.get(appId), seriesData.getValue(), 0);
 				statisticsHashMap.put(appId, item);
 			}
 			else
@@ -155,7 +161,6 @@ public class RemoteFacade
 				statisticsHashMap.get(appId).setCrashesCount(seriesData.getValue());
 			}
 		}
-
-		return new ArrayList<DailyStatisticsItem>(statisticsHashMap.values());
+		return statisticsHashMap.values();
 	}
 }

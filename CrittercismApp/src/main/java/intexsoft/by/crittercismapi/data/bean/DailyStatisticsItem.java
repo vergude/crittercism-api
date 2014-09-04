@@ -121,7 +121,8 @@ public class DailyStatisticsItem extends Entity
         {
             return 0;
         }
-        return ((double) crashesCount / appLoadsCount);
+
+		return (double) crashesCount / appLoadsCount;
     }
 
 

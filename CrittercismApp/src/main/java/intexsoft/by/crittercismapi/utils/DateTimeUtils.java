@@ -11,6 +11,9 @@ import java.util.Locale;
 public final class DateTimeUtils
 {
 	private static final String SQL_DATE_FORMAT = "yyyyMMdd hh:mm:ss";
+	private static final int HOUR_DAY = 23;
+	private static final int MINUTE_DAY = 59;
+	private static final int SECOND_DAY = 59;
 
 	private DateTimeUtils()
 	{
@@ -26,9 +29,9 @@ public final class DateTimeUtils
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
 
-		calendar.set(Calendar.HOUR_OF_DAY, 23);
-		calendar.set(Calendar.MINUTE, 59);
-		calendar.set(Calendar.SECOND, 59);
+		calendar.set(Calendar.HOUR_OF_DAY, HOUR_DAY);
+		calendar.set(Calendar.MINUTE, MINUTE_DAY);
+		calendar.set(Calendar.SECOND, SECOND_DAY);
 
 		return String.valueOf(calendar.getTime().getTime());
 	}

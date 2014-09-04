@@ -46,10 +46,10 @@ public class StatisticsCursorLoader extends CursorLoader
 
 		Cursor cursor = queryHelper.getDailyStatisticsItem(
 				null,
-				DailyStatisticsItem.COLUMN_DATE + " >= ? and " + DailyStatisticsItem.COLUMN_DATE +" < ? and "
+				DailyStatisticsItem.COLUMN_DATE + " >= ? and " + DailyStatisticsItem.COLUMN_DATE + " < ? and "
 						+ DailyStatisticsItem.COLUMN_APP_REMOTE_ID + " = ?",
-						new String[]{stringStartDate, stringEndDate,appId},
-						orderBy);
+						new String[]{stringStartDate, stringEndDate, appId},
+						 orderBy);
 
 		return cursor;
 	}

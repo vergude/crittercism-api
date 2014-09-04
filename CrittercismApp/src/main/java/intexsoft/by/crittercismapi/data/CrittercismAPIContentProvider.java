@@ -55,17 +55,13 @@ public class CrittercismAPIContentProvider extends ContentProvider
 		switch (uriMatcher.match(uri))
 		{
 			case URI_CODE_DAILY_STATISTIC:
-			{
 				return queryHelper.getDailyStatisticsItem(projection, selection, selectionArgs, sortOrder);
-			}
+
 			case URI_CODE_CRITTERCISM_APP:
-			{
 				return queryHelper.getCursor(CrittercismApp.class, projection, selection, selectionArgs, sortOrder);
-			}
-			default:
-			{
-				return null;
-			}
+
+			default: return null;
+
 		}
 	}
 
@@ -81,19 +77,13 @@ public class CrittercismAPIContentProvider extends ContentProvider
 		switch (uriMatcher.match(uri))
 		{
 			case URI_CODE_DAILY_STATISTIC:
-			{
-				long id = queryHelper.save(DailyStatisticsItem.class, values);
-				return ContentUris.withAppendedId(uri, id);
-			}
+				long idDailyStatistic = queryHelper.save(DailyStatisticsItem.class, values);
+				return ContentUris.withAppendedId(uri, idDailyStatistic);
+
 			case URI_CODE_CRITTERCISM_APP:
-			{
-				long id = queryHelper.save(CrittercismApp.class, values);
-				return ContentUris.withAppendedId(uri, id);
-			}
-			default:
-			{
-				return null;
-			}
+				long idCrittercismApp = queryHelper.save(CrittercismApp.class, values);
+				return ContentUris.withAppendedId(uri, idCrittercismApp);
+			default: return null;
 		}
 	}
 
@@ -111,10 +101,7 @@ public class CrittercismAPIContentProvider extends ContentProvider
 //            case URI_CODE_DAILY_STATISTIC: {
 //                return queryHelper.updateTag(values, selection, selectionArgs);
 //            }
-			default:
-			{
-				return 0;
-			}
+			default: return 0;
 		}
 	}
 

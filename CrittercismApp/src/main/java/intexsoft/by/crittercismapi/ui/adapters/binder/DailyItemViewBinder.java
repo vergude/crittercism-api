@@ -87,7 +87,7 @@ public class DailyItemViewBinder extends RelativeLayout
 		}
 		else
 		{
-			long date = data.getLong(data.getColumnIndex((DailyStatisticsItem.COLUMN_DATE)));
+			long date = data.getLong(data.getColumnIndex(DailyStatisticsItem.COLUMN_DATE));
 			tvAppName.setText(DateTimeUtils.getFormattedDate(new Date(date), DATE_FORMAT));
 			Log.d("****************", DateTimeUtils.getFormattedDate(new Date(date), DATE_FORMAT));
 			Log.d("*******************", Long.toString(new Date(date).getTime()));

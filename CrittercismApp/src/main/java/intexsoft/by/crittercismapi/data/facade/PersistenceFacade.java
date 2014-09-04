@@ -19,7 +19,11 @@ import org.androidannotations.annotations.RootContext;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 @EBean(scope = EBean.Scope.Singleton)
@@ -33,6 +37,9 @@ public class PersistenceFacade
 
 	@Bean
 	DatabaseQueryHelper databaseQueryHelper;
+
+	private static final String WHERE_START_DATE = " >= ? and ";
+	private static final String WHERE_END_DATE = " < ?";
 
     public static PersistenceFacade getInstance(Context context)
 	{
@@ -101,14 +108,14 @@ public class PersistenceFacade
 	String appName = "";
 
 	Cursor cursor = databaseQueryHelper.getDailyStatisticsItemSum(null,
-			DailyStatisticsItem.COLUMN_DATE + " >= ? and " + DailyStatisticsItem.COLUMN_DATE + " < ?" ,
+			DailyStatisticsItem.COLUMN_DATE + WHERE_START_DATE + DailyStatisticsItem.COLUMN_DATE + WHERE_END_DATE ,
 			new String[]{stringStartDate, stringEndDate}, DailyStatisticsItem.COLUMN_APP_REMOTE_ID, columnName);
 
 	if (cursor != null)
 	{
 		cursor.moveToFirst();
 		maxCrashes = cursor.getDouble(cursor.getColumnIndex(valueSum));
-		appName = appName = cursor.getString(cursor.getColumnIndex(CrittercismApp.COLUMN_NAME));
+		appName = cursor.getString(cursor.getColumnIndex(CrittercismApp.COLUMN_NAME));
 		while (cursor.moveToNext())
 		{
 			if (cursor.getDouble(cursor.getColumnIndex(valueSum)) >  maxCrashes)
@@ -133,7 +140,7 @@ public class PersistenceFacade
 		{
 			cursor.moveToFirst();
 			maxCrashes = cursor.getDouble(cursor.getColumnIndex(valueSum));
-			appName = appName = cursor.getString(cursor.getColumnIndex(CrittercismApp.COLUMN_NAME));
+			appName = cursor.getString(cursor.getColumnIndex(CrittercismApp.COLUMN_NAME));
 			while (cursor.moveToNext())
 			{
 				if (cursor.getDouble(cursor.getColumnIndex(valueSum)) >  maxCrashes)
@@ -155,14 +162,14 @@ public class PersistenceFacade
 		String appName = "";
 
 		Cursor cursor = databaseQueryHelper.getDailyStatisticsItemSum(null,
-				DailyStatisticsItem.COLUMN_DATE + " >= ? and " + DailyStatisticsItem.COLUMN_DATE + " < ?" ,
+				DailyStatisticsItem.COLUMN_DATE + WHERE_START_DATE + DailyStatisticsItem.COLUMN_DATE + WHERE_END_DATE ,
 				new String[]{stringStartDate, stringEndDate}, DailyStatisticsItem.COLUMN_APP_REMOTE_ID, columnName);
 
 		if (cursor != null)
 		{
 			cursor.moveToFirst();
 			maxCrashes = cursor.getDouble(cursor.getColumnIndex(valueSum));
-			appName = appName = cursor.getString(cursor.getColumnIndex(CrittercismApp.COLUMN_NAME));
+			appName = cursor.getString(cursor.getColumnIndex(CrittercismApp.COLUMN_NAME));
 			while (cursor.moveToNext())
 			{
 				if (cursor.getDouble(cursor.getColumnIndex(valueSum)) >  maxCrashes)

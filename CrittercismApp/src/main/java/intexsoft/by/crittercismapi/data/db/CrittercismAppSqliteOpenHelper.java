@@ -11,21 +11,21 @@ public class CrittercismAppSqliteOpenHelper extends SQLiteOpenHelper
 	private static final String DB_NAME = "crittercism.db";
 	private static final int DB_VERSION = 1;
 
-	private static CrittercismAppSqliteOpenHelper INSTANCE;
+	private static CrittercismAppSqliteOpenHelper crittercismAppSqliteOpenHelper;
 
 	public static CrittercismAppSqliteOpenHelper getInstance(Context context)
 	{
-		if (INSTANCE == null)
+		if (crittercismAppSqliteOpenHelper == null)
 		{
 			synchronized (CrittercismAppSqliteOpenHelper.class)
 			{
-				if (INSTANCE == null)
+				if (crittercismAppSqliteOpenHelper == null)
 				{
-					INSTANCE = new CrittercismAppSqliteOpenHelper(context);
+					crittercismAppSqliteOpenHelper = new CrittercismAppSqliteOpenHelper(context);
 				}
 			}
 		}
-		return INSTANCE;
+		return crittercismAppSqliteOpenHelper;
 	}
 
 	public CrittercismAppSqliteOpenHelper(Context context)

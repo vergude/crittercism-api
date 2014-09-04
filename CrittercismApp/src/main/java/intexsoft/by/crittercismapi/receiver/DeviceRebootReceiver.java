@@ -17,6 +17,9 @@ import java.util.Calendar;
 
 public class DeviceRebootReceiver extends BroadcastReceiver
 {
+	private static final String LOG_KEY = "Alarm";
+	private static final int HOUR_DAY = 23;
+	private static final int MINUTE_DAY = 58;
 
 	@Override
 	public void onReceive(Context context, Intent i)
@@ -34,15 +37,15 @@ public class DeviceRebootReceiver extends BroadcastReceiver
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTimeInMillis(currenttime);
 
-		Log.d("Alarm", "Current time from calendar: " + calendar.getTimeInMillis());
-		Log.d("Alarm", "Current time system: " + currenttime);
+		Log.d(LOG_KEY, "Current time from calendar: " + calendar.getTimeInMillis());
+		Log.d(LOG_KEY, "Current time system: " + currenttime);
 
-		calendar.set(Calendar.HOUR_OF_DAY, 23);
-		calendar.set(Calendar.MINUTE, 58);
+		calendar.set(Calendar.HOUR_OF_DAY, HOUR_DAY);
+		calendar.set(Calendar.MINUTE, MINUTE_DAY);
 		calendar.set(Calendar.SECOND, 0);
 		calendar.set(Calendar.MILLISECOND, 0);
 
-		Log.d("Alarm", "Start time:" + calendar.getTime().toString());
+		Log.d(LOG_KEY, "Start time:" + calendar.getTime().toString());
 
 		am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), Constants.INTERVAL, pi);
 		context.startService(new Intent(context, DailyDataSavingService.class));
