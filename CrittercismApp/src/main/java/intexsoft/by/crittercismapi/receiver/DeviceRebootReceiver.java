@@ -10,7 +10,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import intexsoft.by.crittercismapi.Constants;
 import intexsoft.by.crittercismapi.service.DailyDataSavingService;
 
 import java.util.Calendar;
@@ -47,7 +46,7 @@ public class DeviceRebootReceiver extends BroadcastReceiver
 
 		Log.d(LOG_KEY, "Start time:" + calendar.getTime().toString());
 
-		am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), Constants.INTERVAL, pi);
+		am.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 24 * 60 * 60 * 1000, pi);
 		context.startService(new Intent(context, DailyDataSavingService.class));
 	}
 

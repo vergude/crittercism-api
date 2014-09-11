@@ -1,9 +1,10 @@
 package intexsoft.by.crittercismapi;
 
 import android.app.Application;
-import com.crittercism.app.Crittercism;
+import android.util.Log;
 import intexsoft.by.crittercismapi.data.CupboardConfigurator;
 import intexsoft.by.crittercismapi.receiver.DeviceRebootReceiver;
+import intexsoft.by.crittercismapi.receiver.NotificationReceiver;
 import org.androidannotations.annotations.EApplication;
 
 /**
@@ -28,8 +29,10 @@ public class CrittercismApplication extends Application
         application = this;
 
 		DeviceRebootReceiver.scheduleAlarms(this);
+		NotificationReceiver.startnAlarmForNotification(this);
+		Log.d("C****************************", "********************************");
 
-		Crittercism.initialize(getApplicationContext(), CRITTERCISM_APP_ID);
+//		Crittercism.initialize(getApplicationContext(), CRITTERCISM_APP_ID);
 	}
 
     public static Application getApplication()

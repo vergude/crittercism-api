@@ -3,12 +3,12 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory android:title="@string/general_settings">
         <CheckBoxPreference android:key="@string/settings_key_one"
-            android:title="Настройка первая"
-            android:summary="Описание первой настройки"/>
+            android:title="Notification message"
+            android:summary="Message a leader crashes every day"/>
 
         <CheckBoxPreference android:key="@string/autoLogin"
             android:title="Auto login"
-            android:summary="Автоматическая авторизация пользователя"/>
+            android:summary="Automatic user authentication"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/about_settings">

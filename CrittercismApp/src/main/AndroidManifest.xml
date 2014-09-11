@@ -37,6 +37,10 @@
         <service
             android:name=".service.LoginService_"
             android:exported="false" />
+        
+        <service android:name=".service.NotificationService"
+            android:exported="false"/>
+
         <service
             android:name=".service.ErrorGraphService_"
             android:exported="false" />
@@ -52,10 +56,17 @@
             </intent-filter>
         </receiver>
 
+        <receiver android:name=".receiver.NotificationReceiver">
+            <intent-filter>
+                <action android:name="by.crittercismapi.notification"/>
+            </intent-filter>
+        </receiver>
+
         <provider
             android:name=".data.CrittercismAPIContentProvider_"
             android:authorities="intexsoft.by.crittercismapi"
             android:exported="false" />
     </application>
+
 
 </manifest>
