@@ -27,11 +27,12 @@ public class TimeForLoadDailyDataReceiver extends BroadcastReceiver
 
 		Log.d(LOG_KEY, "onReceive: " + (new Date(System.currentTimeMillis())).toString());
 
+		settingsFacade.saveLastSavingDate(System.currentTimeMillis());
+
+		ErrorGraphService.saveDataForPeriodIfNeeded();
 		ErrorGraphService.getAndSaveDailyStatistics();
 
 		Log.d(LOG_KEY, "Data loaded: " + (new Date()).toString());
-
-		settingsFacade.saveLastSavingDate(System.currentTimeMillis());
 
 		Log.d("Alarm", "Data loaded: " + (new Date()).toString());
 	}

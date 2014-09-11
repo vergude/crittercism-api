@@ -6,6 +6,7 @@ import intexsoft.by.crittercismapi.data.bean.DailyStatisticsItem;
 import intexsoft.by.crittercismapi.data.facade.RemoteFacade;
 import intexsoft.by.crittercismapi.data.remote.response.GraphResponse;
 import intexsoft.by.crittercismapi.data.remote.response.SeriesData;
+import intexsoft.by.crittercismapi.utils.DateTimeUtils;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
@@ -32,22 +33,22 @@ public class ErrorGraphManager
 	@RootContext
 	Context context;
 
-	public List<DailyStatisticsItem> getMonthlyStatistics(String appId)
+	public List<DailyStatisticsItem> getMonthlyStatistics(String appId, Date fromDate)
 	{
 		LinkedHashMap<Date, DailyStatisticsItem> appErrorDetailsMap = new LinkedHashMap<Date, DailyStatisticsItem>();
 
 		GraphResponse graphResponseItemsAppCrashes = remoteFacade.getErrorGraphOneApp(appId, Constants.GRAPH_CRASHES);
-		processCrashes(graphResponseItemsAppCrashes, appErrorDetailsMap, new DailyCrashesItemProcessor(), appId);
+		processCrashes(graphResponseItemsAppCrashes, appErrorDetailsMap, new DailyCrashesItemProcessor(), appId, fromDate);
 
 
 		GraphResponse graphResponseItemsAppLoads = remoteFacade.getErrorGraphOneApp(appId, Constants.GRAPH_APPLOADS);
-		processCrashes(graphResponseItemsAppLoads, appErrorDetailsMap, new DailyLoadsItemProcessor(), appId);
+		processCrashes(graphResponseItemsAppLoads, appErrorDetailsMap, new DailyLoadsItemProcessor(), appId, fromDate);
 		
 		return new ArrayList<DailyStatisticsItem>(appErrorDetailsMap.values());
 	}
 
 	private void processCrashes(GraphResponse graphResponse, LinkedHashMap<Date, DailyStatisticsItem> appErrorDetailsMap,
-								DailyItemProcessor dailyItemProcessor, String appId)
+								DailyItemProcessor dailyItemProcessor, String appId, Date fromDate)
 	{
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
@@ -68,6 +69,22 @@ public class ErrorGraphManager
 			endDateCalendar.add(Calendar.DATE, -1);
 
 			int step = 0;
+
+			if (fromDate != null)
+			{
+				Calendar fromDateCalendar = DateTimeUtils.getStartOfDay(fromDate);
+				fromDate = fromDateCalendar.getTime();
+
+				if (fromDate.after(startDate))
+				{
+					do
+					{
+						startDateCalendar.add(Calendar.DATE, 1);
+						step++;
+					}
+					while (startDate.before(fromDate));
+				}
+			}
 
 			do
 			{

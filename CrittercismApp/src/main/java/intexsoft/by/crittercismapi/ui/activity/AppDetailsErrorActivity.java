@@ -93,8 +93,8 @@ public class AppDetailsErrorActivity extends Activity implements AppDetailsError
 	@Override
 	protected void onStop()
 	{
-		super.onStop();
 		appDetailsErrorPresenter.onStop();
+		super.onStop();
 	}
 
 //	@AfterViews

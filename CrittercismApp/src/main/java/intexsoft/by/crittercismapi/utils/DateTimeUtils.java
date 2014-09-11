@@ -56,4 +56,27 @@ public final class DateTimeUtils
 
 		return sdf.format(date);
 	}
+
+	public static boolean isYesterday(Date lastSavingDate)
+	{
+		Calendar calendar = getStartOfDay(lastSavingDate);
+
+		Calendar yesterdayCalendar = getStartOfDay(new Date(System.currentTimeMillis()));
+		yesterdayCalendar.add(Calendar.DATE, -1);
+
+		return calendar.getTime().equals(yesterdayCalendar.getTime());
+	}
+
+	public static Calendar getStartOfDay(Date date)
+	{
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+
+		return calendar;
+	}
 }

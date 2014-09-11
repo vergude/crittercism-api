@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import intexsoft.by.crittercismapi.Constants;
 import intexsoft.by.crittercismapi.CrittercismApplication;
+import intexsoft.by.crittercismapi.data.bean.CrittercismApp;
 import intexsoft.by.crittercismapi.data.bean.DailyStatisticsItem;
 import intexsoft.by.crittercismapi.data.facade.PersistenceFacade;
 import intexsoft.by.crittercismapi.data.facade.RemoteFacade;
@@ -12,10 +13,13 @@ import intexsoft.by.crittercismapi.event.AppDetailsLoadedEvent;
 import intexsoft.by.crittercismapi.event.DailyStatisticsLoadedEvent;
 import intexsoft.by.crittercismapi.event.EventObserver;
 import intexsoft.by.crittercismapi.manager.ErrorGraphManager;
+import intexsoft.by.crittercismapi.settings.SettingsFacade;
+import intexsoft.by.crittercismapi.utils.DateTimeUtils;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EIntentService;
 import org.androidannotations.annotations.ServiceAction;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -32,6 +36,9 @@ public class ErrorGraphService extends IntentService
 
 	@Bean
 	PersistenceFacade persistenceFacade;
+
+	@Bean
+	SettingsFacade settingsFacade;
 
 	@Bean
 	ErrorGraphManager errorGraphManager;
@@ -54,6 +61,11 @@ public class ErrorGraphService extends IntentService
 	public static void getAppErrorDetails(String appId)
 	{
 		ErrorGraphService_.intent(getContext()).fetchAppDetailsError(appId).start();
+	}
+
+	public static void saveDataForPeriodIfNeeded()
+	{
+		ErrorGraphService_.intent(getContext()).saveDataForPeriod().start();
 	}
 
 	@Override
@@ -85,12 +97,44 @@ public class ErrorGraphService extends IntentService
 	@ServiceAction(Constants.Action.REQUEST_GET_APP_DETAILS_ERROR)
 	public void fetchAppDetailsError(String appId)
 	{
-		List<DailyStatisticsItem> appErrorDetailsList = errorGraphManager.getMonthlyStatistics(appId);
+		List<DailyStatisticsItem> appErrorDetailsList = errorGraphManager.getMonthlyStatistics(appId, null);
 
 		AppDetailsLoadedEvent event = new AppDetailsLoadedEvent();
 		event.setDailyStatisticsItems(appErrorDetailsList);
 
 		EventObserver.sendEvent(getContext(), event);
+	}
+
+	@ServiceAction(Constants.Action.SAVE_DATA_FOR_PERIOD)
+	public void saveDataForPeriod()
+	{
+		long savingDateLong = settingsFacade.getLastSavingDate();
+		if (savingDateLong == 0)
+		{
+			return;
+		}
+
+		Date lastSavingDate = new Date(savingDateLong);
+		if(DateTimeUtils.isYesterday(lastSavingDate))
+		{
+			return;
+		}
+
+		String userLogin = settingsFacade.getLogin();
+
+		List<CrittercismApp> oldAppsList = persistenceFacade.getAppsByUser(userLogin);
+
+		if (oldAppsList == null || oldAppsList.size() == 0)
+		{
+			List<CrittercismApp> appsList = remoteFacade.getAppsForUser(userLogin);
+			persistenceFacade.saveApps(appsList);
+
+			for (CrittercismApp app :appsList)
+			{
+				List<DailyStatisticsItem> dailyStatisticsItems = errorGraphManager.getMonthlyStatistics(app.getRemoteId(), lastSavingDate);
+				persistenceFacade.saveDailyStatisticsItems(dailyStatisticsItems);
+			}
+		}
 	}
 
 	private static Context getContext()
