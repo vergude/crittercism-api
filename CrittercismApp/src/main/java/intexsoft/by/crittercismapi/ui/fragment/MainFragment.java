@@ -87,12 +87,7 @@ public class MainFragment extends Fragment implements MainView, DatePickerFragme
 	{
 		super.onCreate(savedInstanceState);
 		myAnimationSet = new MyAnimationSet(true);
-	}
 
-	@Override
-	public void onStart()
-	{
-		super.onStart();
 		presenter.onStart();
 	}
 

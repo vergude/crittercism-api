@@ -1,7 +1,6 @@
 package intexsoft.by.crittercismapi;
 
 import android.app.Application;
-import com.crittercism.app.Crittercism;
 import intexsoft.by.crittercismapi.data.CupboardConfigurator;
 import intexsoft.by.crittercismapi.receiver.DeviceRebootReceiver;
 import org.androidannotations.annotations.EApplication;
@@ -29,7 +28,7 @@ public class CrittercismApplication extends Application
 
 		DeviceRebootReceiver.scheduleAlarms(this);
 
-		Crittercism.initialize(getApplicationContext(), CRITTERCISM_APP_ID);
+		//Crittercism.initialize(getApplicationContext(), CRITTERCISM_APP_ID);
 	}
 
     public static Application getApplication()
