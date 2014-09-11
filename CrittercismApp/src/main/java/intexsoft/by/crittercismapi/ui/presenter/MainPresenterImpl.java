@@ -40,6 +40,7 @@ public class MainPresenterImpl implements MainPresenter
         this.mainView = view;
 
 		ErrorGraphService.getTodayStatistics();
+		ErrorGraphService.saveDataForPeriodIfNeeded();
     }
 
 
@@ -48,6 +49,8 @@ public class MainPresenterImpl implements MainPresenter
     {
         EventObserver.register(getContext(), dailyStatisticsReceiver, DailyStatisticsLoadedEvent.class);
     }
+
+
 
     @Override
     public void onStop()

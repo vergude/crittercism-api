@@ -123,7 +123,7 @@ public class LoginService extends IntentService
 
 			for (CrittercismApp app :appsList)
 			{
-				List<DailyStatisticsItem> dailyStatisticsItems = errorGraphManager.getMonthlyStatistics(app.getRemoteId());
+				List<DailyStatisticsItem> dailyStatisticsItems = errorGraphManager.getMonthlyStatistics(app.getRemoteId(), null);
 				persistenceFacade.saveDailyStatisticsItems(dailyStatisticsItems);
 			}
 		}

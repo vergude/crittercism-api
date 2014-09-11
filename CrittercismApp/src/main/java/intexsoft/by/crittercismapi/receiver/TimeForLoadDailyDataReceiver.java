@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import intexsoft.by.crittercismapi.service.ErrorGraphService;
+import intexsoft.by.crittercismapi.settings.SettingsFacade;
+import intexsoft.by.crittercismapi.settings.SettingsFacade_;
 
 import java.util.Date;
 
@@ -13,16 +15,25 @@ import java.util.Date;
  */
 public class TimeForLoadDailyDataReceiver extends BroadcastReceiver
 {
+
 	private static final String LOG_KEY = "Alarm";
+
+	SettingsFacade settingsFacade;
 
 	@Override
 	public void onReceive(Context context, Intent intent)
 	{
+		settingsFacade = SettingsFacade_.getInstance_(context);
 
 		Log.d(LOG_KEY, "onReceive: " + (new Date(System.currentTimeMillis())).toString());
 
+		settingsFacade.saveLastSavingDate(System.currentTimeMillis());
+
+		ErrorGraphService.saveDataForPeriodIfNeeded();
 		ErrorGraphService.getAndSaveDailyStatistics();
 
 		Log.d(LOG_KEY, "Data loaded: " + (new Date()).toString());
+
+		Log.d("Alarm", "Data loaded: " + (new Date()).toString());
 	}
 }

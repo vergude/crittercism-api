@@ -66,4 +66,14 @@ public class SettingsFacade
 		return appSettings.autoLogin().get();
 	}
 
+	public long getLastSavingDate()
+	{
+		return appSettings.lastSavingDate().get();
+	}
+
+	public void saveLastSavingDate(long date)
+	{
+		appSettings.edit().lastSavingDate().put(date).apply();
+	}
+
 }
