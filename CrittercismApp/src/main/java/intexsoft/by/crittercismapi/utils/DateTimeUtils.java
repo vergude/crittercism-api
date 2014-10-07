@@ -8,75 +8,99 @@ import java.util.Locale;
 /**
  * Created by anastasya.konovalova on 21.07.2014.
  */
-public final class DateTimeUtils
-{
-	private static final String SQL_DATE_FORMAT = "yyyyMMdd hh:mm:ss";
-	private static final int HOUR_DAY = 23;
-	private static final int MINUTE_DAY = 59;
-	private static final int SECOND_DAY = 59;
+public final class DateTimeUtils {
+    private static final String SQL_DATE_FORMAT = "yyyyMMdd hh:mm:ss";
+    private static final int HOUR_DAY = 23;
+    private static final int MINUTE_DAY = 59;
+    private static final int SECOND_DAY = 59;
 
-	private DateTimeUtils()
-	{
-	}
+    private DateTimeUtils()
+    {
+    }
 
-	public static long getCurrentDateLong()
-	{
-		return (new Date()).getTime();
-	}
+    public static long getCurrentDateLong()
+    {
+        return (new Date()).getTime();
+    }
 
-	public static String getFormatedEndOfDay(Date date)
-	{
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(date);
+    public static String getFormatedEndOfDay(Date date)
+    {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
 
-		calendar.set(Calendar.HOUR_OF_DAY, HOUR_DAY);
-		calendar.set(Calendar.MINUTE, MINUTE_DAY);
-		calendar.set(Calendar.SECOND, SECOND_DAY);
+        calendar.set(Calendar.HOUR_OF_DAY, HOUR_DAY);
+        calendar.set(Calendar.MINUTE, MINUTE_DAY);
+        calendar.set(Calendar.SECOND, SECOND_DAY);
 
-		return String.valueOf(calendar.getTime().getTime());
-	}
+        return String.valueOf(calendar.getTime().getTime());
+    }
 
-	public static String getFormatedStartOfDay(Date date)
-	{
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(date);
+    public static String getFormatedStartOfDay(Date date)
+    {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
 
-		calendar.set(Calendar.HOUR_OF_DAY, 0);
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.SECOND, 0);
-		calendar.set(Calendar.MILLISECOND, 0);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
 
-		return String.valueOf(calendar.getTime().getTime());
-	}
+        return String.valueOf(calendar.getTime().getTime());
+    }
 
+    public static String getFormattedDate(Date date, String dateFormat)
+    {
+        SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.getDefault());
 
-	public static String getFormattedDate(Date date, String dateFormat)
-	{
-		SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.getDefault());
+        return sdf.format(date);
+    }
 
-		return sdf.format(date);
-	}
+    public static boolean isYesterday(Date lastSavingDate)
+    {
+        Calendar calendar = getStartOfDay(lastSavingDate);
 
-	public static boolean isYesterday(Date lastSavingDate)
-	{
-		Calendar calendar = getStartOfDay(lastSavingDate);
+        Calendar yesterdayCalendar = getStartOfDay(new Date(System.currentTimeMillis()));
+        yesterdayCalendar.add(Calendar.DATE, -1);
 
-		Calendar yesterdayCalendar = getStartOfDay(new Date(System.currentTimeMillis()));
-		yesterdayCalendar.add(Calendar.DATE, -1);
+        return calendar.getTime().equals(yesterdayCalendar.getTime());
+    }
 
-		return calendar.getTime().equals(yesterdayCalendar.getTime());
-	}
+    public static Calendar getStartOfDay(Date date)
+    {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
 
-	public static Calendar getStartOfDay(Date date)
-	{
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(date);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
 
-		calendar.set(Calendar.HOUR_OF_DAY, 0);
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.SECOND, 0);
-		calendar.set(Calendar.MILLISECOND, 0);
+        return calendar;
+    }
 
-		return calendar;
-	}
+    public static String getFormattedStartMonth(Date date)
+    {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+
+        return String.valueOf(calendar.getTime().getTime());
+    }
+
+    public static String getFormattedEndMonth(Date date)
+    {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+        calendar.set(Calendar.HOUR_OF_DAY, HOUR_DAY);
+        calendar.set(Calendar.MINUTE, MINUTE_DAY);
+        calendar.set(Calendar.SECOND, SECOND_DAY);
+
+        return String.valueOf(calendar.getTime().getTime());
+    }
 }

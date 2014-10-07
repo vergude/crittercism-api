@@ -2,32 +2,28 @@
 <resources>
 
     <string name="app_name">CrittercismAPI</string>
-
     <string name="title_activity_statistics">StatisticsActivity</string>
-
     <string name="action_settings">Settings</string>
     <string name="action_logout">Logout</string>
-
     <string name="navigate_apps">Applications</string>
     <string name="navigate_statistics">Statistics</string>
     <string name="navigate_fast_statistics">Fast Statistic</string>
+    <string name="month_statistics">Month Statistics</string>
     <string name="navigate_settings">Settings</string>
-
     <string name="general_settings">General</string>
     <string name="about_settings">About</string>
-
     <string name="settings_key_one">Setting_One</string>
     <string name="autoLogin">autoLogin</string>
     <string name="settings_title_version">Build version</string>
     <string name="setting_hint_version">Version:</string>
-
     <string name="previous_day">previous day</string>
     <string name="next_day">next day</string>
-
+    <string name="previous_month">previous month</string>
+    <string name="next_month">next month</string>
     <string name="error_parse_date">Error set date!</string>
+    <string name="name_app">Application name</string>
+    <string name="crashes">Crashes</string>
+    <string name="loads">Loads</string>
+    <string name="error_percent">Errors</string>
 
-    <string name = "name_app">Application name</string>
-    <string name = "crashes">Crashes</string>
-    <string name = "loads">Loads</string>
-    <string name = "error_percent">Errors</string>
 </resources>

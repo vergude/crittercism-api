@@ -1,7 +1,6 @@
 package intexsoft.by.crittercismapi.ui.fragment;
 
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.LoaderManager;
 import android.content.Loader;
@@ -13,25 +12,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.ListView;
+import android.widget.GridView;
 import android.widget.TextView;
-
-import intexsoft.by.crittercismapi.R;
-import intexsoft.by.crittercismapi.data.bean.CrittercismApp;
-import intexsoft.by.crittercismapi.data.bean.DailyStatisticsItem;
-import intexsoft.by.crittercismapi.data.facade.RemoteFacade;
-import intexsoft.by.crittercismapi.data.loader.DailyStatisticsCursorLoader;
-import intexsoft.by.crittercismapi.event.OnSwipeTouchEvent;
-import intexsoft.by.crittercismapi.ui.adapters.DailyStatisticsAdapter;
-import intexsoft.by.crittercismapi.ui.adapters.binder.DailyItemViewBinder;
-import intexsoft.by.crittercismapi.ui.presenter.StatisticsPresenter;
-import intexsoft.by.crittercismapi.ui.presenter.StatisticsPresenterImpl;
-import intexsoft.by.crittercismapi.ui.view.StatisticsView;
-import intexsoft.by.crittercismapi.ui.view.animation.EndAnimationListener;
-import intexsoft.by.crittercismapi.ui.view.animation.MyAnimationSet;
-import intexsoft.by.crittercismapi.utils.DateTimeUtils;
-import intexsoft.by.crittercismapi.utils.Launcher;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -43,54 +25,59 @@ import org.androidannotations.annotations.ViewById;
 import java.util.Calendar;
 import java.util.Date;
 
-/**
- * Created by anastasya.konovalova on 11.07.2014.
- */
-@EFragment(R.layout.fragment_statistics)
-public class StatisticsFragment extends Fragment implements StatisticsView,
-        DatePickerFragment.FragmentDatePickerInterface, LoaderManager.LoaderCallbacks<Cursor> {
+import intexsoft.by.crittercismapi.R;
+import intexsoft.by.crittercismapi.data.bean.CrittercismApp;
+import intexsoft.by.crittercismapi.data.bean.DailyStatisticsItem;
+import intexsoft.by.crittercismapi.data.loader.MonthStatisticsCursorLoader;
+import intexsoft.by.crittercismapi.ui.adapters.DailyStatisticsAdapter;
+import intexsoft.by.crittercismapi.ui.adapters.binder.DailyItemViewBinder;
+import intexsoft.by.crittercismapi.ui.presenter.MonthStatisticPresenter;
+import intexsoft.by.crittercismapi.ui.presenter.MonthStatisticsPresenterImpl;
+import intexsoft.by.crittercismapi.ui.view.MonthStatisticsView;
+import intexsoft.by.crittercismapi.ui.view.animation.EndAnimationListener;
+import intexsoft.by.crittercismapi.ui.view.animation.MyAnimationSet;
+import intexsoft.by.crittercismapi.utils.DateTimeUtils;
+import intexsoft.by.crittercismapi.utils.Launcher;
 
-    private static final String DATE_FORMAT = "d, MMM yyyy";
+@EFragment(R.layout.fragment_month_statistcs)
+public class MonthStatisticsFragment extends Fragment implements MonthStatisticsView, LoaderManager.LoaderCallbacks<Cursor> {
+
+    private static final String DATE_FORMAT = "MMMM, yyyy";
     private Animation animationStart = null;
-    private MyAnimationSet myAnimationSet;
     private boolean clickResult = false;
+    private MyAnimationSet myAnimationSet;
 
     private static final int DELAY_PROGRESS_BAR = 500;
-    private static final String SHORT_TYPE = "ASC";
     private static final String SELECTED_KEY = "selectedDate";
+    private static final String SHORT_TYPE = "ASC";
 
 
     public static final String TAG = MainFragment.class.getSimpleName();
 
-    @ViewById
-    TextView tvDate;
+
+    public static MonthStatisticsFragment build()
+    {
+        return MonthStatisticsFragment_.builder().build();
+    }
 
     @ViewById
-    LinearLayout idFragmentLayout;
+    TextView tvDateMonth;
+
+    @ViewById
+    GridView gvAppInfo;
 
     @ViewById
     FrameLayout progressContainer;
 
-    @ViewById
-    ListView gvAppInfo;
-
-    @Bean(StatisticsPresenterImpl.class)
-    StatisticsPresenter presenter;
-
-    @Bean
-    RemoteFacade remoteFacade;
+    @Bean(MonthStatisticsPresenterImpl.class)
+    MonthStatisticPresenter presenter;
 
     Date selectedDate;
-
-    private DailyStatisticsAdapter adapter;
 
     private String sortColumnName;
     private String sortOrder;
 
-    public static StatisticsFragment build()
-    {
-        return StatisticsFragment_.builder().build();
-    }
+    private DailyStatisticsAdapter adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -101,7 +88,6 @@ public class StatisticsFragment extends Fragment implements StatisticsView,
         if (savedInstanceState == null) {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(new Date());
-            calendar.add(Calendar.DATE, -1);
 
             selectedDate = calendar.getTime();
         } else {
@@ -117,35 +103,10 @@ public class StatisticsFragment extends Fragment implements StatisticsView,
         super.onSaveInstanceState(outState);
     }
 
-    private final OnSwipeTouchEvent onSwipeTouchEvent = new OnSwipeTouchEvent(getActivity()) {
-        @Override
-        public void onSwipeLeft()
-        {
-            setDate(1);
-
-            tvDate.startAnimation(animationStart);
-            progressContainer.setVisibility(View.VISIBLE);
-
-        }
-
-        @Override
-        public void onSwipeRight()
-        {
-            setDate(-1);
-
-            tvDate.startAnimation(animationStart);
-            progressContainer.setVisibility(View.VISIBLE);
-        }
-    };
-
-    void setDate(int day)
+    @AfterViews
+    void initViews()
     {
-        Calendar mCalendar = Calendar.getInstance();
-        mCalendar.setTime(selectedDate);
-        mCalendar.add(Calendar.DAY_OF_MONTH, day);
-
-        selectedDate = mCalendar.getTime();
-
+        presenter.init(this);
         setNewDate();
     }
 
@@ -153,8 +114,15 @@ public class StatisticsFragment extends Fragment implements StatisticsView,
     void swipeDate()
     {
         animationStart = AnimationUtils.loadAnimation(getActivity(), R.anim.scale);
-        idFragmentLayout.setOnTouchListener(onSwipeTouchEvent);
-        gvAppInfo.setOnTouchListener(onSwipeTouchEvent);
+    }
+
+    @AfterViews
+    protected void init()
+    {
+        adapter = new DailyStatisticsAdapter(getActivity(), true);
+        if (gvAppInfo != null) {
+            gvAppInfo.setAdapter(adapter);
+        }
     }
 
     @AfterViews
@@ -191,128 +159,48 @@ public class StatisticsFragment extends Fragment implements StatisticsView,
         ((ViewGroup) view).findViewById(R.id.animationView).setVisibility(View.VISIBLE);
     }
 
-    @UiThread
-    void removeView(View view, View fadeView, int i)
+    @Click(R.id.ibPreviousMonth)
+    public void previousDay()
     {
-        ((ViewGroup) view).removeView(fadeView);
-    }
+        Calendar mCalendar = Calendar.getInstance();
+        mCalendar.setTime(selectedDate);
+        mCalendar.add(Calendar.MONTH, -1);
 
-    @Override
-    public void onStart()
-    {
-        super.onStart();
-        presenter.onStart();
-    }
-
-    @Override
-    public void onStop()
-    {
-        super.onStop();
-        presenter.onStop();
-    }
-
-    @Override
-    public void onResume()
-    {
-        super.onResume();
-
-        progressContainer.setVisibility(View.VISIBLE);
-
-        getLoaderManager().initLoader(0, null, this);
-    }
-
-    @AfterViews
-    void initViews()
-    {
-        presenter.init(this);
+        selectedDate = mCalendar.getTime();
 
         setNewDate();
+
+        tvDateMonth.startAnimation(animationStart);
+        progressContainer.setVisibility(View.VISIBLE);
+    }
+
+    @Click(R.id.ibNextMonth)
+    public void nextDay()
+    {
+        Calendar mCalendar = Calendar.getInstance();
+        mCalendar.setTime(selectedDate);
+        mCalendar.add(Calendar.MONTH, 1);
+
+        selectedDate = mCalendar.getTime();
+
+        setNewDate();
+
+        tvDateMonth.startAnimation(animationStart);
+        progressContainer.setVisibility(View.VISIBLE);
+    }
+
+    private void setNewDate()
+    {
+        tvDateMonth.setText(DateTimeUtils.getFormattedDate(selectedDate, DATE_FORMAT));
+
+        getLoaderManager().restartLoader(0, null, this);
+
     }
 
     @Override
     public Activity getContainer()
     {
         return getActivity();
-    }
-
-    @Click(R.id.tvDate)
-    public void setDateFromCalendar()
-    {
-        DialogFragment datePickerFragment = new DatePickerFragment();
-        datePickerFragment.setTargetFragment(this, 0);
-        datePickerFragment.show(getFragmentManager(), "datePicker");
-    }
-
-    @Click(R.id.ibPreviousDay)
-    public void previousDay()
-    {
-        Calendar mCalendar = Calendar.getInstance();
-        mCalendar.setTime(selectedDate);
-        mCalendar.add(Calendar.DAY_OF_MONTH, -1);
-
-        selectedDate = mCalendar.getTime();
-
-        setNewDate();
-
-        tvDate.startAnimation(animationStart);
-        progressContainer.setVisibility(View.VISIBLE);
-    }
-
-    @Click(R.id.ibNextDay)
-    public void nextDay()
-    {
-        Calendar mCalendar = Calendar.getInstance();
-        mCalendar.setTime(selectedDate);
-        mCalendar.add(Calendar.DAY_OF_MONTH, 1);
-
-        selectedDate = mCalendar.getTime();
-
-        setNewDate();
-
-        tvDate.startAnimation(animationStart);
-        progressContainer.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public Date getCurrentDate()
-    {
-        return selectedDate;
-    }
-
-    @Override
-    public void setSelectedDate(Date date)
-    {
-        if (selectedDate.equals(date)) {
-            return;
-        }
-
-        selectedDate = date;
-        setNewDate();
-
-        tvDate.startAnimation(animationStart);
-        progressContainer.setVisibility(View.VISIBLE);
-    }
-
-    public void setNewDate()
-    {
-        tvDate.setText(DateTimeUtils.getFormattedDate(selectedDate, DATE_FORMAT));
-
-        getLoaderManager().restartLoader(0, null, this);
-    }
-
-    @Override
-    public void dataLoaded()
-    {
-
-    }
-
-    @AfterViews
-    protected void init()
-    {
-        adapter = new DailyStatisticsAdapter(getActivity(), true);
-        if (gvAppInfo != null) {
-            gvAppInfo.setAdapter(adapter);
-        }
     }
 
     @Click(R.id.tvHeadAppName)
@@ -349,13 +237,36 @@ public class StatisticsFragment extends Fragment implements StatisticsView,
         getLoaderManager().restartLoader(0, null, this);
     }
 
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+        presenter.onStart();
+    }
 
     @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args)
+    public void onStop()
+    {
+        super.onStop();
+        presenter.onStop();
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+
+        progressContainer.setVisibility(View.VISIBLE);
+
+        getLoaderManager().initLoader(0, null, this);
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int i, Bundle bundle)
     {
         String sortBy = (sortColumnName != null) ? sortColumnName + " " + sortOrder : null;
 
-        return new DailyStatisticsCursorLoader(getActivity(), selectedDate, sortBy);
+        return new MonthStatisticsCursorLoader(getActivity(), selectedDate, sortBy);
     }
 
     @Override
@@ -367,7 +278,7 @@ public class StatisticsFragment extends Fragment implements StatisticsView,
     }
 
     @Override
-    public void onLoaderReset(Loader loader)
+    public void onLoaderReset(Loader<Cursor> cursorLoader)
     {
 
     }
@@ -376,5 +287,11 @@ public class StatisticsFragment extends Fragment implements StatisticsView,
     void hideProgressBar()
     {
         progressContainer.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void dataLoaded()
+    {
+
     }
 }

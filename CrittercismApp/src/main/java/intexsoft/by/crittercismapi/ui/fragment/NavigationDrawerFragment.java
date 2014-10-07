@@ -24,6 +24,9 @@ public class NavigationDrawerFragment extends Fragment
 	@ViewById(R.id.item_statistics)
 	TextView bookmarksItem;
 
+    @ViewById(R.id.item_month_statistics)
+    TextView mouthStatistics;
+
 	@ViewById(R.id.item_fast_statistics)
 	TextView fastStatistic;
 
@@ -87,6 +90,14 @@ public class NavigationDrawerFragment extends Fragment
 		closeDrawer();
 	}
 
+    @Click(R.id.item_month_statistics)
+    void mouthStatisticsClicked()
+    {
+        selectNavigationItem(NavigationItem.NAVIGATION_MONTH_STATISTICS);
+        performNavigation(NavigationItem.NAVIGATION_MONTH_STATISTICS);
+        closeDrawer();
+    }
+
 	@Click(R.id.item_fast_statistics)
 	void fastStatisticsClicked(View v)
 	{
@@ -109,19 +120,28 @@ public class NavigationDrawerFragment extends Fragment
 		switch (item)
 		{
 			case NAVIGATION_APPS:
+                catalogsItem.setTypeface(null, Typeface.BOLD);
 				bookmarksItem.setTypeface(null, Typeface.NORMAL);
-				catalogsItem.setTypeface(null, Typeface.BOLD);
 				fastStatistic.setTypeface(null, Typeface.NORMAL);
+                mouthStatistics.setTypeface(null, Typeface.NORMAL);
 				break;
 			case NAVIGATION_STATISTICS:
 				catalogsItem.setTypeface(null, Typeface.NORMAL);
 				bookmarksItem.setTypeface(null, Typeface.BOLD);
 				fastStatistic.setTypeface(null, Typeface.NORMAL);
+                mouthStatistics.setTypeface(null, Typeface.NORMAL);
 				break;
+            case NAVIGATION_MONTH_STATISTICS:
+                catalogsItem.setTypeface(null, Typeface.NORMAL);
+                bookmarksItem.setTypeface(null, Typeface.NORMAL);
+                mouthStatistics.setTypeface(null, Typeface.BOLD);
+                fastStatistic.setTypeface(null, Typeface.NORMAL);
+                break;
 			case NAVIGATION_FAST_STATISTICS:
 				catalogsItem.setTypeface(null, Typeface.NORMAL);
 				bookmarksItem.setTypeface(null, Typeface.NORMAL);
-				fastStatistic.setTypeface(null, Typeface.BOLD);
+                mouthStatistics.setTypeface(null, Typeface.NORMAL);
+                fastStatistic.setTypeface(null, Typeface.BOLD);
 				break;
 			default:
 				break;

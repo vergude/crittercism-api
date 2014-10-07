@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/idFragmentLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/orange"
+            android:padding="8dp">
+            <ImageButton
+                android:id="@+id/ibPreviousMonth"
+                style="@style/SelectorDays"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="left"
+                android:contentDescription="@string/previous_month"
+                android:src="@drawable/ic_action_previous_item"/>
+
+            <TextView
+                android:id="@+id/tvDateMonth"
+                style="@style/SelectorDays"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textSize="20sp"/>
+
+            <ImageButton
+                android:id="@+id/ibNextMonth"
+                style="@style/SelectorDays"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:contentDescription="@string/next_month"
+                android:src="@drawable/ic_action_next_item"/>
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:padding="8dip">
+
+                <TextView
+                    android:id="@+id/tvHeadAppName"
+                    style="@style/headGridView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:gravity="left"
+                    android:text="@string/name_app"
+                    android:textSize="17sp"/>
+
+                <TextView
+                    android:id="@+id/tvHeadCrashes"
+                    style="@style/headGridView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:gravity="right"
+                    android:text="@string/crashes"
+                    android:textSize="17sp"/>
+
+                <TextView
+                    android:id="@+id/tvHeadLoads"
+                    style="@style/headGridView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:gravity="right"
+                    android:text="@string/loads"
+                    android:textSize="17sp"/>
+
+                <TextView
+                    android:id="@+id/tvHeadAppErrors"
+                    style="@style/headGridView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:gravity="right"
+                    android:text="@string/error_percent"
+                    android:textSize="17sp"/>
+            </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <GridView
+                    android:id="@+id/gvAppInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:background="@color/orange"
+                    android:listSelector="@android:color/transparent"
+                    android:verticalSpacing="2dip">
+                </GridView>
+            </FrameLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:visibility="invisible"
+        android:clickable="true"
+        android:id="@+id/progressContainer"
+        android:alpha="0.50">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/progressBar2"
+            android:layout_gravity="center" />
+    </FrameLayout>
+</RelativeLayout>

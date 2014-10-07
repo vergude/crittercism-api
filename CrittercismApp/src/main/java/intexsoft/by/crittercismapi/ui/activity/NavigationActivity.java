@@ -10,6 +10,7 @@ import android.view.animation.Animation;
 import intexsoft.by.crittercismapi.R;
 import intexsoft.by.crittercismapi.ui.fragment.FastStatisticFragment;
 import intexsoft.by.crittercismapi.ui.fragment.MainFragment;
+import intexsoft.by.crittercismapi.ui.fragment.MonthStatisticsFragment;
 import intexsoft.by.crittercismapi.ui.fragment.NavigationItem;
 import intexsoft.by.crittercismapi.ui.fragment.StatisticsFragment;
 
@@ -40,6 +41,15 @@ public class NavigationActivity extends BaseNavigationActivity
 			replaceContentFragment(StatisticsFragment.build(), StatisticsFragment.TAG);
 		}
 	}
+
+    private void showMouthStatisticFragment() {
+        currentItem = NavigationItem.NAVIGATION_MONTH_STATISTICS;
+        Fragment fragment = getContentFragment();
+        if (fragment == null || !(fragment instanceof MonthStatisticsFragment))
+        {
+            replaceContentFragment(MonthStatisticsFragment.build(), MonthStatisticsFragment.TAG);
+        }
+    }
 
 	private  void showFastStatisticFragment()
 	{
@@ -96,6 +106,9 @@ public class NavigationActivity extends BaseNavigationActivity
 			case NAVIGATION_STATISTICS:
 				showStatisticsFragment();
 				break;
+            case NAVIGATION_MONTH_STATISTICS:
+                showMouthStatisticFragment();
+                break;
 			case NAVIGATION_FAST_STATISTICS:
 				showFastStatisticFragment();
 				break;
@@ -109,7 +122,7 @@ public class NavigationActivity extends BaseNavigationActivity
 		updateTitle();
 	}
 
-	@Override
+    @Override
 	protected void onStart()
 	{
 		super.onStart();
