@@ -40,7 +40,8 @@ import intexsoft.by.crittercismapi.utils.DateTimeUtils;
 import intexsoft.by.crittercismapi.utils.Launcher;
 
 @EFragment(R.layout.fragment_month_statistcs)
-public class MonthStatisticsFragment extends Fragment implements MonthStatisticsView, LoaderManager.LoaderCallbacks<Cursor> {
+public class MonthStatisticsFragment extends Fragment implements MonthStatisticsView, LoaderManager.LoaderCallbacks<Cursor>
+{
 
     private static final String DATE_FORMAT = "MMMM, yyyy";
     private Animation animationStart = null;
@@ -85,12 +86,15 @@ public class MonthStatisticsFragment extends Fragment implements MonthStatistics
         super.onActivityCreated(savedInstanceState);
 
         myAnimationSet = new MyAnimationSet(true);
-        if (savedInstanceState == null) {
+        if (savedInstanceState == null)
+        {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(new Date());
 
             selectedDate = calendar.getTime();
-        } else {
+        }
+        else
+        {
             Date date = new Date(savedInstanceState.getLong(SELECTED_KEY));
             selectedDate = date;
         }
@@ -120,7 +124,8 @@ public class MonthStatisticsFragment extends Fragment implements MonthStatistics
     protected void init()
     {
         adapter = new DailyStatisticsAdapter(getActivity(), true);
-        if (gvAppInfo != null) {
+        if (gvAppInfo != null)
+        {
             gvAppInfo.setAdapter(adapter);
         }
     }
@@ -128,11 +133,13 @@ public class MonthStatisticsFragment extends Fragment implements MonthStatistics
     @AfterViews
     void onClickListViewItem()
     {
-        gvAppInfo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        gvAppInfo.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
             @Override
             public void onItemClick(final AdapterView<?> adapterView, final View view, final int i, long l)
             {
-                if (((ViewGroup) view).findViewById(R.id.animationView).getVisibility() == View.INVISIBLE && !clickResult) {
+                if (((ViewGroup) view).findViewById(R.id.animationView).getVisibility() == View.INVISIBLE && !clickResult)
+                {
                     startAnimation(view, i);
                 }
             }
@@ -145,7 +152,8 @@ public class MonthStatisticsFragment extends Fragment implements MonthStatistics
 
         ((ViewGroup) view).findViewById(R.id.animationView).startAnimation(myAnimationSet);
         myAnimationSet.setAnimationListener(
-                new EndAnimationListener() {
+                new EndAnimationListener()
+                {
                     @Override
                     public void onAnimationEnd(Animation animation)
                     {
@@ -229,7 +237,8 @@ public class MonthStatisticsFragment extends Fragment implements MonthStatistics
 
     public void startSort(String columnName)
     {
-        if (columnName.equals(sortColumnName) || sortColumnName == null) {
+        if (columnName.equals(sortColumnName) || sortColumnName == null)
+        {
             sortOrder = (SHORT_TYPE.equals(sortOrder)) ? "DESC" : SHORT_TYPE;
         }
         sortColumnName = columnName;

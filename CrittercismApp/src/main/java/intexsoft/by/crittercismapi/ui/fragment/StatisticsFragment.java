@@ -48,7 +48,8 @@ import java.util.Date;
  */
 @EFragment(R.layout.fragment_statistics)
 public class StatisticsFragment extends Fragment implements StatisticsView,
-        DatePickerFragment.FragmentDatePickerInterface, LoaderManager.LoaderCallbacks<Cursor> {
+        DatePickerFragment.FragmentDatePickerInterface, LoaderManager.LoaderCallbacks<Cursor>
+{
 
     private static final String DATE_FORMAT = "d, MMM yyyy";
     private Animation animationStart = null;
@@ -98,13 +99,16 @@ public class StatisticsFragment extends Fragment implements StatisticsView,
         super.onActivityCreated(savedInstanceState);
 
         myAnimationSet = new MyAnimationSet(true);
-        if (savedInstanceState == null) {
+        if (savedInstanceState == null)
+        {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(new Date());
             calendar.add(Calendar.DATE, -1);
 
             selectedDate = calendar.getTime();
-        } else {
+        }
+        else
+        {
             Date date = new Date(savedInstanceState.getLong(SELECTED_KEY));
             selectedDate = date;
         }
@@ -117,7 +121,8 @@ public class StatisticsFragment extends Fragment implements StatisticsView,
         super.onSaveInstanceState(outState);
     }
 
-    private final OnSwipeTouchEvent onSwipeTouchEvent = new OnSwipeTouchEvent(getActivity()) {
+    private final OnSwipeTouchEvent onSwipeTouchEvent = new OnSwipeTouchEvent(getActivity())
+    {
         @Override
         public void onSwipeLeft()
         {
@@ -160,11 +165,13 @@ public class StatisticsFragment extends Fragment implements StatisticsView,
     @AfterViews
     void onClickListViewItem()
     {
-        gvAppInfo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        gvAppInfo.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
             @Override
             public void onItemClick(final AdapterView<?> adapterView, final View view, final int i, long l)
             {
-                if (((ViewGroup) view).findViewById(R.id.animationView).getVisibility() == View.INVISIBLE && !clickResult) {
+                if (((ViewGroup) view).findViewById(R.id.animationView).getVisibility() == View.INVISIBLE && !clickResult)
+                {
                     startAnimation(view, i);
                 }
             }
@@ -177,7 +184,8 @@ public class StatisticsFragment extends Fragment implements StatisticsView,
 
         ((ViewGroup) view).findViewById(R.id.animationView).startAnimation(myAnimationSet);
         myAnimationSet.setAnimationListener(
-                new EndAnimationListener() {
+                new EndAnimationListener()
+                {
                     @Override
                     public void onAnimationEnd(Animation animation)
                     {
@@ -282,7 +290,8 @@ public class StatisticsFragment extends Fragment implements StatisticsView,
     @Override
     public void setSelectedDate(Date date)
     {
-        if (selectedDate.equals(date)) {
+        if (selectedDate.equals(date))
+        {
             return;
         }
 
@@ -310,7 +319,8 @@ public class StatisticsFragment extends Fragment implements StatisticsView,
     protected void init()
     {
         adapter = new DailyStatisticsAdapter(getActivity(), true);
-        if (gvAppInfo != null) {
+        if (gvAppInfo != null)
+        {
             gvAppInfo.setAdapter(adapter);
         }
     }
@@ -341,7 +351,8 @@ public class StatisticsFragment extends Fragment implements StatisticsView,
 
     public void startSort(String columnName)
     {
-        if (columnName.equals(sortColumnName) || sortColumnName == null) {
+        if (columnName.equals(sortColumnName) || sortColumnName == null)
+        {
             sortOrder = (SHORT_TYPE.equals(sortOrder)) ? "DESC" : SHORT_TYPE;
         }
         sortColumnName = columnName;

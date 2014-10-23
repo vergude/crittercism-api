@@ -19,7 +19,8 @@ import org.jetbrains.annotations.Nullable;
  */
 
 @EBean(scope = EBean.Scope.Singleton)
-public class DatabaseQueryHelper {
+public class DatabaseQueryHelper
+{
 
     @RootContext
     Context context;
@@ -46,14 +47,19 @@ public class DatabaseQueryHelper {
     {
         ThreadUtils.checkAndThrowIfUIThread();
 
-        try {
-            String[] columns = {"DS._id as _id", "DS.crashes_count as crashes_count", "DS.app_loads_count as app_loads_count",
+        try
+        {
+            String[] columns = {
+                    "DS._id as _id", "DS.crashes_count as crashes_count", "DS.app_loads_count as app_loads_count",
                     "DS.date as date, CA.name as name", "DS.app_remote_id as app_remote_id",
-                    "CAST (crashes_count AS REAL)/(CAST (app_loads_count AS REAL)) as crashes_percent",};
+                    "CAST (crashes_count AS REAL)/(CAST (app_loads_count AS REAL)) as crashes_percent",
+            };
 
             Cursor result = getReadableDb().query(TABLE_DB, columns, selection, selectionArgs, null, null, sortOrder);
             return result;
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             handleException(e);
             return null;
         }
@@ -64,14 +70,19 @@ public class DatabaseQueryHelper {
     {
         ThreadUtils.checkAndThrowIfUIThread();
 
-        try {
-            String[] columns = {"DS._id as _id", "sum(DS.crashes_count) as crashes_count", "sum(DS.app_loads_count) as app_loads_count",
+        try
+        {
+            String[] columns = {
+                    "DS._id as _id", "sum(DS.crashes_count) as crashes_count", "sum(DS.app_loads_count) as app_loads_count",
                     "DS.date as date, CA.name as name", "DS.app_remote_id as app_remote_id",
-                    "CAST (crashes_count AS REAL)/(CAST (app_loads_count AS REAL)) as crashes_percent",};
+                    "CAST (crashes_count AS REAL)/(CAST (app_loads_count AS REAL)) as crashes_percent",
+            };
 
             Cursor result = getReadableDb().query(TABLE_DB, columns, selection, selectionArgs, "name", null, sortOrder);
             return result;
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             handleException(e);
             return null;
         }
@@ -83,16 +94,21 @@ public class DatabaseQueryHelper {
     {
         ThreadUtils.checkAndThrowIfUIThread();
 
-        try {
+        try
+        {
             String[] columns =
-                    {"DS._id as _id", "DS.crashes_count as crashes_count", "DS.app_loads_count as app_loads_count",
+                    {
+                            "DS._id as _id", "DS.crashes_count as crashes_count", "DS.app_loads_count as app_loads_count",
                             "DS.date as date, CA.name as name", "DS.app_remote_id as app_remote_id",
                             "sum(CAST (crashes_count AS REAL)/(CAST (app_loads_count AS REAL))) as crashes_percent",
-                            "sum(" + columnName + ") as count_sum",};
+                            "sum(" + columnName + ") as count_sum",
+                    };
 
             Cursor result = getReadableDb().query(TABLE_DB, columns, selection, selectionArgs, groupBy, null, null);
             return result;
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             handleException(e);
             return null;
         }
@@ -106,9 +122,12 @@ public class DatabaseQueryHelper {
     public long save(Class<?> clazz, ContentValues values)
     {
         ThreadUtils.checkAndThrowIfUIThread();
-        try {
+        try
+        {
             return CupboardFactory.cupboard().withDatabase(getReadWriteDb()).put(clazz, values);
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             handleException(e);
             return -1;
         }
@@ -119,12 +138,15 @@ public class DatabaseQueryHelper {
     {
         ThreadUtils.checkAndThrowIfUIThread();
 
-        try {
+        try
+        {
             Cursor result = CupboardFactory.cupboard().withDatabase(getReadableDb()).query(className).
                     withProjection(projection).withSelection(selection, selectionArgs).
                     orderBy(sortOrder).getCursor();
             return result;
-        } catch (SQLException e) {
+        }
+        catch (SQLException e)
+        {
             handleException(e);
             return null;
         }
