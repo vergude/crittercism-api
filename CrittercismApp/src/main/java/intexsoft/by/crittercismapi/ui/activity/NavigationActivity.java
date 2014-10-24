@@ -9,6 +9,7 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import intexsoft.by.crittercismapi.R;
 import intexsoft.by.crittercismapi.ui.fragment.FastStatisticFragment;
+import intexsoft.by.crittercismapi.ui.fragment.GraphStatisticsFragment;
 import intexsoft.by.crittercismapi.ui.fragment.MainFragment;
 import intexsoft.by.crittercismapi.ui.fragment.MonthStatisticsFragment;
 import intexsoft.by.crittercismapi.ui.fragment.NavigationItem;
@@ -61,6 +62,16 @@ public class NavigationActivity extends BaseNavigationActivity
 		}
 	}
 
+    private  void showGraphStatisticsFragment()
+    {
+        currentItem = NavigationItem.NAVIGATION_GRAPH_STATISTICS;
+        Fragment fragment = getContentFragment();
+        if (fragment == null || !(fragment instanceof GraphStatisticsFragment))
+        {
+            replaceContentFragment(GraphStatisticsFragment.build(), GraphStatisticsFragment.TAG);
+        }
+    }
+
 	private Fragment getContentFragment()
 	{
 		return getFragmentManager().findFragmentById(R.id.content_frame);
@@ -112,6 +123,9 @@ public class NavigationActivity extends BaseNavigationActivity
 			case NAVIGATION_FAST_STATISTICS:
 				showFastStatisticFragment();
 				break;
+            case NAVIGATION_GRAPH_STATISTICS:
+                showGraphStatisticsFragment();
+                break;
 			case NAVIGATION_SETTINGS:
 				Intent intent = new Intent(this, SettingsActivity.class);
 				startActivity(intent);

@@ -30,6 +30,9 @@ public class NavigationDrawerFragment extends Fragment
 	@ViewById(R.id.item_fast_statistics)
 	TextView fastStatistic;
 
+    @ViewById(R.id.item_graph_statistics)
+    TextView graphStatistics;
+
 	@ViewById(R.id.item_settings)
 	View settingsItem;
 
@@ -106,6 +109,14 @@ public class NavigationDrawerFragment extends Fragment
 		closeDrawer();
 	}
 
+    @Click(R.id.item_graph_statistics)
+    void graphStatisticsClicked(View v)
+    {
+        selectNavigationItem(NavigationItem.NAVIGATION_GRAPH_STATISTICS);
+        performNavigation(NavigationItem.NAVIGATION_GRAPH_STATISTICS);
+        closeDrawer();
+    }
+
 	@Click(R.id.item_settings)
 	void settingsClicked(View v)
 	{
@@ -124,25 +135,36 @@ public class NavigationDrawerFragment extends Fragment
 				bookmarksItem.setTypeface(null, Typeface.NORMAL);
 				fastStatistic.setTypeface(null, Typeface.NORMAL);
                 mouthStatistics.setTypeface(null, Typeface.NORMAL);
+                graphStatistics.setTypeface(null, Typeface.NORMAL);
 				break;
 			case NAVIGATION_STATISTICS:
 				catalogsItem.setTypeface(null, Typeface.NORMAL);
 				bookmarksItem.setTypeface(null, Typeface.BOLD);
 				fastStatistic.setTypeface(null, Typeface.NORMAL);
                 mouthStatistics.setTypeface(null, Typeface.NORMAL);
+                graphStatistics.setTypeface(null, Typeface.NORMAL);
 				break;
             case NAVIGATION_MONTH_STATISTICS:
                 catalogsItem.setTypeface(null, Typeface.NORMAL);
                 bookmarksItem.setTypeface(null, Typeface.NORMAL);
                 mouthStatistics.setTypeface(null, Typeface.BOLD);
                 fastStatistic.setTypeface(null, Typeface.NORMAL);
+                graphStatistics.setTypeface(null, Typeface.NORMAL);
                 break;
 			case NAVIGATION_FAST_STATISTICS:
 				catalogsItem.setTypeface(null, Typeface.NORMAL);
 				bookmarksItem.setTypeface(null, Typeface.NORMAL);
                 mouthStatistics.setTypeface(null, Typeface.NORMAL);
                 fastStatistic.setTypeface(null, Typeface.BOLD);
+                graphStatistics.setTypeface(null, Typeface.NORMAL);
 				break;
+            case NAVIGATION_GRAPH_STATISTICS:
+                catalogsItem.setTypeface(null, Typeface.NORMAL);
+                bookmarksItem.setTypeface(null, Typeface.NORMAL);
+                mouthStatistics.setTypeface(null, Typeface.NORMAL);
+                fastStatistic.setTypeface(null, Typeface.NORMAL);
+                graphStatistics.setTypeface(null, Typeface.BOLD);
+                break;
 			default:
 				break;
 		}

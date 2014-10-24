@@ -13,6 +13,7 @@ public enum NavigationItem
 	NAVIGATION_STATISTICS(R.string.navigate_statistics),
     NAVIGATION_MONTH_STATISTICS(R.string.month_statistics),
 	NAVIGATION_FAST_STATISTICS(R.string.navigate_fast_statistics),
+    NAVIGATION_GRAPH_STATISTICS(R.string.graph_statistics),
 	NAVIGATION_SETTINGS(R.string.navigate_settings);
 
 	private final int titleResId;
