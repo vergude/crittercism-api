@@ -89,6 +89,28 @@ public class DatabaseQueryHelper
     }
 
     @Nullable
+    public Cursor getDailyGraphStatisticsItem(String[] projection, String selection, String[] selectionArgs, String selectedColumnName)
+    {
+        ThreadUtils.checkAndThrowIfUIThread();
+
+        try
+        {
+            String[] columns = {
+                    "DS." + selectedColumnName, "DS.date as date, CA.name as name"
+
+            };
+
+            Cursor result = getReadableDb().query(TABLE_DB, columns, selection, selectionArgs, null, null, null);
+            return result;
+        }
+        catch (SQLException e)
+        {
+            handleException(e);
+            return null;
+        }
+    }
+
+    @Nullable
     public Cursor getDailyStatisticsItemSum(String[] projection, String selection, String[] selectionArgs,
                                             String groupBy, String columnName)
     {

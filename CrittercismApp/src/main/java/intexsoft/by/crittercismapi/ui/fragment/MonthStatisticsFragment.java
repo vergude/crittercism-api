@@ -168,7 +168,7 @@ public class MonthStatisticsFragment extends Fragment implements MonthStatistics
     }
 
     @Click(R.id.ibPreviousMonth)
-    public void previousDay()
+    public void previousMonth()
     {
         Calendar mCalendar = Calendar.getInstance();
         mCalendar.setTime(selectedDate);
@@ -183,7 +183,7 @@ public class MonthStatisticsFragment extends Fragment implements MonthStatistics
     }
 
     @Click(R.id.ibNextMonth)
-    public void nextDay()
+    public void nextMonth()
     {
         Calendar mCalendar = Calendar.getInstance();
         mCalendar.setTime(selectedDate);

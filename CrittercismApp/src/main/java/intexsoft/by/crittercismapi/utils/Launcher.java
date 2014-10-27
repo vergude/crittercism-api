@@ -1,16 +1,22 @@
 package intexsoft.by.crittercismapi.utils;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.FrameLayout;
+
+import java.util.Date;
+
 import intexsoft.by.crittercismapi.R;
 import intexsoft.by.crittercismapi.ui.activity.AppDetailsErrorActivity_;
+import intexsoft.by.crittercismapi.ui.activity.GraphActivity_;
 import intexsoft.by.crittercismapi.ui.activity.LoginActivity_;
 import intexsoft.by.crittercismapi.ui.activity.MainActivity_;
+import intexsoft.by.crittercismapi.ui.fragment.StatisticsFragment;
 
 public final class Launcher
 {
@@ -66,8 +72,6 @@ public final class Launcher
 		relativeLayout.addView(fadeView);
 		fadeView.setClickable(true);
 		fadeView.bringToFront();
-
-
 	}
 
 	public static void startAppDetailErrorActitvity(Context context, String appId, String appName)
@@ -80,4 +84,11 @@ public final class Launcher
 	{
 		LoginActivity_.intent(context).isFromLogout(isFromLogout).start();
 	}
+
+    public static void startGraphActivity(Context context, String appId, String appName, String selectedColumnName, Date date)
+    {
+        GraphActivity_.intent(context).appId(appId).appName(appName).selectedColumnName(selectedColumnName).selectedDate(date).start();
+        ((Activity)context).overridePendingTransition(R.anim.slide_left_in, R.anim.empty_animation);
+    }
+
 }

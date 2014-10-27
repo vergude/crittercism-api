@@ -11,34 +11,42 @@ import intexsoft.by.crittercismapi.data.db.DatabaseQueryHelper;
 import intexsoft.by.crittercismapi.data.db.DatabaseQueryHelper_;
 import intexsoft.by.crittercismapi.utils.DateTimeUtils;
 
+
 /**
- * Created by vadim on 04.10.2014.
+ * Created by vadim on 25.10.2014.
  */
-public class MonthStatisticsCursorLoader extends CursorLoader {
 
+public class GraphStatisticsCursorLoader extends CursorLoader
+{
     private DatabaseQueryHelper queryHelper;
-    private Date date;
-    private String orderBy;
+    private String appId;
+    private String selectedColumnName;
+    private Date  date;
 
-    public MonthStatisticsCursorLoader(Context context, Date date, String sortColumnName)
+    public GraphStatisticsCursorLoader(Context context, String appId, String selectedColumnName, Date date)
     {
         super(context);
+        this.appId = appId;
+        this.selectedColumnName = selectedColumnName;
         this.date = date;
-        this.orderBy = sortColumnName;
         this.queryHelper = DatabaseQueryHelper_.getInstance_(context);
     }
 
     @Override
     public Cursor loadInBackground()
     {
+
         String startDate = DateTimeUtils.getFormattedStartMonth(date);
         String endDate = DateTimeUtils.getFormattedEndMonth(date);
 
-        Cursor cursor = queryHelper.getDailyMonthStatisticsItem(
+        Cursor cursor = queryHelper.getDailyGraphStatisticsItem(
                 null,
-                DailyStatisticsItem.COLUMN_DATE + " >= ? and " + DailyStatisticsItem.COLUMN_DATE + " < ? ",
-                new String[]{startDate, endDate},
-                orderBy);
+                DailyStatisticsItem.COLUMN_DATE + " >= ? and " + DailyStatisticsItem.COLUMN_DATE + " < ? and "
+                        + DailyStatisticsItem.COLUMN_APP_REMOTE_ID + " = ?",
+                new String[]{startDate, endDate, appId},
+                selectedColumnName
+        );
+
         return cursor;
     }
 }

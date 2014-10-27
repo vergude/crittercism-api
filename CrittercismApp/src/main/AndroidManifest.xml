@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
@@ -25,22 +25,23 @@
         </activity>
         <activity android:name=".ui.activity.MainActivity_" >
         </activity>
-        <activity android:name=".ui.activity.SettingsActivity"
+        <activity
+            android:name=".ui.activity.SettingsActivity"
             android:label="@string/action_settings"
-            android:parentActivityName=".ui.activity.MainActivity_">
-            </activity>
-        <activity android:name=".ui.activity.AppDetailsErrorActivity_"
+            android:parentActivityName=".ui.activity.MainActivity_" >
+        </activity>
+        <activity
+            android:name=".ui.activity.AppDetailsErrorActivity_"
             android:label="Last Month"
-            android:parentActivityName=".ui.activity.MainActivity_">
+            android:parentActivityName=".ui.activity.MainActivity_" >
         </activity>
 
         <service
             android:name=".service.LoginService_"
             android:exported="false" />
-        
-        <service android:name=".service.NotificationService"
-            android:exported="false"/>
-
+        <service
+            android:name=".service.NotificationService"
+            android:exported="false" />
         <service
             android:name=".service.ErrorGraphService_"
             android:exported="false" />
@@ -48,17 +49,18 @@
             android:name=".service.DailyDataSavingService"
             android:exported="false" />
 
-        <receiver android:name=".receiver.DeviceRebootReceiver"
-            android:enabled="true" android:exported="false"
-            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+        <receiver
+            android:name=".receiver.DeviceRebootReceiver"
+            android:enabled="true"
+            android:exported="false"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-
-        <receiver android:name=".receiver.NotificationReceiver">
+        <receiver android:name=".receiver.NotificationReceiver" >
             <intent-filter>
-                <action android:name="by.crittercismapi.notification"/>
+                <action android:name="by.crittercismapi.notification" />
             </intent-filter>
         </receiver>
 
@@ -66,7 +68,11 @@
             android:name=".data.CrittercismAPIContentProvider_"
             android:authorities="intexsoft.by.crittercismapi"
             android:exported="false" />
-    </application>
 
+        <activity
+            android:name=".ui.activity.GraphActivity_"
+            android:label="activity_graph" >
+        </activity>
+    </application>
 
 </manifest>
