@@ -3,6 +3,8 @@ package intexsoft.by.crittercismapi.ui.presenter;
 import android.content.Context;
 import android.database.Cursor;
 
+import org.achartengine.model.XYMultipleSeriesDataset;
+import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 
@@ -10,6 +12,7 @@ import intexsoft.by.crittercismapi.CrittercismApplication;
 import intexsoft.by.crittercismapi.event.EventObserver;
 import intexsoft.by.crittercismapi.ui.interactor.BuildGraphInteractor;
 import intexsoft.by.crittercismapi.ui.interactor.BuildGraphInteractorImpl;
+import intexsoft.by.crittercismapi.ui.interactor.OnBuildGraphFinishedListener;
 import intexsoft.by.crittercismapi.ui.view.GraphActivityView;
 
 /**
@@ -17,11 +20,10 @@ import intexsoft.by.crittercismapi.ui.view.GraphActivityView;
  */
 
 @EBean
-public class GraphActivityPresenterImpl implements GraphActivityPresenter
+public class GraphActivityPresenterImpl implements GraphActivityPresenter, OnBuildGraphFinishedListener
 {
 
     private GraphActivityView graphActivityView;
-    private BuildGraphInteractor graphInteractor;
 
     @Bean(BuildGraphInteractorImpl.class)
     BuildGraphInteractor interactor;
@@ -58,8 +60,14 @@ public class GraphActivityPresenterImpl implements GraphActivityPresenter
     }
 
     @Override
-    public void buildGraph(Cursor cursor)
+    public void buildGraph(Cursor cursor, String selectedColumnName)
     {
-        graphInteractor.buildGraph(cursor);
+        interactor.buildGraph(cursor, selectedColumnName, this);
+    }
+
+    @Override
+    public void finishBuild(XYMultipleSeriesDataset multipleSeriesDataset, XYMultipleSeriesRenderer multipleSeriesRenderer)
+    {
+        graphActivityView.showGraph(multipleSeriesDataset, multipleSeriesRenderer);
     }
 }

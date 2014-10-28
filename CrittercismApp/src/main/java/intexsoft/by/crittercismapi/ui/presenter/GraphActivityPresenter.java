@@ -9,5 +9,5 @@ import intexsoft.by.crittercismapi.ui.view.GraphActivityView;
  */
 public interface GraphActivityPresenter extends BasePresenter<GraphActivityView>
 {
-    void buildGraph(Cursor cursor);
+    void buildGraph(Cursor cursor, String selectedColumnName);
 }

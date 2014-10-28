@@ -7,5 +7,5 @@ import android.database.Cursor;
  */
 public interface BuildGraphInteractor
 {
-    void buildGraph(Cursor cursor);
+    void buildGraph(Cursor cursor, String selectedColumnName, OnBuildGraphFinishedListener listener);
 }

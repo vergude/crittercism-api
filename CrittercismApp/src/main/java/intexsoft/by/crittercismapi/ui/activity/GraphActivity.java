@@ -6,11 +6,17 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.FrameLayout;
 
+import org.achartengine.ChartFactory;
+import org.achartengine.GraphicalView;
+import org.achartengine.model.XYMultipleSeriesDataset;
+import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
+import org.androidannotations.annotations.ViewById;
 
 import java.util.Date;
 
@@ -26,6 +32,9 @@ import intexsoft.by.crittercismapi.utils.DateTimeUtils;
 public class GraphActivity extends Activity implements LoaderManager.LoaderCallbacks<Cursor>, GraphActivityView
 
 {
+
+    @ViewById
+    FrameLayout graphLayout;
 
     @Extra
     String appId;
@@ -43,6 +52,13 @@ public class GraphActivity extends Activity implements LoaderManager.LoaderCallb
     GraphActivityPresenter presenter;
 
     @AfterViews
+    void initViews()
+    {
+        presenter.init(this);
+
+    }
+
+    @AfterViews
     public void init()
     {
         getLoaderManager().restartLoader(0, null, this);
@@ -53,18 +69,12 @@ public class GraphActivity extends Activity implements LoaderManager.LoaderCallb
     {
         return new GraphStatisticsCursorLoader(this, appId, selectedColumnName, selectedDate);
     }
-    private static final String DATE_FORMAT = "d, MMM (E)";
+
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor)
     {
         if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                do {
-                    long date = cursor.getLong(cursor.getColumnIndex(DailyStatisticsItem.COLUMN_DATE));
-                    Log.d("ASDA", "" + (cursor.getInt(cursor.getColumnIndex(selectedColumnName)))+"------ "+(DateTimeUtils.getFormattedDate(new Date(date), DATE_FORMAT)));
-                } while (cursor.moveToNext());
-            }
-            cursor.close();
+           presenter.buildGraph(cursor, selectedColumnName);
         }
 
     }
@@ -85,5 +95,12 @@ public class GraphActivity extends Activity implements LoaderManager.LoaderCallb
     public void dataLoaded()
     {
 
+    }
+
+    @Override
+    public void showGraph(XYMultipleSeriesDataset multipleSeriesDataset, XYMultipleSeriesRenderer multipleSeriesRenderer)
+    {
+        GraphicalView graphicalView = ChartFactory.getCubeLineChartView(this, multipleSeriesDataset, multipleSeriesRenderer, 0);
+        graphLayout.addView(graphicalView);
     }
 }

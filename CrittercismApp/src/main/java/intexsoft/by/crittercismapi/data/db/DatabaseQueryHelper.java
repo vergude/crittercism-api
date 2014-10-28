@@ -96,8 +96,7 @@ public class DatabaseQueryHelper
         try
         {
             String[] columns = {
-                    "DS." + selectedColumnName, "DS.date as date, CA.name as name"
-
+                    "DS." + selectedColumnName, "DS.date as date", "CA.name as name",
             };
 
             Cursor result = getReadableDb().query(TABLE_DB, columns, selection, selectionArgs, null, null, null);
