@@ -55,7 +55,8 @@
                 android:layout_margin="8dp"
                 android:background="@color/white"
                 android:orientation="horizontal"
-                android:padding="8dip">
+                android:padding="8dip"
+                >
 
 
                     <TextView
@@ -101,9 +102,11 @@
 
             </LinearLayout>
 
-            <FrameLayout
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
                 <ListView
                     android:id="@+id/lvApplications"
                     android:layout_width="wrap_content"
@@ -113,7 +116,40 @@
                     android:listSelector="@android:color/transparent"
                     android:verticalSpacing="2dip">
                 </ListView>
-            </FrameLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:layout_margin="8dp"
+                android:padding="8dp">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/graph_type"
+                    android:textSize="17sp"
+                    android:id="@+id/tvSelectGraph"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/graph_type_crashes"
+                    android:textSize="17sp"
+                    android:id="@+id/tvGraphTypeCrashes"
+                    android:layout_marginLeft="15dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/graph_type_loads"
+                    android:textSize="17sp"
+                    android:id="@+id/tvGraphTypeLoads"
+                    android:layout_marginLeft="15dp"/>
+            </LinearLayout>
 
         </LinearLayout>
     </LinearLayout>

@@ -6,7 +6,6 @@ import android.app.LoaderManager;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -15,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -29,7 +29,6 @@ import java.util.Date;
 import intexsoft.by.crittercismapi.R;
 import intexsoft.by.crittercismapi.data.bean.CrittercismApp;
 import intexsoft.by.crittercismapi.data.bean.DailyStatisticsItem;
-import intexsoft.by.crittercismapi.data.loader.GraphStatisticsCursorLoader;
 import intexsoft.by.crittercismapi.data.loader.MonthStatisticsCursorLoader;
 import intexsoft.by.crittercismapi.ui.adapters.DailyStatisticsAdapter;
 import intexsoft.by.crittercismapi.ui.adapters.binder.DailyItemViewBinder;
@@ -53,12 +52,19 @@ public class GraphStatisticsFragment extends Fragment implements GraphStatistics
     private static final int DELAY_PROGRESS_BAR = 500;
 
     private static final String SELECTED_KEY = "selectedDate";
+    private static final String SELECTED_TYPE = "selectedTypeGraph";
     private static final String SHORT_TYPE = "ASC";
 
     private String sortColumnName;
     private String sortOrder;
 
     private String selectedColumnName;
+
+    @ViewById
+    TextView tvGraphTypeCrashes;
+
+    @ViewById
+    TextView tvGraphTypeLoads;
 
     @ViewById
     TextView tvDateMonth;
@@ -107,6 +113,7 @@ public class GraphStatisticsFragment extends Fragment implements GraphStatistics
         {
             Date date = new Date(savedInstanceState.getLong(SELECTED_KEY));
             selectedDate = date;
+            selectedColumnName = savedInstanceState.getString(SELECTED_TYPE);
         }
     }
 
@@ -114,8 +121,10 @@ public class GraphStatisticsFragment extends Fragment implements GraphStatistics
     public void onSaveInstanceState(Bundle outState)
     {
         outState.putLong(SELECTED_KEY, selectedDate.getTime());
+        outState.putString(SELECTED_TYPE, selectedColumnName);
         super.onSaveInstanceState(outState);
     }
+
 
     @AfterViews
     protected void init()
@@ -132,6 +141,10 @@ public class GraphStatisticsFragment extends Fragment implements GraphStatistics
     {
         presenter.init(this);
         setNewDate();
+        if (selectedColumnName != null)
+        {
+            selectTypeGraph(selectedColumnName);
+        }
     }
 
     @AfterViews
@@ -199,13 +212,27 @@ public class GraphStatisticsFragment extends Fragment implements GraphStatistics
                     {
                         ((ViewGroup) view).findViewById(R.id.animationView).setVisibility(View.INVISIBLE);
                         clickResult = false;
-                        Launcher.startGraphActivity(getActivity(), ((DailyItemViewBinder) view).getRemoteId(),
-                                ((DailyItemViewBinder) view).getAppName(), selectedColumnName, selectedDate);
+                        if (checkTypeGraph())
+                        {
+                            Launcher.startGraphActivity(getActivity(), ((DailyItemViewBinder) view).getRemoteId(),
+                                    ((DailyItemViewBinder) view).getAppName(), selectedColumnName, selectedDate);
+                        }
                     }
                 }
         );
         ((ViewGroup) view).findViewById(R.id.animationView).setVisibility(View.VISIBLE);
     }
+
+    public boolean checkTypeGraph()
+    {
+        if (selectedColumnName == null)
+        {
+            Toast.makeText(getActivity(), "Please set type graph!", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        return true;
+    }
+
     private void setNewDate()
     {
         tvDateMonth.setText(DateTimeUtils.getFormattedDate(selectedDate, DATE_FORMAT));
@@ -240,11 +267,23 @@ public class GraphStatisticsFragment extends Fragment implements GraphStatistics
     @Click(R.id.tvHeadCrashes)
     public void sortAppCrashes()
     {
-        selectTypeGraph(DailyStatisticsItem.COLUMN_CRASHES_COUNT);
+        startSort(DailyStatisticsItem.COLUMN_CRASHES_COUNT);
     }
 
     @Click(R.id.tvHeadLoads)
     public void sortAppLoads()
+    {
+        startSort(DailyStatisticsItem.COLUMN_APP_LOADS_COUNT);
+    }
+
+    @Click(R.id.tvGraphTypeCrashes)
+    public void selectTypeCrashes()
+    {
+        selectTypeGraph(DailyStatisticsItem.COLUMN_CRASHES_COUNT);
+    }
+
+    @Click(R.id.tvGraphTypeLoads)
+    public void selectTypeLoads()
     {
         selectTypeGraph(DailyStatisticsItem.COLUMN_APP_LOADS_COUNT);
     }
@@ -253,13 +292,13 @@ public class GraphStatisticsFragment extends Fragment implements GraphStatistics
     {
         if (columnName.equals(DailyStatisticsItem.COLUMN_CRASHES_COUNT))
         {
-            tvHeadCrashes.setTextColor(getResources().getColor(R.color.blue));
-            tvHeadLoads.setTextColor(getResources().getColor(R.color.back));
+            tvGraphTypeCrashes.setTextColor(getResources().getColor(R.color.blue));
+            tvGraphTypeLoads.setTextColor(getResources().getColor(R.color.back));
         }
         else
         {
-            tvHeadCrashes.setTextColor(getResources().getColor(R.color.back));
-            tvHeadLoads.setTextColor(getResources().getColor(R.color.blue));
+            tvGraphTypeCrashes.setTextColor(getResources().getColor(R.color.back));
+            tvGraphTypeLoads.setTextColor(getResources().getColor(R.color.blue));
         }
         selectedColumnName = columnName;
     }
@@ -282,8 +321,6 @@ public class GraphStatisticsFragment extends Fragment implements GraphStatistics
 
         progressContainer.setVisibility(View.VISIBLE);
         getLoaderManager().initLoader(0, null, this);
-
-
     }
 
     @Override
