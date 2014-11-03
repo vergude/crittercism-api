@@ -1,5 +1,9 @@
 package intexsoft.by.crittercismapi.ui.presenter;
 
+import android.content.Context;
+import android.database.Cursor;
+
+import intexsoft.by.crittercismapi.ui.interactor.BuildGraphInteractor;
 import intexsoft.by.crittercismapi.ui.view.GraphStatisticsView;
 
 /**
@@ -7,5 +11,5 @@ import intexsoft.by.crittercismapi.ui.view.GraphStatisticsView;
  */
 public interface GraphStatisticsPresenter extends BasePresenter<GraphStatisticsView>
 {
-
+    void buildConcreteGraph(Cursor cursor, String selectedColumnName, Context context, BuildGraphInteractor interactor);
 }

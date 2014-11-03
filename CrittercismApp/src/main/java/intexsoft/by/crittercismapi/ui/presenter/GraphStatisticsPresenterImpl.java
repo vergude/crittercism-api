@@ -1,12 +1,14 @@
 package intexsoft.by.crittercismapi.ui.presenter;
 
 import android.content.Context;
+import android.database.Cursor;
 
 import org.androidannotations.annotations.EBean;
 
 import intexsoft.by.crittercismapi.CrittercismApplication;
 import intexsoft.by.crittercismapi.event.DailyStatisticsLoadedEvent;
 import intexsoft.by.crittercismapi.event.EventObserver;
+import intexsoft.by.crittercismapi.ui.interactor.BuildGraphInteractor;
 import intexsoft.by.crittercismapi.ui.view.GraphStatisticsView;
 
 /**
@@ -19,7 +21,8 @@ public class GraphStatisticsPresenterImpl implements GraphStatisticsPresenter
 
     private GraphStatisticsView graphStatisticsView;
 
-    private final EventObserver.Receiver dailyStatisticsReceiver = new EventObserver.Receiver() {
+    private final EventObserver.Receiver dailyStatisticsReceiver = new EventObserver.Receiver()
+    {
         @Override
         protected void onReceive(Context context, EventObserver.Event event)
         {
@@ -49,4 +52,11 @@ public class GraphStatisticsPresenterImpl implements GraphStatisticsPresenter
     {
         return CrittercismApplication.getApplication().getApplicationContext();
     }
+
+    @Override
+    public void buildConcreteGraph(Cursor cursor, String selectedColumnName, Context context, BuildGraphInteractor interactor)
+    {
+        graphStatisticsView.showGraph(interactor.buildGraph(cursor, selectedColumnName, context));
+    }
+
 }

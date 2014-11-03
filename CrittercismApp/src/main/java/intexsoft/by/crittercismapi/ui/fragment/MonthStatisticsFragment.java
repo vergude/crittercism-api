@@ -13,6 +13,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.androidannotations.annotations.AfterViews;
@@ -29,6 +30,7 @@ import intexsoft.by.crittercismapi.R;
 import intexsoft.by.crittercismapi.data.bean.CrittercismApp;
 import intexsoft.by.crittercismapi.data.bean.DailyStatisticsItem;
 import intexsoft.by.crittercismapi.data.loader.MonthStatisticsCursorLoader;
+import intexsoft.by.crittercismapi.event.OnSwipeTouchEvent;
 import intexsoft.by.crittercismapi.ui.adapters.DailyStatisticsAdapter;
 import intexsoft.by.crittercismapi.ui.adapters.binder.DailyItemViewBinder;
 import intexsoft.by.crittercismapi.ui.presenter.MonthStatisticPresenter;
@@ -69,6 +71,9 @@ public class MonthStatisticsFragment extends Fragment implements MonthStatistics
 
     @ViewById
     FrameLayout progressContainer;
+
+    @ViewById
+    LinearLayout idFragmentLayout;
 
     @Bean(MonthStatisticsPresenterImpl.class)
     MonthStatisticPresenter presenter;
@@ -118,6 +123,8 @@ public class MonthStatisticsFragment extends Fragment implements MonthStatistics
     void swipeDate()
     {
         animationStart = AnimationUtils.loadAnimation(getActivity(), R.anim.scale);
+        idFragmentLayout.setOnTouchListener(onSwipeTouchEvent);
+        gvAppInfo.setOnTouchListener(onSwipeTouchEvent);
     }
 
     @AfterViews
@@ -203,6 +210,39 @@ public class MonthStatisticsFragment extends Fragment implements MonthStatistics
 
         getLoaderManager().restartLoader(0, null, this);
 
+    }
+
+    private final OnSwipeTouchEvent onSwipeTouchEvent = new OnSwipeTouchEvent(getActivity())
+    {
+        @Override
+        public void onSwipeLeft()
+        {
+            setDate(1);
+
+            tvDateMonth.startAnimation(animationStart);
+            progressContainer.setVisibility(View.VISIBLE);
+
+        }
+
+        @Override
+        public void onSwipeRight()
+        {
+            setDate(-1);
+
+            tvDateMonth.startAnimation(animationStart);
+            progressContainer.setVisibility(View.VISIBLE);
+        }
+    };
+
+    void setDate(int month)
+    {
+        Calendar mCalendar = Calendar.getInstance();
+        mCalendar.setTime(selectedDate);
+        mCalendar.add(Calendar.MONTH, month);
+
+        selectedDate = mCalendar.getTime();
+
+        setNewDate();
     }
 
     @Override

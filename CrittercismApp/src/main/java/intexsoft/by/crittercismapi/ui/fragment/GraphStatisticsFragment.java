@@ -3,6 +3,7 @@ package intexsoft.by.crittercismapi.ui.fragment;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.LoaderManager;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +22,8 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.OptionsItem;
+import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
@@ -29,9 +33,13 @@ import java.util.Date;
 import intexsoft.by.crittercismapi.R;
 import intexsoft.by.crittercismapi.data.bean.CrittercismApp;
 import intexsoft.by.crittercismapi.data.bean.DailyStatisticsItem;
+import intexsoft.by.crittercismapi.data.loader.GraphStatisticsCursorLoader;
 import intexsoft.by.crittercismapi.data.loader.MonthStatisticsCursorLoader;
+import intexsoft.by.crittercismapi.event.OnSwipeTouchEvent;
 import intexsoft.by.crittercismapi.ui.adapters.DailyStatisticsAdapter;
 import intexsoft.by.crittercismapi.ui.adapters.binder.DailyItemViewBinder;
+import intexsoft.by.crittercismapi.ui.interactor.BuildLineGraphImpl;
+import intexsoft.by.crittercismapi.ui.interactor.BuildPieGraphImpl;
 import intexsoft.by.crittercismapi.ui.presenter.GraphStatisticsPresenter;
 import intexsoft.by.crittercismapi.ui.presenter.GraphStatisticsPresenterImpl;
 import intexsoft.by.crittercismapi.ui.view.GraphStatisticsView;
@@ -41,6 +49,7 @@ import intexsoft.by.crittercismapi.utils.DateTimeUtils;
 import intexsoft.by.crittercismapi.utils.Launcher;
 
 @EFragment(R.layout.fragment_graph_statistics)
+@OptionsMenu(R.menu.graph)
 public class GraphStatisticsFragment extends Fragment implements GraphStatisticsView, LoaderManager.LoaderCallbacks<Cursor>
 {
 
@@ -59,6 +68,7 @@ public class GraphStatisticsFragment extends Fragment implements GraphStatistics
     private String sortOrder;
 
     private String selectedColumnName;
+    private static final String APPID = "AppId";
 
     @ViewById
     TextView tvGraphTypeCrashes;
@@ -80,6 +90,9 @@ public class GraphStatisticsFragment extends Fragment implements GraphStatistics
 
     @ViewById
     FrameLayout progressContainer;
+
+    @ViewById
+    LinearLayout idFragmentLayout;
 
 
     @Bean(GraphStatisticsPresenterImpl.class)
@@ -151,6 +164,8 @@ public class GraphStatisticsFragment extends Fragment implements GraphStatistics
     void swipeDate()
     {
         animationStart = AnimationUtils.loadAnimation(getActivity(), R.anim.scale);
+        idFragmentLayout.setOnTouchListener(onSwipeTouchEvent);
+        lvApplications.setOnTouchListener(onSwipeTouchEvent);
     }
 
     @Click(R.id.ibPreviousMonth)
@@ -214,13 +229,20 @@ public class GraphStatisticsFragment extends Fragment implements GraphStatistics
                         clickResult = false;
                         if (checkTypeGraph())
                         {
-                            Launcher.startGraphActivity(getActivity(), ((DailyItemViewBinder) view).getRemoteId(),
-                                    ((DailyItemViewBinder) view).getAppName(), selectedColumnName, selectedDate);
+                            Bundle bundle = new Bundle();
+                            bundle.putString(APPID, ((DailyItemViewBinder) view).getRemoteId());
+                            getLoaderManager().restartLoader(1, bundle, getFragment());
+
                         }
                     }
                 }
         );
         ((ViewGroup) view).findViewById(R.id.animationView).setVisibility(View.VISIBLE);
+    }
+
+    public GraphStatisticsFragment getFragment()
+    {
+        return this;
     }
 
     public boolean checkTypeGraph()
@@ -250,6 +272,39 @@ public class GraphStatisticsFragment extends Fragment implements GraphStatistics
     public void dataLoaded()
     {
 
+    }
+
+    private final OnSwipeTouchEvent onSwipeTouchEvent = new OnSwipeTouchEvent(getActivity())
+    {
+        @Override
+        public void onSwipeLeft()
+        {
+            setDate(1);
+
+            tvDateMonth.startAnimation(animationStart);
+            progressContainer.setVisibility(View.VISIBLE);
+
+        }
+
+        @Override
+        public void onSwipeRight()
+        {
+            setDate(-1);
+
+            tvDateMonth.startAnimation(animationStart);
+            progressContainer.setVisibility(View.VISIBLE);
+        }
+    };
+
+    void setDate(int month)
+    {
+        Calendar mCalendar = Calendar.getInstance();
+        mCalendar.setTime(selectedDate);
+        mCalendar.add(Calendar.MONTH, month);
+
+        selectedDate = mCalendar.getTime();
+
+        setNewDate();
     }
 
     @Override
@@ -303,6 +358,15 @@ public class GraphStatisticsFragment extends Fragment implements GraphStatistics
         selectedColumnName = columnName;
     }
 
+    @OptionsItem
+    public void showPieGraph()
+    {
+        if (checkTypeGraph())
+        {
+            getLoaderManager().restartLoader(2, null, this);
+        }
+    }
+
     public void startSort(String columnName)
     {
         if (columnName.equals(sortColumnName) || sortColumnName == null)
@@ -324,17 +388,58 @@ public class GraphStatisticsFragment extends Fragment implements GraphStatistics
     }
 
     @Override
+    public void showGraph(Intent intent)
+    {
+        startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.slide_left_in, R.anim.empty_animation);
+    }
+
+    @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle bundle)
+    {
+        Loader<Cursor> loader = null;
+
+        switch (id)
+        {
+            case 0:
+                loader = getMonthStatisticsCursorLoader();
+                break;
+            case 1:
+                loader = new GraphStatisticsCursorLoader(getActivity(), bundle.getString(APPID), selectedColumnName, selectedDate);
+                break;
+            case 2:
+                loader = getMonthStatisticsCursorLoader();
+                break;
+            default:
+                break;
+        }
+        return loader;
+    }
+
+    public MonthStatisticsCursorLoader getMonthStatisticsCursorLoader()
     {
         String sortBy = (sortColumnName != null) ? sortColumnName + " " + sortOrder : null;
         return new MonthStatisticsCursorLoader(getActivity(), selectedDate, sortBy);
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor data)
+    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor)
     {
-        adapter.swapCursor(data);
-        hideProgressBar();
+        switch (cursorLoader.getId())
+        {
+            case 0:
+                adapter.swapCursor(cursor);
+                hideProgressBar();
+                break;
+            case 1:
+                presenter.buildConcreteGraph(cursor, selectedColumnName, getActivity(), new BuildLineGraphImpl());
+                break;
+            case 2:
+                presenter.buildConcreteGraph(cursor, selectedColumnName, getActivity(), new BuildPieGraphImpl());
+                break;
+            default:
+                break;
+        }
     }
 
     @Override

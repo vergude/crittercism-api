@@ -1,8 +1,11 @@
 package intexsoft.by.crittercismapi.ui.interactor;
 
+import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 
+import org.achartengine.ChartFactory;
 import org.achartengine.chart.PointStyle;
 import org.achartengine.model.XYMultipleSeriesDataset;
 
@@ -23,10 +26,11 @@ import intexsoft.by.crittercismapi.utils.DateTimeUtils;
  */
 
 @EBean
-public class BuildGraphInteractorImpl implements BuildGraphInteractor
+public class BuildLineGraphImpl implements BuildGraphInteractor
 {
 
     private static final String COLOR_ORANGE = "#FEA20F";
+    private static final String COLOR_WHITE = "#FFFFFF";
     private static final int TEXT_SIZE_LABELS = 15;
     private static final int TEXT_SIZE_LEGEND = 20;
     private static final int MARGINS = 30;
@@ -38,7 +42,7 @@ public class BuildGraphInteractorImpl implements BuildGraphInteractor
     private static final String DATE_FORMAT = "d";
 
     @Override
-    public void buildGraph(Cursor cursor, String selectedColumnName, OnBuildGraphFinishedListener listener)
+    public Intent buildGraph(Cursor cursor, String selectedColumnName, Context context)
     {
         XYMultipleSeriesDataset multipleSeriesDatasetdataset = new XYMultipleSeriesDataset();
         multipleSeriesDatasetdataset.addSeries(getSeries(cursor, selectedColumnName));
@@ -48,7 +52,7 @@ public class BuildGraphInteractorImpl implements BuildGraphInteractor
 
         setOptionsGraph(multipleSeriesRenderer, cursor);
 
-        listener.finishBuild(multipleSeriesDatasetdataset, multipleSeriesRenderer);
+        return ChartFactory.getLineChartIntent(context, multipleSeriesDatasetdataset, multipleSeriesRenderer);
     }
 
     private void setOptionsGraph(XYMultipleSeriesRenderer multipleSeriesRenderer, Cursor cursor)
@@ -75,6 +79,9 @@ public class BuildGraphInteractorImpl implements BuildGraphInteractor
         multipleSeriesRenderer.setXLabelsColor(Color.RED);
         multipleSeriesRenderer.setYLabelsColor(0, Color.RED);
         multipleSeriesRenderer.setAxesColor(Color.parseColor(COLOR_ORANGE));
+
+        multipleSeriesRenderer.setApplyBackgroundColor(true);
+        multipleSeriesRenderer.setBackgroundColor(Color.parseColor(COLOR_WHITE));
     }
 
     private void setTexSize(XYMultipleSeriesRenderer multipleSeriesRenderer)

@@ -26,8 +26,10 @@
     <string name="crashes">Crashes</string>
     <string name="loads">Loads</string>
     <string name="error_percent">Errors</string>
-    <string name="graph_type">Select graph type:</string>
-    <string name="graph_type_loads">Loads</string>
-    <string name="graph_type_crashes">Crashes</string>
+    <string name="graph_type_data">Select data type:</string>
+    <string name="graph_type_data_loads">Loads</string>
+    <string name="graph_type_data_crashes">Crashes</string>
+    <string name="graph_type_pie">Show pie graph</string>
+
 
 </resources>

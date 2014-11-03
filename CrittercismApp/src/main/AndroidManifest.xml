@@ -73,6 +73,7 @@
             android:name=".ui.activity.GraphActivity_"
             android:label="activity_graph" >
         </activity>
+        <activity android:name="org.achartengine.GraphicalActivity"></activity>
     </application>
 
 </manifest>

@@ -1,5 +1,7 @@
 package intexsoft.by.crittercismapi.ui.interactor;
 
+import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 
 /**
@@ -7,5 +9,5 @@ import android.database.Cursor;
  */
 public interface BuildGraphInteractor
 {
-    void buildGraph(Cursor cursor, String selectedColumnName, OnBuildGraphFinishedListener listener);
+    Intent buildGraph(Cursor cursor, String selectedColumnName, Context context);
 }
