@@ -46,7 +46,6 @@ import intexsoft.by.crittercismapi.ui.view.GraphStatisticsView;
 import intexsoft.by.crittercismapi.ui.view.animation.EndAnimationListener;
 import intexsoft.by.crittercismapi.ui.view.animation.MyAnimationSet;
 import intexsoft.by.crittercismapi.utils.DateTimeUtils;
-import intexsoft.by.crittercismapi.utils.Launcher;
 
 @EFragment(R.layout.fragment_graph_statistics)
 @OptionsMenu(R.menu.graph)
