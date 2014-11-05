@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="download_leader_type">Download leader</string>
+    <string name="crashes_count_type">"Crashes count"</string>
+    <string name="error_percent_type">Error percent</string>
+
+    <string name="download_column_name">app_loads_count</string>
+    <string name="crashes_column_name">crashes_count</string>
+    <string name="error_column_name">CAST (crashes_count AS REAL)/(CAST (app_loads_count AS REAL))</string>
+
+    <string name="all_time_type">ALL TIME</string>
+    <string name="month_time_type">ONE MONTH</string>
+    <string name="night_time_type">LAST NIGHT</string>
+
+    <integer name="all_time_value">1</integer>
+    <integer name="month_time_value">-32</integer>
+    <integer name="night_time_value">-2</integer>
+
+</resources>

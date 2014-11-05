@@ -63,20 +63,18 @@ public class DatabaseQueryHelper
 
 
 	@Nullable
-	public Cursor getDailyStatisticsItemSum(String[] projection, String selection, String[] selectionArgs,
-											String groupBy, String columnName)
+	public Cursor getDailyStatisticsItemSum(String groupBy, String column, String time)
 	{
 		ThreadUtils.checkAndThrowIfUIThread();
 
 		try
 		{
-			String [] columns =
-					{"DS._id as _id", "DS.crashes_count as crashes_count", "DS.app_loads_count as app_loads_count",
-					"DS.date as date, CA.name as name", "DS.app_remote_id as app_remote_id",
-					"sum(CAST (crashes_count AS REAL)/(CAST (app_loads_count AS REAL))) as crashes_percent",
-					"sum(" + columnName + ") as count_sum", };
-
-			Cursor result = getReadableDb().query(TABLE_DB, columns, selection, selectionArgs, groupBy, null, null);
+			Cursor result = getReadableDb().rawQuery("SELECT MAX(count_sum) as max_count, name FROM (SELECT  DS.app_loads_count as app_loads_count, " +
+													"CA.name as name, " +
+													"DS.date as date, " +
+													"SUM("+ column +") as count_sum " +
+													"FROM DailyStatisticsItem AS DS INNER JOIN CrittercismApp AS CA ON " +
+													"DS.app_remote_id = CA.remote_id WHERE date >= ? GROUP BY app_remote_id)", new String[] {time});
 			return result;
 		}
 		catch (SQLException e)

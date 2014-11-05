@@ -5,7 +5,6 @@ package intexsoft.by.crittercismapi.data.loader.data;
  */
 public class CommonStatisticsData
 {
-	private String mostCrashesByMonthAppId;
 
 	private String mostCrashesByMonthAppName;
 	private String mostCrashesByNightAppName;
@@ -18,6 +17,109 @@ public class CommonStatisticsData
 	private String mostDownloadsByAllTimeAppName;
 	private String mostDownloadsByMonthAppName;
 	private String mostDownloadsByNightAppName;
+
+	private String detailLoadLeaderAll;
+	private String detailCrashesCountAll;
+	private String detailErrorPercentAll;
+
+	private String detailLoadLeaderMonth;
+	private String detailCrashesCountMonth;
+	private String detailErrorPercentMonth;
+
+	private String detailLoadLeaderNight;
+	private String detailCrashesCountNight;
+
+	public String getDetailErrorPercentNight()
+	{
+		return detailErrorPercentNight;
+	}
+
+	public void setDetailErrorPercentNight(String detailErrorPercentNight)
+	{
+		this.detailErrorPercentNight = detailErrorPercentNight;
+	}
+
+	public String getDetailLoadLeaderAll()
+	{
+		return detailLoadLeaderAll;
+	}
+
+	public void setDetailLoadLeaderAll(String detailLoadLeaderAll)
+	{
+		this.detailLoadLeaderAll = detailLoadLeaderAll;
+	}
+
+	public String getDetailCrashesCountAll()
+	{
+		return detailCrashesCountAll;
+	}
+
+	public void setDetailCrashesCountAll(String detailCrashesCountAll)
+	{
+		this.detailCrashesCountAll = detailCrashesCountAll;
+	}
+
+	public String getDetailLoadLeaderMonth()
+	{
+		return detailLoadLeaderMonth;
+	}
+
+	public void setDetailLoadLeaderMonth(String detailLoadLeaderMonth)
+	{
+		this.detailLoadLeaderMonth = detailLoadLeaderMonth;
+	}
+
+	public String getDetailErrorPercentAll()
+	{
+		return detailErrorPercentAll;
+	}
+
+	public void setDetailErrorPercentAll(String detailErrorPercentAll)
+	{
+		this.detailErrorPercentAll = detailErrorPercentAll;
+	}
+
+	public String getDetailCrashesCountMonth()
+	{
+		return detailCrashesCountMonth;
+	}
+
+	public void setDetailCrashesCountMonth(String detailCrashesCountMonth)
+	{
+		this.detailCrashesCountMonth = detailCrashesCountMonth;
+	}
+
+	public String getDetailErrorPercentMonth()
+	{
+		return detailErrorPercentMonth;
+	}
+
+	public void setDetailErrorPercentMonth(String detailErrorPercentMonth)
+	{
+		this.detailErrorPercentMonth = detailErrorPercentMonth;
+	}
+
+	public String getDetailLoadLeaderNight()
+	{
+		return detailLoadLeaderNight;
+	}
+
+	public void setDetailLoadLeaderNight(String detailLoadLeaderNight)
+	{
+		this.detailLoadLeaderNight = detailLoadLeaderNight;
+	}
+
+	public String getDetailCrashesCountNight()
+	{
+		return detailCrashesCountNight;
+	}
+
+	public void setDetailCrashesCountNight(String detailCrashesCountNight)
+	{
+		this.detailCrashesCountNight = detailCrashesCountNight;
+	}
+
+	private String detailErrorPercentNight;
 
 	public String getMostErrorByAllTimeAppName()
 	{
@@ -97,17 +199,6 @@ public class CommonStatisticsData
 	public void setMostCrashesByNightAppName(String mostCrashesByNightAppName)
 	{
 		this.mostCrashesByNightAppName = mostCrashesByNightAppName;
-	}
-
-
-	public String getMostCrashesByMonthAppId()
-	{
-		return mostCrashesByMonthAppId;
-	}
-
-	public void setMostCrashesByMonthAppId(String mostCrashesByMonthAppId)
-	{
-		this.mostCrashesByMonthAppId = mostCrashesByMonthAppId;
 	}
 
 	public String getMostCrashesByMonthAppName()
