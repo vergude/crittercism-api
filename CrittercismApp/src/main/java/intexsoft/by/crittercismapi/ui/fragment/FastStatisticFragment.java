@@ -5,52 +5,27 @@ import android.app.Fragment;
 import android.app.LoaderManager;
 import android.content.Loader;
 import android.os.Bundle;
-import android.widget.TextView;
+import android.widget.ListView;
 import intexsoft.by.crittercismapi.R;
+import intexsoft.by.crittercismapi.data.db.TimeStatisticContainer;
 import intexsoft.by.crittercismapi.data.loader.CommonStatisticsLoader;
-import intexsoft.by.crittercismapi.data.loader.data.CommonStatisticsData;
+import intexsoft.by.crittercismapi.ui.adapters.FastStatisticAdapter;
 import intexsoft.by.crittercismapi.ui.view.FastStatisticView;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
+import java.util.List;
+
 /**
  * Created by Евгений on 27.08.2014.
  */
-@EFragment(R.layout.fast_statistic)
-public class FastStatisticFragment extends Fragment implements FastStatisticView, LoaderManager.LoaderCallbacks<CommonStatisticsData>
+@EFragment(R.layout.fast_statistic_fragment)
+public class FastStatisticFragment extends Fragment implements FastStatisticView, LoaderManager.LoaderCallbacks<List<TimeStatisticContainer>>
 {
 	public static final String TAG = MainFragment.class.getSimpleName();
-	private CommonStatisticsData commonStatisticsData;
 
 	@ViewById
-	TextView appNameCrashesCountMonth;
-
-	@ViewById
-	TextView appNameCrashesCountAll;
-
-	@ViewById
-	TextView appNameCrashesCountNight;
-
-	@ViewById
-	TextView appNameLoadLeaderAll;
-
-	@ViewById
-	TextView appNameLoadLeaderMonth;
-
-	@ViewById
-	TextView appNameLoadLeaderNight;
-
-	@ViewById
-	TextView appNameErrorPercentAll;
-
-	@ViewById
-	TextView appNameErrorPercentMonth;
-
-	@ViewById
-	TextView appNameErrorPercentNight;
-
-
-
+	ListView fastStatisticList;
 
 	public static FastStatisticFragment build()
 	{
@@ -71,30 +46,22 @@ public class FastStatisticFragment extends Fragment implements FastStatisticView
 	}
 
 	@Override
-	public Loader<CommonStatisticsData> onCreateLoader(int i, Bundle bundle)
+	public Loader<List<TimeStatisticContainer>> onCreateLoader(int i, Bundle bundle)
 	{
 		return new CommonStatisticsLoader(getActivity());
 	}
 
 	@Override
-	public void onLoadFinished(Loader<CommonStatisticsData> commonStatisticsDataLoader, CommonStatisticsData commonStatistics)
+	public void onLoadFinished(Loader<List<TimeStatisticContainer>> loader, List<TimeStatisticContainer> data)
 	{
-		appNameCrashesCountMonth.setText(commonStatistics.getMostCrashesByMonthAppName());
-		appNameCrashesCountAll.setText(commonStatistics.getMostCrashesByAllTimeAppName());
-		appNameCrashesCountNight.setText(commonStatistics.getMostCrashesByNightAppName());
-
-		appNameErrorPercentMonth.setText(commonStatistics.getMostErrorByMonthAppName());
-		appNameErrorPercentAll.setText(commonStatistics.getMostErrorByAllTimeAppName());
-		appNameErrorPercentNight.setText(commonStatistics.getMostErrorByNightAppName());
-
-		appNameLoadLeaderMonth.setText(commonStatistics.getMostDownloadsByMonthAppName());
-		appNameLoadLeaderAll.setText(commonStatistics.getMostDownloadsByAllTimeAppName());
-		appNameLoadLeaderNight.setText(commonStatistics.getMostDownloadsByNightAppName());
+		FastStatisticAdapter fastStatisticAdapter = new FastStatisticAdapter(getActivity(),data);
+		fastStatisticList.setAdapter(fastStatisticAdapter);
 	}
 
 	@Override
-	public void onLoaderReset(Loader<CommonStatisticsData> commonStatisticsDataLoader)
+	public void onLoaderReset(Loader<List<TimeStatisticContainer>> loader)
 	{
 
 	}
+
 }

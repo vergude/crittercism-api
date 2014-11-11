@@ -3,14 +3,14 @@ package intexsoft.by.crittercismapi.data.facade;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.util.Log;
 import intexsoft.by.crittercismapi.data.CrittercismAPIContentProvider;
 import intexsoft.by.crittercismapi.data.bean.CrittercismApp;
 import intexsoft.by.crittercismapi.data.bean.DailyStatisticsItem;
 import intexsoft.by.crittercismapi.data.bean.Entity;
 import intexsoft.by.crittercismapi.data.db.DatabaseQueryHelper;
+import intexsoft.by.crittercismapi.data.db.FastStatisticItem;
+import intexsoft.by.crittercismapi.data.db.StatisticType;
 import intexsoft.by.crittercismapi.settings.SettingsFacade;
-import intexsoft.by.crittercismapi.utils.DateTimeUtils;
 import intexsoft.by.crittercismapi.utils.ThreadUtils;
 import nl.qbusict.cupboard.CupboardFactory;
 import org.androidannotations.annotations.Bean;
@@ -20,7 +20,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,8 +37,7 @@ public class PersistenceFacade
 	@Bean
 	DatabaseQueryHelper databaseQueryHelper;
 
-	private static final String WHERE_START_DATE = " >= ? and ";
-	private static final String WHERE_END_DATE = " < ?";
+	private static final String COLUMN_ERROR = "CAST (crashes_count AS REAL)/(CAST (app_loads_count AS REAL))";
 
     public static PersistenceFacade getInstance(Context context)
 	{
@@ -99,88 +97,18 @@ public class PersistenceFacade
 		return CupboardFactory.cupboard().withContext(context).put(uri, toSave);
 	}
 
-	public String getMaxCrashesAppNameMonth(Date startDate, Date endDate, String columnName, String valueSum)
-{
 
-	String stringStartDate = DateTimeUtils.getFormatedStartOfDay(startDate);
-	String stringEndDate = DateTimeUtils.getFormatedStartOfDay(endDate);
-	double maxCrashes;
-	String appName = "";
-
-	Cursor cursor = databaseQueryHelper.getDailyStatisticsItemSum(null,
-			DailyStatisticsItem.COLUMN_DATE + WHERE_START_DATE + DailyStatisticsItem.COLUMN_DATE + WHERE_END_DATE ,
-			new String[]{stringStartDate, stringEndDate}, DailyStatisticsItem.COLUMN_APP_REMOTE_ID, columnName);
-
-	if (cursor != null)
+	public FastStatisticItem getFastStatisticItem(String time, StatisticType type)
 	{
+		FastStatisticItem fastStatisticItem = new FastStatisticItem();
+		Cursor cursor = databaseQueryHelper.getDailyStatisticsItemSum(DailyStatisticsItem.COLUMN_APP_REMOTE_ID,
+				context.getString(type.getColumnName()), time);
 		cursor.moveToFirst();
-		maxCrashes = cursor.getDouble(cursor.getColumnIndex(valueSum));
-		appName = cursor.getString(cursor.getColumnIndex(CrittercismApp.COLUMN_NAME));
-		while (cursor.moveToNext())
-		{
-			if (cursor.getDouble(cursor.getColumnIndex(valueSum)) >  maxCrashes)
-			{
-				appName = cursor.getString(cursor.getColumnIndex(CrittercismApp.COLUMN_NAME));
-				maxCrashes = cursor.getDouble(cursor.getColumnIndex(valueSum));
-			}
-		}
-	}
-	return appName;
-}
+		fastStatisticItem.setCountType(context.getString(type.getStatisticType()));
+		fastStatisticItem.setAppName(cursor.getString(cursor.getColumnIndex("name")));
+		fastStatisticItem.setCountResult(type.formatStatisticsValue(cursor.getFloat(cursor.getColumnIndex("max_count"))));
 
-	public String getMaxCrashesAppNameAllTime(String columnName, String valueSum)
-	{
-		double maxCrashes;
-		String appName = "";
-
-		Cursor cursor = databaseQueryHelper.getDailyStatisticsItemSum(null, null,
-				null, DailyStatisticsItem.COLUMN_APP_REMOTE_ID,  columnName);
-
-		if (cursor != null)
-		{
-			cursor.moveToFirst();
-			maxCrashes = cursor.getDouble(cursor.getColumnIndex(valueSum));
-			appName = cursor.getString(cursor.getColumnIndex(CrittercismApp.COLUMN_NAME));
-			while (cursor.moveToNext())
-			{
-				if (cursor.getDouble(cursor.getColumnIndex(valueSum)) >  maxCrashes)
-				{
-					appName = cursor.getString(cursor.getColumnIndex(CrittercismApp.COLUMN_NAME));
-					maxCrashes = cursor.getDouble(cursor.getColumnIndex(valueSum));
-				}
-			}
-		}
-		return appName;
-	}
-
-	public String getMaxCrashesAppNameNight(Date startDate, Date endDate, String columnName, String valueSum)
-	{
-
-		String stringStartDate = DateTimeUtils.getFormatedStartOfDay(startDate);
-		String stringEndDate = DateTimeUtils.getFormatedStartOfDay(endDate);
-		double maxCrashes = 0;
-		String appName = "";
-
-		Cursor cursor = databaseQueryHelper.getDailyStatisticsItemSum(null,
-				DailyStatisticsItem.COLUMN_DATE + WHERE_START_DATE + DailyStatisticsItem.COLUMN_DATE + WHERE_END_DATE ,
-				new String[]{stringStartDate, stringEndDate}, DailyStatisticsItem.COLUMN_APP_REMOTE_ID, columnName);
-
-		if (cursor != null)
-		{
-			cursor.moveToFirst();
-			maxCrashes = cursor.getDouble(cursor.getColumnIndex(valueSum));
-			appName = cursor.getString(cursor.getColumnIndex(CrittercismApp.COLUMN_NAME));
-			while (cursor.moveToNext())
-			{
-				if (cursor.getDouble(cursor.getColumnIndex(valueSum)) >  maxCrashes)
-				{
-					appName = cursor.getString(cursor.getColumnIndex(CrittercismApp.COLUMN_NAME));
-					maxCrashes = cursor.getDouble(cursor.getColumnIndex(valueSum));
-				}
-			}
-		}
-		Log.d("*****************", String.format("%.3f", maxCrashes));
-		return appName;
+		return fastStatisticItem;
 	}
 
 }

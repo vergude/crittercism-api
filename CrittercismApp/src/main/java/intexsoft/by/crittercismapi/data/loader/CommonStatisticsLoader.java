@@ -1,24 +1,32 @@
 package intexsoft.by.crittercismapi.data.loader;
 
 import android.content.Context;
-import intexsoft.by.crittercismapi.data.bean.DailyStatisticsItem;
+import intexsoft.by.crittercismapi.data.db.FastStatisticItem;
+import intexsoft.by.crittercismapi.data.db.StatisticType;
+import intexsoft.by.crittercismapi.data.db.TimeStatisticContainer;
+import intexsoft.by.crittercismapi.data.db.TimeType;
 import intexsoft.by.crittercismapi.data.facade.PersistenceFacade;
 import intexsoft.by.crittercismapi.data.facade.PersistenceFacade_;
-import intexsoft.by.crittercismapi.data.loader.data.CommonStatisticsData;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by anastasya.konovalova on 27.08.2014.
  */
-public class CommonStatisticsLoader extends OneTimeLoader<CommonStatisticsData>
+public class CommonStatisticsLoader extends OneTimeLoader<List<TimeStatisticContainer>>
 {
-	private static final String COLUMN_SUM = "count_sum";
-	private static final int ONE_MONTH_DAYS = -30;
+	private static final String COLUMN_CRASHES = "crashes_count";
+	private static final String COLUMN_LOADS = "app_loads_count";
+	private static final String COLUMN_ERROR = "CAST (crashes_count AS REAL)/(CAST (app_loads_count AS REAL))";
+
 	private PersistenceFacade persistenceFacade;
 
-	private Date endDate;
+	private Date date;
+
+	private List<TimeStatisticContainer> timeStatisticContainers;
 
 	public CommonStatisticsLoader(Context context)
 	{
@@ -26,50 +34,54 @@ public class CommonStatisticsLoader extends OneTimeLoader<CommonStatisticsData>
 	}
 
 	@Override
-	public CommonStatisticsData loadInBackground()
+	public List<TimeStatisticContainer> loadInBackground()
 	{
 		persistenceFacade = PersistenceFacade_.getInstance_(getContext());
+		timeStatisticContainers = new ArrayList<TimeStatisticContainer>();
 
-		endDate = new Date();
+		date = new Date();
+		for ( TimeType timeType : TimeType.values())
+		{
+			TimeStatisticContainer statisticContainer = new TimeStatisticContainer();
+			statisticContainer.setTimeType(getContext().getString(timeType.getTimeType()));
+			statisticContainer.setFastStatisticItemList(getFastStatisticList(getDate(date,
+					getContext().getResources().getInteger(timeType.getDaysCount()))));
 
-		CommonStatisticsData commonStatisticsData = new CommonStatisticsData();
+			timeStatisticContainers.add(statisticContainer);
+		}
 
-		commonStatisticsData.setMostCrashesByMonthAppName(persistenceFacade.getMaxCrashesAppNameMonth(getStartDate(endDate, ONE_MONTH_DAYS),
-				endDate, DailyStatisticsItem.COLUMN_CRASHES_COUNT, COLUMN_SUM));
-
-		commonStatisticsData.setMostCrashesByAllTimeAppName(persistenceFacade.getMaxCrashesAppNameAllTime(
-				DailyStatisticsItem.COLUMN_CRASHES_COUNT, COLUMN_SUM));
-
-		commonStatisticsData.setMostCrashesByNightAppName(persistenceFacade.getMaxCrashesAppNameNight(getStartDate(endDate, -1),
-				endDate, DailyStatisticsItem.COLUMN_CRASHES_COUNT, COLUMN_SUM));
-
-		commonStatisticsData.setMostErrorByMonthAppName(persistenceFacade.getMaxCrashesAppNameMonth(getStartDate(endDate, ONE_MONTH_DAYS),
-				endDate, null, DailyStatisticsItem.COLUMN_CRASHES_PERCENT));
-
-		commonStatisticsData.setMostErrorByAllTimeAppName(persistenceFacade.getMaxCrashesAppNameAllTime(null,
-				DailyStatisticsItem.COLUMN_CRASHES_PERCENT));
-
-		commonStatisticsData.setMostErrorByNightAppName(persistenceFacade.getMaxCrashesAppNameNight(
-				getStartDate(endDate, -1), endDate, null, DailyStatisticsItem.COLUMN_CRASHES_PERCENT));
-
-		commonStatisticsData.setMostDownloadsByMonthAppName(persistenceFacade.getMaxCrashesAppNameMonth(
-				getStartDate(endDate, ONE_MONTH_DAYS), endDate, DailyStatisticsItem.COLUMN_APP_LOADS_COUNT, COLUMN_SUM));
-
-		commonStatisticsData.setMostDownloadsByAllTimeAppName(persistenceFacade.getMaxCrashesAppNameAllTime(
-				DailyStatisticsItem.COLUMN_APP_LOADS_COUNT, COLUMN_SUM));
-
-		commonStatisticsData.setMostDownloadsByNightAppName(persistenceFacade.getMaxCrashesAppNameNight(getStartDate(endDate, -1),
-				endDate, DailyStatisticsItem.COLUMN_APP_LOADS_COUNT, COLUMN_SUM));
-
-		return commonStatisticsData;
+		return timeStatisticContainers;
 	}
 
-	private Date getStartDate(Date endDat, int value)
+	private List<FastStatisticItem> getFastStatisticList(long time)
+	{
+		List<FastStatisticItem> fastStatisticItemList = new ArrayList<FastStatisticItem>();
+
+		fastStatisticItemList.add(persistenceFacade.getFastStatisticItem(String.valueOf(time),
+				StatisticType.DOWNLOAD_LEADER));
+
+		fastStatisticItemList.add(persistenceFacade.getFastStatisticItem(String.valueOf(time),
+				StatisticType.CRASHES_COUNT));
+
+    	fastStatisticItemList.add(persistenceFacade.getFastStatisticItem(String.valueOf(time),
+				StatisticType.ERROR_PERCENT));
+
+		return fastStatisticItemList;
+	}
+
+	private long getDate(Date dat, int value)
 	{
 		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(endDat);
-		calendar.add(Calendar.DAY_OF_MONTH, value);
+		calendar.setTime(dat);
+		if(value == 1)
+		{
+			return 1;
+		}
+		else
+		{
+			calendar.add(Calendar.DAY_OF_MONTH, value);
+			return calendar.getTime().getTime();
+		}
 
-		return calendar.getTime();
 	}
 }
